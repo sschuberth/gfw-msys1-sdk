@@ -5,11 +5,19 @@ limit=100
 
 # Get the download link to the most recent version of mingw-get.
 link=$(curl -s http://sourceforge.net/api/file/index/project-id/2435/mtime/desc/limit/$limit/rss |
-     sed -nr "s/<link>(.+mingw-get-[0-9]+\.[0-9]+-mingw32-.+-bin\.tar.+)<\/link>/\1/p" |
+     sed -nr "s/<link>(.+(mingw-get-[0-9]+\.[0-9]+-mingw32-.+-bin\.tar\.gz).+)<\/link>/\2\t\1/p" |
      head -1)
 
+file=$(echo "$link" | cut -f 1)
+url=$(echo "$link" | cut -f 2)
+
+# Trim whitespaces.
+file=$(echo $file)
+url=$(echo $url)
+
 mkdir -p root/mingw && cd root/mingw && (
-    curl -L $link | tar -xz
+    echo "Downloading $file ..."
+    curl -# -L $url | tar -xz
 
     # Install mingw in a directory below the msys root.
     cat > var/lib/mingw-get/data/profile.xml << EOF
@@ -25,5 +33,6 @@ mkdir -p root/mingw && cd root/mingw && (
 EOF
 
     # Get the list of available packages.
+    echo "Downloading catalogues ..."
     bin/mingw-get update
 )
