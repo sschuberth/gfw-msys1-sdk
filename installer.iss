@@ -114,3 +114,33 @@ begin
         PackagesList.AddCheckBox(Packages[i],'',0,False,True,False,True,nil);
     end;
 end;
+
+function GetCheckedPackages(Param:String):String;
+var
+    i:Integer;
+begin
+    Result:=Param;
+
+    if PackagesList=nil then begin
+        Exit;
+    end;
+
+    for i:=0 to PackagesList.Items.Count-1 do begin
+        if PackagesList.Checked[i] then begin
+            Result:=Result+' '+PackagesList.ItemCaption[i];
+        end;
+    end;
+end;
+
+function NextButtonClick(CurPageID:Integer):Boolean;
+var
+    ResultCode:Integer;
+begin
+    if CurPageID<>PackagesPage.ID then begin
+        Result:=True;
+        Exit;
+    end;
+
+    Exec(WizardDirValue+'\mingw\bin\mingw-get.exe',GetCheckedPackages('install'),'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
+    Result:=(ResultCode=0);
+end;
