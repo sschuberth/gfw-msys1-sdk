@@ -1,14 +1,19 @@
+#define APP_NAME    'msysGitDevEnv'
+#define APP_VERSION '0.1'
+
 [Setup]
 
 ; Compiler-related
 Compression=lzma2/ultra
 LZMAUseSeparateProcess=yes
+OutputBaseFilename={#APP_NAME+'-v'+APP_VERSION}
+OutputDir=installer
 SolidCompression=yes
 
 ; Installer-related
-AppName=msysGitDevEnv
-AppVersion=0.1
-DefaultDirName={pf}\msysGitDevEnv
+AppName={#APP_NAME}
+AppVersion={#APP_VERSION}
+DefaultDirName={pf}\{#APP_NAME}
 DisableReadyPage=yes
 PrivilegesRequired=none
 
