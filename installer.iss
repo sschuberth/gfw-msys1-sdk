@@ -18,6 +18,31 @@ Source: root\*; DestDir: {app}; Flags: recursesubdirs
 
 [Code]
 
+var
+    PackagesPage:TWizardPage;
+    PackagesList:TNewCheckListBox;
+
+procedure InitializeWizard;
+var
+    PrevPageID:Integer;
+begin
+    PrevPageID:=wpInstalling;
+
+    PackagesPage:=CreateCustomPage(
+        PrevPageID,
+        'Package selection',
+        'Which packages would like to have installed?'
+    );
+    PrevPageID:=PackagesPage.ID;
+
+    PackagesList:=TNewCheckListBox.Create(PackagesPage);
+    with PackagesList do begin
+        Parent:=PackagesPage.Surface;
+        Width:=PackagesPage.SurfaceWidth;
+        Height:=PackagesPage.SurfaceHeight;
+    end;
+end;
+
 function GetAvailablePackages:TArrayOfString;
 var
     Path,Name:String;
@@ -49,7 +74,6 @@ begin
                                 l:=GetArraylength(Result);
                                 SetArrayLength(Result,l+1);
                                 Result[l]:=Name;
-                                Log(Name);
                                 break;
                             end;
                         end;
@@ -65,11 +89,23 @@ end;
 procedure CurStepChanged(CurStep:TSetupStep);
 var
     Packages:TArrayOfString;
+    NumPackages,i:Integer;
 begin
     if CurStep<>ssPostInstall then begin
         Exit;
     end;
 
     Packages:=GetAvailablePackages;
-    Log(IntToStr(GetArraylength(Packages)));
+    NumPackages:=GetArrayLength(Packages);
+
+    if NumPackages=0 then begin
+        // TODO: Error handling.
+        Exit;
+    end;
+
+    PackagesPage.Description:='Which of these '+IntToStr(NumPackages)+' packages would like to have installed?';
+
+    for i:=0 to GetArrayLength(Packages)-1  do begin
+        PackagesList.AddCheckBox(Packages[i],'',0,False,True,False,True,nil);
+    end;
 end;
