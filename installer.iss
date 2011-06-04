@@ -27,6 +27,130 @@ var
     PackagesPage:TWizardPage;
     PackagesList:TNewCheckListBox;
 
+{
+    XML parsing stuff
+}
+
+function GetFirstQuotedString(Name:String):String;
+var
+    p:Integer;
+begin
+    p:=Pos('"',Name);
+    if p>0 then begin
+        Delete(Name,1,p);
+        p:=Pos('"',Name);
+        if p>0 then begin
+            Delete(Name,p,Length(Name));
+            Result:=Trim(Name);
+        end;
+    end;
+end;
+
+procedure ParseForHierarchy(Lines:TArrayOfString;var List:TArrayOfString);
+var
+    i,p,s,l:Integer;
+    Line,Name,Group:String;
+begin
+    for i:=0 to GetArrayLength(Lines)-1 do begin
+        Line:=Lines[i];
+
+        // Look for the begin of package group.
+        p:=Pos('<package-group',Line);
+        s:=Pos('/>',Line);
+        if p>0 then begin
+            Name:=GetFirstQuotedString(Line);
+
+            // Append the name to the list.
+            if Length(Name)>0 then begin
+                if s=0 then begin
+                    Group:=AddBackslash(Group)+Name;
+                end else begin
+                    l:=GetArraylength(List);
+                    SetArrayLength(List,l+1);
+                    List[l]:=Group+'\'+Name;
+                end;
+            end;
+        end else begin
+            // Look for the end of package group.
+            p:=Pos('</package-group>',Line);
+            if p>0 then begin
+                Group:=RemoveBackslash(ExtractFilePath(Group));
+            end;
+        end;
+    end;
+end;
+
+procedure ParseForPackages(Lines:TArrayOfString;var List:TArrayOfString);
+var
+    i,p,l:Integer;
+    Line,Name:String;
+begin
+    for i:=0 to GetArrayLength(Lines)-1 do begin
+        Line:=Lines[i];
+
+        // Look for a package name.
+        p:=Pos('<package name',Line);
+        if p>0 then begin
+            Name:=GetFirstQuotedString(Line);
+
+            // Append the name to the list.
+            if Length(Name)>0 then begin
+                l:=GetArraylength(List);
+                SetArrayLength(List,l+1);
+                List[l]:=Name;
+            end;
+        end else begin
+            // Look for a group name.
+            p:=Pos('<affiliate group',Line);
+            if p>0 then begin
+                Name:=GetFirstQuotedString(Line);
+
+                // Append the group name to the current name.
+                if Length(Name)>0 then begin
+                    l:=GetArraylength(List)-1;
+                    List[l]:=Name+'\'+List[l];
+                end;
+            end;
+        end;
+    end;
+end;
+
+function GetAvailablePackages:TArrayOfString;
+var
+    Path:String;
+    FindRec:TFindRec;
+    Lines,Groups:TArrayOfString;
+    i:Integer;
+begin
+    Path:=WizardDirValue+'\mingw\var\lib\mingw-get\data\';
+
+    // Loop over all XML files.
+    if FindFirst(Path+'*.xml',FindRec) then begin
+        try
+            repeat
+                // Load all lines of text and parse them.
+                if LoadStringsFromFile(Path+FindRec.Name,Lines) then begin
+                    if Pos('-list.xml',FindRec.Name)>0 then begin
+                        ParseForHierarchy(Lines,Groups);
+                    end else begin
+                        ParseForPackages(Lines,Result);
+                    end;
+                end;
+            until not FindNext(FindRec);
+        finally
+            FindClose(FindRec);
+        end;
+    end;
+
+    for i:=0 to GetArrayLength(Groups)-1 do begin
+        Log(Groups[i]);
+    end;
+end;
+
+{
+    Installer callbacks
+}
+
 procedure InitializeWizard;
 var
     PrevPageID:Integer;
@@ -45,49 +169,6 @@ begin
         Parent:=PackagesPage.Surface;
         Width:=PackagesPage.SurfaceWidth;
         Height:=PackagesPage.SurfaceHeight;
-    end;
-end;
-
-function GetAvailablePackages:TArrayOfString;
-var
-    Path,Name:String;
-    FindRec:TFindRec;
-    Lines:TArrayOfString;
-    i,p,l:Integer;
-begin
-    Path:=WizardDirValue+'\mingw\var\lib\mingw-get\data\';
-
-    // Loop over all XML files.
-    if FindFirst(Path+'*.xml',FindRec) then begin
-        try
-            repeat
-                if LoadStringsFromFile(Path+FindRec.Name,Lines) then begin
-                    for i:=0 to GetArrayLength(Lines)-1 do begin
-                        Name:=Lines[i];
-
-                        // If look for the package name.
-                        p:=Pos('<package name',Name);
-                        if p>0 then begin
-                            p:=Pos('"',Name);
-                            Delete(Name,1,p);
-                            p:=Pos('"',Name);
-                            Delete(Name,p,Length(Name));
-                            Name:=Trim(Name);
-
-                            // Append the name to the list.
-                            if Length(Name)>0 then begin
-                                l:=GetArraylength(Result);
-                                SetArrayLength(Result,l+1);
-                                Result[l]:=Name;
-                                break;
-                            end;
-                        end;
-                    end;
-                end;
-            until not FindNext(FindRec);
-        finally
-            FindClose(FindRec);
-        end;
     end;
 end;
 
@@ -141,6 +222,7 @@ begin
         Exit;
     end;
 
+    // TODO: Check if at least one package is selected.
     Exec(WizardDirValue+'\mingw\bin\mingw-get.exe',GetCheckedPackages('install'),'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
     Result:=(ResultCode=0);
 end;
