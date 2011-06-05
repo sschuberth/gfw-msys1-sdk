@@ -50,9 +50,9 @@ begin
     end;
 end;
 
-procedure ParseForHierarchy(Lines:TArrayOfString;var List:TArrayOfString);
+procedure ParseForHierarchy(Lines:TArrayOfString;var List:TStringList);
 var
-    i,p,s,l:Integer;
+    i,p,s:Integer;
     Line,Name,Group:String;
 begin
     for i:=0 to GetArrayLength(Lines)-1 do begin
@@ -69,25 +69,21 @@ begin
                 if s=0 then begin
                     Group:=AddBackslash(Group)+Name;
                 end else begin
-                    l:=GetArrayLength(List);
-                    SetArrayLength(List,l+1);
-                    List[l]:=Group+'\'+Name;
+                    List.Append(Group+'\'+Name);
                 end;
             end;
         end else begin
             // Look for the end of package group.
             p:=Pos('</package-group>',Line);
             if p>0 then begin
-                l:=GetArrayLength(List);
-                SetArrayLength(List,l+1);
-                List[l]:=Group;
+                List.Append(Group);
                 Group:=ExtractFileDir(Group);
             end;
         end;
     end;
 end;
 
-procedure ParseForPackages(Lines:TArrayOfString;var List:TArrayOfString);
+procedure ParseForPackages(Lines:TArrayOfString;var List:TStringList);
 var
     i,p,l:Integer;
     Line,Name:String;
@@ -102,9 +98,7 @@ begin
 
             // Append the name to the list.
             if Length(Name)>0 then begin
-                l:=GetArrayLength(List);
-                SetArrayLength(List,l+1);
-                List[l]:=Name;
+                List.Append(Name);
             end;
 
             // Append the class (e.g. "virtual"), if any, to the name.
@@ -112,8 +106,8 @@ begin
             if p>0 then begin
                 Delete(Line,1,p);
                 Name:=GetFirstQuotedString(Line);
-                l:=GetArrayLength(List)-1;
-                List[l]:=List[l]+'@'+Name;
+                l:=List.Count-1;
+                List.Strings[l]:=List.Strings[l]+'@'+Name;
             end;
         end else begin
             // Look for a group name.
@@ -123,8 +117,8 @@ begin
 
                 // Append the group name to the current name.
                 if Length(Name)>0 then begin
-                    l:=GetArrayLength(List)-1;
-                    List[l]:=Name+'\'+List[l];
+                    l:=List.Count-1;
+                    List.Strings[l]:=Name+'\'+List.Strings[l];
                 end;
             end;
         end;
@@ -133,12 +127,16 @@ end;
 
 function GetAvailablePackages(var Entries:TArrayOfString):Integer;
 var
+    Groups,Packages:TStringList;
     Path:String;
     FindRec:TFindRec;
-    Lines,Groups,Packages:TArrayOfString;
+    Lines:TArrayOfString;
     g,p,l:Integer;
     Group,Parent:String;
 begin
+    Groups:=TStringList.Create;
+    Packages:=TStringList.Create;
+
     Path:=WizardDirValue+'\mingw\var\lib\mingw-get\data\';
 
     // Loop over all XML files.
@@ -159,26 +157,32 @@ begin
         end;
     end;
 
-    // Sort packages into groups. Note that packages may belong to multiple groups
-    // because their group belongs to mutiple parent groups (see "MinGW Standard Libraries").
-    Log('There are '+IntToStr(GetArrayLength(Groups))+' groups and '+IntToStr(GetArrayLength(Packages))+' unique packages.');
+    Packages.Sort;
 
-    for g:=0 to GetArrayLength(Groups)-1 do begin
-        Log('Sorting into group: '+Groups[g]);
+    // Assigning packages to groups. Note that packages may belong to multiple groups
+    // because their group belongs to mutiple parent groups (see "MinGW Standard Libraries").
+    Log('There are '+IntToStr(Groups.Count)+' groups and '+IntToStr(Packages.Count)+' unique packages.');
+
+    for g:=0 to Groups.Count-1 do begin
+        Log('Assigning to group: '+Groups[g]);
 
         Group:=Lowercase(ExtractFileName(Groups[g]));
-        for p:=0 to GetArrayLength(Packages)-1 do begin
+        for p:=0 to Packages.Count-1 do begin
             Parent:=Lowercase(ExtractFileDir(Packages[p]));
             if (Group=Parent) or ((Length(Parent)=0) and (Pos(Group,Lowercase(Packages[p]))>0)) then begin
                 l:=GetArrayLength(Entries);
                 SetArrayLength(Entries,l+1);
-                Entries[l]:=Groups[g]+'\'+ExtractFileName(Packages[p]);
+                Entries[l]:=Groups.Strings[g]+'\'+ExtractFileName(Packages.Strings[p]);
             end;
         end;
     end;
 
     Log('Created '+IntToStr(l+1)+' package entries.');
-    Result:=GetArrayLength(Packages);
+
+    Result:=Packages.Count;
+
+    Groups.Free;
+    Packages.Free;
 end;
 
 {
