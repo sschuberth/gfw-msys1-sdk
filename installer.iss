@@ -205,7 +205,8 @@ begin
     NumPackages:=GetArrayLength(Packages);
 
     if NumPackages=0 then begin
-        // TODO: Error handling.
+        // This should never happen as we bundle the package catalogue files with the installer.
+        MsgBox('No packages found, please report this as an error to the developers.',mbError,MB_OK);
         Exit;
     end;
 
@@ -245,4 +246,13 @@ begin
     // TODO: Check if at least one package is selected.
     Exec(WizardDirValue+'\mingw\bin\mingw-get.exe',GetCheckedPackages('install'),'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
     Result:=(ResultCode=0);
+end;
+
+function ShouldSkipPage(PageID:Integer):Boolean;
+begin
+    if (PageID=PackagesPage.ID) and (PackagesList.Items.Count=0) then begin
+        Result:=True;
+    end else begin
+        Result:=False;
+    end;
 end;
