@@ -195,7 +195,8 @@ end;
 procedure CurStepChanged(CurStep:TSetupStep);
 var
     Packages:TArrayOfString;
-    NumPackages,i:Integer;
+    NumPackages,i,Level,p:Integer;
+    Hierarchy,Group,PrevPath,Path,Package:String;
 begin
     if CurStep<>ssPostInstall then begin
         Exit;
@@ -213,7 +214,31 @@ begin
     PackagesPage.Description:='Which of these '+IntToStr(NumPackages)+' packages would like to have installed?';
 
     for i:=0 to GetArrayLength(Packages)-1  do begin
-        PackagesList.AddCheckBox(Packages[i],'',0,False,True,False,True,nil);
+        Hierarchy:=ExtractFilePath(Packages[i]);
+
+        // Create only those groups of the hierarchy that were not previously created.
+        Level:=0;
+        p:=Pos('\',Hierarchy);
+        while p>0 do begin
+            Group:=Copy(Hierarchy,1,p-1);
+            Path:=AddBackslash(Path)+Group;
+
+            if Pos(Path,PrevPath)=0 then begin
+                // Set a group entry's object to non-NIL to be able to easily distinguish them from package entries.
+                PackagesList.AddCheckBox(Group,'',Level,False,True,False,True,PackagesList);
+            end;
+
+            Delete(Hierarchy,1,p);
+            Inc(Level);
+
+            p:=Pos('\',Hierarchy);
+        end;
+        PrevPath:=Path;
+        Path:='';
+
+        // Create the package entry.
+        Package:=ExtractFileName(Packages[i]);
+        PackagesList.AddCheckBox(Package,'',Level,False,True,False,True,nil);
     end;
 end;
 
@@ -228,7 +253,7 @@ begin
     end;
 
     for i:=0 to PackagesList.Items.Count-1 do begin
-        if PackagesList.Checked[i] then begin
+        if PackagesList.Checked[i] and (PackagesList.ItemObject[i]=nil) then begin
             Result:=Result+' '+PackagesList.ItemCaption[i];
         end;
     end;
