@@ -65,7 +65,7 @@ begin
                 if s=0 then begin
                     Group:=AddBackslash(Group)+Name;
                 end else begin
-                    l:=GetArraylength(List);
+                    l:=GetArrayLength(List);
                     SetArrayLength(List,l+1);
                     List[l]:=Group+'\'+Name;
                 end;
@@ -74,7 +74,7 @@ begin
             // Look for the end of package group.
             p:=Pos('</package-group>',Line);
             if p>0 then begin
-                l:=GetArraylength(List);
+                l:=GetArrayLength(List);
                 SetArrayLength(List,l+1);
                 List[l]:=Group;
                 Group:=ExtractFileDir(Group);
@@ -98,7 +98,7 @@ begin
 
             // Append the name to the list.
             if Length(Name)>0 then begin
-                l:=GetArraylength(List);
+                l:=GetArrayLength(List);
                 SetArrayLength(List,l+1);
                 List[l]:=Name;
             end;
@@ -108,7 +108,7 @@ begin
             if p>0 then begin
                 Delete(Line,1,p);
                 Name:=GetFirstQuotedString(Line);
-                l:=GetArraylength(List)-1;
+                l:=GetArrayLength(List)-1;
                 List[l]:=List[l]+'@'+Name;
             end;
         end else begin
@@ -119,7 +119,7 @@ begin
 
                 // Append the group name to the current name.
                 if Length(Name)>0 then begin
-                    l:=GetArraylength(List)-1;
+                    l:=GetArrayLength(List)-1;
                     List[l]:=Name+'\'+List[l];
                 end;
             end;
@@ -166,7 +166,7 @@ begin
         for p:=0 to GetArrayLength(Packages)-1 do begin
             Parent:=Lowercase(ExtractFileDir(Packages[p]));
             if (Group=Parent) or ((Length(Parent)=0) and (Pos(Group,Lowercase(Packages[p]))>0)) then begin
-                l:=GetArraylength(Entries);
+                l:=GetArrayLength(Entries);
                 SetArrayLength(Entries,l+1);
                 Entries[l]:=Groups[g]+'\'+ExtractFileName(Packages[p]);
             end;
