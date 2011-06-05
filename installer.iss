@@ -127,7 +127,7 @@ begin
     end;
 end;
 
-function GetAvailablePackages:TArrayOfString;
+function GetAvailablePackages(var Entries:TArrayOfString):Integer;
 var
     Path:String;
     FindRec:TFindRec;
@@ -166,14 +166,15 @@ begin
         for p:=0 to GetArrayLength(Packages)-1 do begin
             Parent:=Lowercase(ExtractFileDir(Packages[p]));
             if (Group=Parent) or ((Length(Parent)=0) and (Pos(Group,Lowercase(Packages[p]))>0)) then begin
-                l:=GetArraylength(Result);
-                SetArrayLength(Result,l+1);
-                Result[l]:=Groups[g]+'\'+ExtractFileName(Packages[p]);
+                l:=GetArraylength(Entries);
+                SetArrayLength(Entries,l+1);
+                Entries[l]:=Groups[g]+'\'+ExtractFileName(Packages[p]);
             end;
         end;
     end;
 
     Log('Created '+IntToStr(l+1)+' package entries.');
+    Result:=GetArrayLength(Packages);
 end;
 
 {
@@ -211,8 +212,7 @@ begin
         Exit;
     end;
 
-    Packages:=GetAvailablePackages;
-    NumPackages:=GetArrayLength(Packages);
+    NumPackages:=GetAvailablePackages(Packages);
 
     if NumPackages=0 then begin
         // This should never happen as we bundle the package catalogue files with the installer.
