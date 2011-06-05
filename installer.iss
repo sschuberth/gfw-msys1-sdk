@@ -122,8 +122,9 @@ function GetAvailablePackages:TArrayOfString;
 var
     Path:String;
     FindRec:TFindRec;
-    Lines,Groups:TArrayOfString;
-    i:Integer;
+    Lines,Groups,Packages:TArrayOfString;
+    g,p,l:Integer;
+    Group,Parent:String;
 begin
     Path:=WizardDirValue+'\mingw\var\lib\mingw-get\data\';
 
@@ -136,7 +137,7 @@ begin
                     if Pos('-list.xml',FindRec.Name)>0 then begin
                         ParseForHierarchy(Lines,Groups);
                     end else begin
-                        ParseForPackages(Lines,Result);
+                        ParseForPackages(Lines,Packages);
                     end;
                 end;
             until not FindNext(FindRec);
@@ -145,9 +146,25 @@ begin
         end;
     end;
 
-    for i:=0 to GetArrayLength(Groups)-1 do begin
-        Log(Groups[i]);
+    // Sort packages into groups. Note that packages may belong to multiple groups
+    // because their group belongs to mutiple parent groups (see "MinGW Standard Libraries").
+    Log('There are '+IntToStr(GetArrayLength(Groups))+' groups and '+IntToStr(GetArrayLength(Packages))+' unique packages.');
+
+    for g:=0 to GetArrayLength(Groups)-1 do begin
+        Log('Sorting into group: '+Groups[g]);
+
+        Group:=Lowercase(ExtractFileName(Groups[g]));
+        for p:=0 to GetArrayLength(Packages)-1 do begin
+            Parent:=Lowercase(ExtractFileDir(Packages[p]));
+            if (Group=Parent) or ((Length(Parent)=0) and (Pos(Group,Lowercase(Packages[p]))>0)) then begin
+                l:=GetArraylength(Result);
+                SetArrayLength(Result,l+1);
+                Result[l]:=Groups[g]+'\'+ExtractFileName(Packages[p]);
+            end;
+        end;
     end;
+
+    Log('Created '+IntToStr(l+1)+' package entries.');
 end;
 
 {
