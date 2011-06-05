@@ -74,6 +74,9 @@ begin
             // Look for the end of package group.
             p:=Pos('</package-group>',Line);
             if p>0 then begin
+                l:=GetArraylength(List);
+                SetArrayLength(List,l+1);
+                List[l]:=Group;
                 Group:=RemoveBackslash(ExtractFilePath(Group));
             end;
         end;
