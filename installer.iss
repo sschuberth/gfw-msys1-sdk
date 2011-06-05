@@ -13,7 +13,7 @@ SolidCompression=yes
 ; Installer-related
 AppName={#APP_NAME}
 AppVersion={#APP_VERSION}
-DefaultDirName={pf}\{#APP_NAME}
+DefaultDirName={sd}\{#APP_NAME}
 DisableReadyPage=yes
 PrivilegesRequired=none
 
@@ -277,18 +277,20 @@ var
     Packages:String;
     ResultCode:Integer;
 begin
-    if CurPageID<>PackagesPage.ID then begin
-        Result:=True;
-        Exit;
-    end;
+    Result:=True;
 
-    Packages:=GetCheckedPackages;
-    if Length(Packages)>0 then begin
-        Log('Installing the following packages: '+Packages);
-        Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
-        Result:=(ResultCode=0);
-    end else begin
-        Result:=(MsgBox('You have not selected any packages. Are you sure you want to continue?',mbConfirmation,MB_YESNO)=IDYES);
+    if (CurPageID=wpSelectDir) and (Pos(' ',WizardDirValue)>0) then begin
+        MsgBox('The installation directory must not contain any spaces, please choose a different one.',mbError,MB_OK);
+        Result:=False;
+    end else if CurPageID=PackagesPage.ID then begin
+        Packages:=GetCheckedPackages;
+        if Length(Packages)>0 then begin
+            Log('Installing the following packages: '+Packages);
+            Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
+            Result:=(ResultCode=0);
+        end else begin
+            Result:=(MsgBox('You have not selected any packages. Are you sure you want to continue?',mbConfirmation,MB_YESNO)=IDYES);
+        end;
     end;
 end;
 
