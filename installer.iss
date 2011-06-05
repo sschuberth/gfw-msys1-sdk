@@ -77,7 +77,7 @@ begin
                 l:=GetArraylength(List);
                 SetArrayLength(List,l+1);
                 List[l]:=Group;
-                Group:=RemoveBackslash(ExtractFilePath(Group));
+                Group:=ExtractFileDir(Group);
             end;
         end;
     end;
