@@ -257,12 +257,10 @@ begin
     end;
 end;
 
-function GetCheckedPackages(Param:String):String;
+function GetCheckedPackages:String;
 var
     i:Integer;
 begin
-    Result:=Param;
-
     if PackagesList=nil then begin
         Exit;
     end;
@@ -276,6 +274,7 @@ end;
 
 function NextButtonClick(CurPageID:Integer):Boolean;
 var
+    Packages:String;
     ResultCode:Integer;
 begin
     if CurPageID<>PackagesPage.ID then begin
@@ -283,9 +282,14 @@ begin
         Exit;
     end;
 
-    // TODO: Check if at least one package is selected.
-    Exec(WizardDirValue+'\mingw\bin\mingw-get.exe',GetCheckedPackages('install'),'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
-    Result:=(ResultCode=0);
+    Packages:=GetCheckedPackages;
+    if Length(Packages)>0 then begin
+        Log('Installing the following packages: '+Packages);
+        Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
+        Result:=(ResultCode=0);
+    end else begin
+        Result:=(MsgBox('You have not selected any packages. Are you sure you want to continue?',mbConfirmation,MB_YESNO)=IDYES);
+    end;
 end;
 
 function ShouldSkipPage(PageID:Integer):Boolean;
