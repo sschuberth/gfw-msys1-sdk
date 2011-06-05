@@ -102,6 +102,15 @@ begin
                 SetArrayLength(List,l+1);
                 List[l]:=Name;
             end;
+
+            // Append the class (e.g. "virtual"), if any, to the name.
+            p:=Pos('class',Line);
+            if p>0 then begin
+                Delete(Line,1,p);
+                Name:=GetFirstQuotedString(Line);
+                l:=GetArraylength(List)-1;
+                List[l]:=List[l]+'@'+Name;
+            end;
         end else begin
             // Look for a group name.
             p:=Pos('<affiliate group',Line);
@@ -196,7 +205,7 @@ procedure CurStepChanged(CurStep:TSetupStep);
 var
     Packages:TArrayOfString;
     NumPackages,i,Level,p:Integer;
-    Hierarchy,Group,PrevPath,Path,Package:String;
+    Hierarchy,Group,PrevPath,Path,PackageName,PackageClass:String;
 begin
     if CurStep<>ssPostInstall then begin
         Exit;
@@ -237,8 +246,14 @@ begin
         Path:='';
 
         // Create the package entry.
-        Package:=ExtractFileName(Packages[i]);
-        PackagesList.AddCheckBox(Package,'',Level,False,True,False,True,nil);
+        PackageName:=ExtractFileName(Packages[i]);
+        PackageClass:='';
+        p:=Pos('@',PackageName);
+        if p>0 then begin
+            PackageClass:=Copy(PackageName,p+1,Length(PackageName));
+            Delete(PackageName,p,Length(PackageName));
+        end;
+        PackagesList.AddCheckBox(PackageName,PackageClass,Level,False,True,False,True,nil);
     end;
 end;
 
