@@ -1,4 +1,4 @@
-#define APP_NAME    'msysGitDevEnv'
+#define APP_NAME    'mingwGitDevEnv'
 #define APP_VERSION '0.1'
 
 [Setup]
