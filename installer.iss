@@ -24,8 +24,7 @@ Source: root\*; DestDir: {app}; Flags: recursesubdirs
 [Code]
 
 const
-    // Note: A space before and after each package name is required!
-    ForcePackages=' msys-base mingw32-gcc ';
+    RequiredPackages='msys-base mingw32-gcc';
 
 var
     PackagesPage:TWizardPage;
@@ -215,7 +214,7 @@ var
     Packages:TArrayOfString;
     NumPackages,i,Level,p:Integer;
     Hierarchy,Group,PrevPath,Path,PackageName,PackageClass:String;
-    Forced:Boolean;
+    Required:Boolean;
 begin
     if CurStep<>ssPostInstall then begin
         Exit;
@@ -264,8 +263,8 @@ begin
         end;
 
         // Enclose the package name by spaces for the lookup as one name may be a substring of another name.
-        Forced:=(Pos(' '+PackageName+' ',ForcePackages)>0);
-        PackagesList.AddCheckBox(PackageName,PackageClass,Level,Forced,not Forced,False,True,nil);
+        Required:=(Pos(' '+PackageName+' ',' '+RequiredPackages+' ')>0);
+        PackagesList.AddCheckBox(PackageName,PackageClass,Level,Required,not Required,False,True,nil);
     end;
 end;
 
