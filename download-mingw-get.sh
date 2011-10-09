@@ -23,8 +23,12 @@ mkdir -p root/mingw && cd root/mingw && (
         echo "Warning: Invalid URL, skipping download of mingw-get."
     fi
 
-    # Install mingw in a directory below the msys root.
-    cat > var/lib/mingw-get/data/profile.xml << EOF
+    if [ -f bin/mingw-get ]; then
+        version=$(bin/mingw-get --version | head -1)
+        echo "Using $version."
+
+        # Install mingw in a directory below the msys root.
+        cat > var/lib/mingw-get/data/profile.xml << EOF
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profile project="MinGW" application="mingw-get">
     <repository uri="http://prdownloads.sourceforge.net/mingw/%F.xml.lzma?download">
@@ -36,7 +40,10 @@ mkdir -p root/mingw && cd root/mingw && (
 </profile>
 EOF
 
-    # Get the list of available packages.
-    echo "Downloading catalogues ..."
-    bin/mingw-get update
+        # Get the list of available packages.
+        echo "Downloading catalogues ..."
+        bin/mingw-get update
+    else
+        echo "Warning: mingw-get not found, skipping download of catalogues."
+    fi
 )
