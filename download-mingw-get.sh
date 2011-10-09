@@ -16,8 +16,12 @@ file=$(echo $file)
 url=$(echo $url)
 
 mkdir -p root/mingw && cd root/mingw && (
-    echo "Downloading $file ..."
-    curl -# -L $url | tar -xz
+    if [ -n "$url" ]; then
+        echo "Downloading $file ..."
+        curl -# -L $url | tar -xz
+    else
+        echo "Warning: Invalid URL, skipping download of mingw-get."
+    fi
 
     # Install mingw in a directory below the msys root.
     cat > var/lib/mingw-get/data/profile.xml << EOF
