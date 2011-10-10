@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Limit the number of RSS feed entries.
-limit=100
+limit=200
 
 # Get the download link to the most recent version of mingw-get.
 link=$(curl -s http://sourceforge.net/api/file/index/project-id/2435/mtime/desc/limit/$limit/rss |
