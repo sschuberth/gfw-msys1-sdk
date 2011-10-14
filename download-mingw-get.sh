@@ -11,7 +11,7 @@ elif [ -f "$(which unzip)" ]; then
     ext="\.zip"
     unpack="unzip -u"
 else
-    echo "Error: No suitable unpacking tool found."
+    echo "ERROR: No suitable unpacking tool found."
     exit 1
 fi
 
@@ -33,7 +33,7 @@ mkdir -p root/mingw && cd root/mingw && (
         $unpack $file
         rm $file
     else
-        echo "Warning: Invalid URL, skipping download of mingw-get."
+        echo "WARNING: Invalid URL, skipping download of mingw-get."
     fi
 
     if [ -f bin/mingw-get ]; then
@@ -57,6 +57,6 @@ EOF
         echo "Downloading catalogues ..."
         bin/mingw-get update
     else
-        echo "Warning: mingw-get not found, skipping download of catalogues."
+        echo "WARNING: mingw-get not found, skipping download of catalogues."
     fi
 )
