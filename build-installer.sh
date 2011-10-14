@@ -1,7 +1,10 @@
 #!/bin/sh
 
-path=$(reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1" | grep InstallLocation | cut -c 34-)
-iscc="$path/ISCC.exe"
+iscc="c:/msysgit/share/InnoSetup/ISCC.exe"
+if [ ! -f $iscc ]; then
+    path=$(reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1" | grep InstallLocation | cut -c 34-)
+    iscc="$path/ISCC.exe"
+fi
 
 if [ -f $iscc ]; then
     $iscc installer.iss
