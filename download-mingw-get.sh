@@ -4,8 +4,19 @@
 limit=500
 
 # Get the download link to the most recent version of mingw-get.
+if [ -f "$(which xz)" ]; then
+    ext="\.tar\.xz"
+    unpack="tar -xf"
+elif [ -f "$(which unzip)" ]; then
+    ext="\.zip"
+    unpack="unzip -u"
+else
+    echo "Error: No suitable unpacking tool found."
+    exit 1
+fi
+
 link=$(curl -s http://sourceforge.net/api/file/index/project-id/2435/mtime/desc/limit/$limit/rss |
-     sed -nr "s/<link>(.+(mingw-get-[0-9]+\.[0-9]+-mingw32-.+-bin\.tar\.xz).+)<\/link>/\2\t\1/p" |
+     sed -nr "s/<link>(.+(mingw-get-[0-9]+\.[0-9]+-mingw32-.+-bin$ext).+)<\/link>/\2\t\1/p" |
      head -1)
 
 file=$(echo "$link" | cut -f 1)
@@ -18,7 +29,9 @@ url=$(echo $url)
 mkdir -p root/mingw && cd root/mingw && (
     if [ -n "$url" ]; then
         echo "Downloading $file ..."
-        curl -# -L $url | tar -xJ
+        curl -# -L $url -o $file
+        $unpack $file
+        rm $file
     else
         echo "Warning: Invalid URL, skipping download of mingw-get."
     fi
