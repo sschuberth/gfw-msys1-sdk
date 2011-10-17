@@ -7,8 +7,9 @@
 Compression=lzma2/ultra
 LZMAUseSeparateProcess=yes
 OutputBaseFilename={#APP_NAME+'-v'+APP_VERSION}
-OutputDir=installer
+OutputDir=.
 SolidCompression=yes
+SourceDir=..
 
 ; Installer-related
 AppName={#APP_NAME}
