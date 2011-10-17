@@ -18,6 +18,13 @@ DefaultDirName={sd}\{#APP_NAME}
 DisableReadyPage=yes
 PrivilegesRequired=none
 
+; Cosmetic
+SetupIconFile=resources\git.ico
+WizardImageBackColor=clWhite
+WizardImageStretch=no
+WizardImageFile=resources\git-large.bmp
+WizardSmallImageFile=resources\git-small.bmp
+
 [Files]
 
 Source: root\*; DestDir: {app}; Flags: recursesubdirs
