@@ -54,13 +54,13 @@ echo The source directory is ${srcdir}
 srcdirname=$(basename ${srcdir})
 
 pkgtmp=${name}-${ver}-${rev}-${subsys}
-BINPKG=${pkgtmp}-bin.tar.lzma
-DOCPKG=${pkgtmp}-doc.tar.lzma
-LICPKG=${pkgtmp}-lic.tar.lzma
-SRCPKG=${pkgtmp}-src.tar.lzma
+BINPKG=${pkgtmp}-bin.tar.xz
+DOCPKG=${pkgtmp}-doc.tar.xz
+LICPKG=${pkgtmp}-lic.tar.xz
+SRCPKG=${pkgtmp}-src.tar.xz
 pkgtmp=lib${name}-${ver}-${rev}-${subsys}
-DLLPKG=${pkgtmp}-dll-${dllver}.tar.lzma
-DEVPKG=${pkgtmp}-dev.tar.lzma
+DLLPKG=${pkgtmp}-dll-${dllver}.tar.xz
+DEVPKG=${pkgtmp}-dev.tar.xz
 BIN_CONTENTS='--exclude=bin/*.dll var/ssl bin'
 DLL_CONTENTS="bin/*.dll lib/openssl/${enginedir}"
 DEV_CONTENTS='include/openssl lib/lib*.a share/man/man3 lib/pkgconfig'
@@ -366,13 +366,13 @@ then
   rm -f ${logdir}/pack.log
   cd ${instdir}${prefix}  && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
   echo Packing | tee -a ${logdir}/pack.log
-  tar cv --lzma --hard-dereference -f ${pkgbuilddir}/${BINPKG} ${BIN_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
-  tar cv --lzma --hard-dereference -f ${pkgbuilddir}/${DLLPKG} ${DLL_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
-  tar cv --lzma --hard-dereference -f ${pkgbuilddir}/${DEVPKG} ${DEV_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
-  tar cv --lzma --hard-dereference -f ${pkgbuilddir}/${DOCPKG} ${DOC_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
-  tar cv --lzma --hard-dereference -f ${pkgbuilddir}/${LICPKG} ${LIC_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
+  tar cv --xz --hard-dereference -f ${pkgbuilddir}/${BINPKG} ${BIN_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
+  tar cv --xz --hard-dereference -f ${pkgbuilddir}/${DLLPKG} ${DLL_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
+  tar cv --xz --hard-dereference -f ${pkgbuilddir}/${DEVPKG} ${DEV_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
+  tar cv --xz --hard-dereference -f ${pkgbuilddir}/${DOCPKG} ${DOC_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
+  tar cv --xz --hard-dereference -f ${pkgbuilddir}/${LICPKG} ${LIC_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
   cd ${pkgbuilddir}  && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
-  tar cv --lzma --hard-dereference -f ${pkgbuilddir}/${SRCPKG} ${SRC_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
+  tar cv --xz --hard-dereference -f ${pkgbuilddir}/${SRCPKG} ${SRC_CONTENTS} 2>&1 | tee -a ${logdir}/pack.log && if ! test "x${PIPESTATUS[0]}" == "x0"; then fail $LINENO; fi
 fi
 
 echo "Done"
