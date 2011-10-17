@@ -1,8 +1,7 @@
 #! /bin/bash
 
 name=openssl
-ver=1.0.0d
-ver2=1.7
+ver=1.0.0e
 dllver=100
 rev=1
 subsys=mingw32
@@ -27,7 +26,7 @@ README.ENGINE"
 licfiles=
 
 url=http://www.openssl.org/source/${SOURCE_ARCHIVE}
-md5='40b6ea380cc8a5bf9734c2f8bf7e701e'
+md5='7040b89c4c58c7a1016c0dfa6e821c86'
 
 if test ! "$MSYSTEM" == "MSYS" -a "$subsys" == "msys"
 then
