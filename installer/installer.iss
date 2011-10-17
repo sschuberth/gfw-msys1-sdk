@@ -37,6 +37,7 @@ const
 var
     PackagesPage:TWizardPage;
     PackagesList:TNewCheckListBox;
+    Packages:TArrayOfString;
 
 {
     XML parsing stuff
@@ -170,6 +171,7 @@ begin
     // because their group belongs to mutiple parent groups (see "MinGW Standard Libraries").
     Log('There are '+IntToStr(Groups.Count)+' groups and '+IntToStr(Packages.Count)+' unique packages.');
 
+    SetArrayLength(Entries,0);
     for g:=0 to Groups.Count-1 do begin
         Log('Assigning to group: '+Groups[g]);
 
@@ -200,7 +202,8 @@ procedure InitializeWizard;
 var
     PrevPageID:Integer;
 begin
-    PrevPageID:=wpInstalling;
+    // Show the package selection after / instead of the usual component selection.
+    PrevPageID:=wpSelectComponents;
 
     PackagesPage:=CreateCustomPage(
         PrevPageID,
@@ -217,28 +220,20 @@ begin
     end;
 end;
 
-procedure CurStepChanged(CurStep:TSetupStep);
+procedure CurPageChanged(CurPageID:Integer);
 var
-    Packages:TArrayOfString;
     NumPackages,i,Level,p:Integer;
     Hierarchy,Group,PrevPath,Path,PackageName,PackageClass:String;
     Required:Boolean;
 begin
-    if CurStep<>ssPostInstall then begin
+    if CurPageID<>PackagesPage.ID then begin
         Exit;
     end;
 
-    NumPackages:=GetAvailablePackages(Packages);
-
-    if NumPackages=0 then begin
-        // This should never happen as we bundle the package catalogue files with the installer.
-        MsgBox('No packages found, please report this as an error to the developers.',mbError,MB_OK);
-        Exit;
-    end;
-
+    NumPackages:=GetArrayLength(Packages);
     PackagesPage.Description:='Which of these '+IntToStr(NumPackages)+' packages would like to have installed?';
 
-    for i:=0 to GetArrayLength(Packages)-1  do begin
+    for i:=0 to NumPackages-1 do begin
         Hierarchy:=ExtractFilePath(Packages[i]);
 
         // Create only those groups of the hierarchy that were not previously created.
@@ -314,9 +309,18 @@ begin
 end;
 
 function ShouldSkipPage(PageID:Integer):Boolean;
+var
+    NumPackages:Integer;
 begin
-    if (PageID=PackagesPage.ID) and (PackagesList.Items.Count=0) then begin
-        Result:=True;
+    if PageID=PackagesPage.ID then begin
+        NumPackages:=GetAvailablePackages(Packages);
+        if NumPackages>0 then begin
+            Result:=False;
+        end else begin
+            // This should never happen as we bundle the package catalogue files with the installer.
+            MsgBox('No packages found, please report this as an error to the developers.',mbError,MB_OK);
+            Result:=True;
+        end;
     end else begin
         Result:=False;
     end;
