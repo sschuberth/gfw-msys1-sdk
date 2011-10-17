@@ -1,0 +1,49 @@
+--- openssl-1.0.0d/Makefile.shared	2010-08-21 15:36:49 +0400
++++ openssl-1.0.0d/Makefile.shared	2011-04-02 12:53:40 +0400
+@@ -262,9 +262,9 @@
+ 	base=-Wl,--enable-auto-image-base; \
+ 	deffile=; \
+ 	if expr $(PLATFORM) : 'mingw' > /dev/null; then \
+-		SHLIB=$(LIBNAME)eay32; base=; \
+-		if test -f $(LIBNAME)eay32.def; then \
+-			deffile=$(LIBNAME)eay32.def; \
++		SHLIB=lib$(LIBNAME); \
++		if test -f lib$(LIBNAME).def; then \
++			deffile=lib$(LIBNAME).def; \
+ 		fi; \
+ 	fi; \
+ 	SHLIB_SUFFIX=.dll; \
+@@ -282,14 +282,14 @@
+ 	dll_name=$$SHLIB$$SHLIB_SOVER$$SHLIB_SUFFIX; extras=; \
+ 	base=-Wl,--enable-auto-image-base; \
+ 	if expr $(PLATFORM) : 'mingw' > /dev/null; then \
++		deflib=unknown; \
+ 		case $(LIBNAME) in \
+-			crypto) SHLIB=libeay;; \
+-			ssl) SHLIB=ssleay;; \
++			crypto) deflib=libeay;; \
++			ssl) deflib=ssleay;; \
+ 		esac; \
+-		SHLIB_SOVER=32; \
+-		extras="$(LIBNAME).def"; \
+-		$(PERL) util/mkdef.pl 32 $$SHLIB > $$extras; \
+-		base=; [ $(LIBNAME) = "crypto" ] && base=-Wl,--image-base,0x63000000; \
++		SHLIB=lib$(LIBNAME); \
++		extras="lib$(LIBNAME).def"; \
++		$(PERL) util/mkdef.pl 32 $$deflib --libname=lib$(LIBNAME)-$(LIBVERSION) > $$extras; \
+ 	fi; \
+ 	dll_name=$$SHLIB$$SHLIB_SOVER$$SHLIB_SUFFIX; \
+ 	$(PERL) util/mkrc.pl $$dll_name | \
+--- openssl-1.0.0d/Makefile.org	2010-01-27 19:06:58 +0300
++++ openssl-1.0.0d/Makefile.org	2011-04-02 13:51:59 +0400
+@@ -541,8 +541,8 @@
+ 				fi ); \
+ 				if expr $(PLATFORM) : 'mingw' > /dev/null; then \
+ 				(	case $$i in \
+-						*crypto*) i=libeay32.dll;; \
+-						*ssl*)    i=ssleay32.dll;; \
++						*crypto*) i=libcrypto-$(SHLIB_VERSION_NUMBER).dll;; \
++						*ssl*)    i=libssl-$(SHLIB_VERSION_NUMBER).dll;; \
+ 					esac; \
+ 					echo installing $$i; \
+ 	 				cp $$i $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i.new; \

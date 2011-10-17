@@ -32,7 +32,7 @@ Source: root\*; DestDir: {app}; Flags: recursesubdirs
 [Code]
 
 const
-    RequiredPackages='msys-base mingw32-gcc';
+    RequiredPackages='msys-base msys-lndir msys-patch msys-perl msys-wget mingw32-gcc mingw32-libz';
 
 var
     PackagesPage:TWizardPage;
