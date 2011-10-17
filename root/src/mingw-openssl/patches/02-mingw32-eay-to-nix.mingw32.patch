@@ -1,0 +1,100 @@
+--- openssl-1.0.0d/util/mkdef.pl	2010-07-25 20:56:06 +0400
++++ openssl-1.0.0d/util/mkdef.pl	2011-04-02 16:27:27 +0400
+@@ -218,15 +218,17 @@
+ 	elsif (/^no-ssl2$/)	{ $no_ssl2=1; }
+ 	elsif (/^no-capieng$/)	{ $no_capieng=1; }
+ 	elsif (/^no-jpake$/)	{ $no_jpake=1; }
++
++        if (/^--libname=(.+)/) { $libname=$1; }
+ 	}
+ 
+ 
+ if (!$libname) { 
+ 	if ($do_ssl) {
+-		$libname="SSLEAY";
++		$libname="libssl";
+ 	}
+ 	if ($do_crypto) {
+-		$libname="LIBEAY";
++		$libname="libcrypto";
+ 	}
+ }
+ 
+@@ -320,34 +322,34 @@
+ 
+ my $symhacks="crypto/symhacks.h";
+ 
+-my @ssl_symbols = &do_defs("SSLEAY", $ssl, $symhacks);
+-my @crypto_symbols = &do_defs("LIBEAY", $crypto, $symhacks);
++my @ssl_symbols = &do_defs("libssl", $ssl, $symhacks);
++my @crypto_symbols = &do_defs("libcrypto", $crypto, $symhacks);
+ 
+ if ($do_update) {
+ 
+ if ($do_ssl == 1) {
+ 
+-	&maybe_add_info("SSLEAY",*ssl_list,@ssl_symbols);
++	&maybe_add_info("libssl",*ssl_list,@ssl_symbols);
+ 	if ($do_rewrite == 1) {
+ 		open(OUT, ">$ssl_num");
+-		&rewrite_numbers(*OUT,"SSLEAY",*ssl_list,@ssl_symbols);
++		&rewrite_numbers(*OUT,"libssl",*ssl_list,@ssl_symbols);
+ 	} else {
+ 		open(OUT, ">>$ssl_num");
+ 	}
+-	&update_numbers(*OUT,"SSLEAY",*ssl_list,$max_ssl,@ssl_symbols);
++	&update_numbers(*OUT,"libssl",*ssl_list,$max_ssl,@ssl_symbols);
+ 	close OUT;
+ }
+ 
+ if($do_crypto == 1) {
+ 
+-	&maybe_add_info("LIBEAY",*crypto_list,@crypto_symbols);
++	&maybe_add_info("libcrypto",*crypto_list,@crypto_symbols);
+ 	if ($do_rewrite == 1) {
+ 		open(OUT, ">$crypto_num");
+-		&rewrite_numbers(*OUT,"LIBEAY",*crypto_list,@crypto_symbols);
++		&rewrite_numbers(*OUT,"libcrypto",*crypto_list,@crypto_symbols);
+ 	} else {
+ 		open(OUT, ">>$crypto_num");
+ 	}
+-	&update_numbers(*OUT,"LIBEAY",*crypto_list,$max_crypto,@crypto_symbols);
++	&update_numbers(*OUT,"libcrypto",*crypto_list,$max_crypto,@crypto_symbols);
+ 	close OUT;
+ } 
+ 
+@@ -367,10 +369,10 @@
+ int main()
+ {
+ EOF
+-	&print_test_file(*STDOUT,"SSLEAY",*ssl_list,$do_ctestall,@ssl_symbols)
++	&print_test_file(*STDOUT,"libssl",*ssl_list,$do_ctestall,@ssl_symbols)
+ 		if $do_ssl == 1;
+ 
+-	&print_test_file(*STDOUT,"LIBEAY",*crypto_list,$do_ctestall,@crypto_symbols)
++	&print_test_file(*STDOUT,"libcrypto",*crypto_list,$do_ctestall,@crypto_symbols)
+ 		if $do_crypto == 1;
+ 
+ 	print "}\n";
+@@ -1250,11 +1252,7 @@
+ 	my $what = "OpenSSL: implementation of Secure Socket Layer";
+ 	my $description = "$what $version, $name - http://$http_vendor";
+ 
+-	if ($W32)
+-		{ $libname.="32"; }
+-	elsif ($W16)
+-		{ $libname.="16"; }
+-	elsif ($OS2)
++	if ($OS2)
+ 		{ # DLL names should not clash on the whole system.
+ 		  # However, they should not have any particular relationship
+ 		  # to the name of the static library.  Chose descriptive names
+@@ -1274,8 +1272,6 @@
+ ; Definition file for the DLL version of the $name library from OpenSSL
+ ;
+ 
+-LIBRARY         $libname	$liboptions
+-
+ EOF
+ 
+ 	if ($W16) {

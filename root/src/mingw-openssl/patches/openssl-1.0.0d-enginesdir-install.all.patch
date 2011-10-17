@@ -1,0 +1,123 @@
+--- openssl-1.0.0d/Configure	2011-04-01 23:15:43 +0400
++++ openssl-1.0.0d/Configure	2011-04-01 23:39:28 +0400
+@@ -1510,6 +1510,7 @@
+ 	s/^PLATFORM=.*$/PLATFORM=$target/;
+ 	s/^OPTIONS=.*$/OPTIONS=$options/;
+ 	s/^CONFIGURE_ARGS=.*$/CONFIGURE_ARGS=$argvstring/;
++	s/^ENGINESDIR=.*$/ENGINESDIR=$enginesdir/;
+ 	if ($cross_compile_prefix)
+ 		{
+ 		s/^CC=.*$/CROSS_COMPILE= $cross_compile_prefix\nCC= \$\(CROSS_COMPILE\)$cc/;
+--- openssl-1.0.0d/Makefile.org	2011-02-08 20:13:20 +0300
++++ openssl-1.0.0d/Makefile.org	2011-04-01 23:35:47 +0400
+@@ -15,6 +15,7 @@
+ PLATFORM=dist
+ OPTIONS=
+ CONFIGURE_ARGS=
++ENGINESDIR=
+ SHLIB_TARGET=
+ 
+ # HERE indicates where this Makefile lives.  This can be used to indicate
+@@ -186,7 +186,7 @@
+ 		SDIRS='$(SDIRS)' LIBRPATH='$(INSTALLTOP)/$(LIBDIR)'	\
+ 		INSTALL_PREFIX='$(INSTALL_PREFIX)'		\
+ 		INSTALLTOP='$(INSTALLTOP)' OPENSSLDIR='$(OPENSSLDIR)'	\
+-		LIBDIR='$(LIBDIR)'				\
++		LIBDIR='$(LIBDIR)' ENGINESDIR='$(ENGINESDIR)'	\
+ 		MAKEDEPEND='$$$${TOP}/util/domd $$$${TOP} -MD $(MAKEDEPPROG)' \
+ 		DEPFLAG='-DOPENSSL_NO_DEPRECATED $(DEPFLAG)'	\
+ 		MAKEDEPPROG='$(MAKEDEPPROG)'			\
+@@ -497,7 +498,7 @@
+ install_sw:
+ 	@$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(INSTALLTOP)/bin \
+ 		$(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR) \
+-		$(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines \
++		$(INSTALL_PREFIX)$(ENGINESDIR) \
+ 		$(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig \
+ 		$(INSTALL_PREFIX)$(INSTALLTOP)/include/openssl \
+ 		$(INSTALL_PREFIX)$(OPENSSLDIR)/misc \
+--- openssl-1.0.0d/Makefile	2011-02-08 20:13:20 +0300
++++ openssl-1.0.0d/Makefile	2011-04-02 02:39:19 +0400
+@@ -15,6 +15,7 @@
+ PLATFORM=dist
+ OPTIONS= no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-shared no-store no-zlib no-zlib-dynamic static-engine
+ CONFIGURE_ARGS=dist
++ENGINESDIR=
+ SHLIB_TARGET=
+ 
+ # HERE indicates where this Makefile lives.  This can be used to indicate
+@@ -188,7 +188,7 @@
+ 		SDIRS='$(SDIRS)' LIBRPATH='$(INSTALLTOP)/$(LIBDIR)'	\
+ 		INSTALL_PREFIX='$(INSTALL_PREFIX)'		\
+ 		INSTALLTOP='$(INSTALLTOP)' OPENSSLDIR='$(OPENSSLDIR)'	\
+-		LIBDIR='$(LIBDIR)'				\
++		LIBDIR='$(LIBDIR)' ENGINESDIR='$(ENGINESDIR)'	\
+ 		MAKEDEPEND='$$$${TOP}/util/domd $$$${TOP} -MD $(MAKEDEPPROG)' \
+ 		DEPFLAG='-DOPENSSL_NO_DEPRECATED $(DEPFLAG)'	\
+ 		MAKEDEPPROG='$(MAKEDEPPROG)'			\
+@@ -499,7 +500,7 @@
+ install_sw:
+ 	@$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(INSTALLTOP)/bin \
+ 		$(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR) \
+-		$(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines \
++		$(INSTALL_PREFIX)$(ENGINESDIR) \
+ 		$(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig \
+ 		$(INSTALL_PREFIX)$(INSTALLTOP)/include/openssl \
+ 		$(INSTALL_PREFIX)$(OPENSSLDIR)/misc \
+--- openssl-1.0.0d/engines/Makefile	2010-08-25 01:46:34 +0400
++++ openssl-1.0.0d/engines/Makefile	2011-04-01 23:40:45 +0400
+@@ -107,7 +107,7 @@
+ 	@[ -n "$(INSTALLTOP)" ] # should be set by top Makefile...
+ 	@if [ -n "$(SHARED_LIBS)" ]; then \
+ 		set -e; \
+-		$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines; \
++		$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(ENGINESDIR); \
+ 		for l in $(LIBNAMES); do \
+ 			( echo installing $$l; \
+ 			  pfx=lib; \
+@@ -116,16 +116,16 @@
+ 				*DSO_BEOS*)	sfx=".so";;	\
+ 				*DSO_DLFCN*)	sfx=`expr "$(SHLIB_EXT)" : '.*\(\.[a-z][a-z]*\)' \| ".so"`;;	\
+ 				*DSO_DL*)	sfx=".sl";;	\
+-				*DSO_WIN32*)	sfx="eay32.dll"; pfx=;;	\
++				*DSO_WIN32*)	sfx=".dll";;	\
+ 				*)		sfx=".bad";;	\
+ 				esac; \
+-				cp $$pfx$$l$$sfx $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$$pfx$$l$$sfx.new; \
++				cp $$pfx$$l$$sfx $(INSTALL_PREFIX)$(ENGINESDIR)/$$pfx$$l$$sfx.new; \
+ 			  else \
+ 				sfx=".so"; \
+-				cp cyg$$l.dll $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$$pfx$$l$$sfx.new; \
++				cp cyg$$l.dll $(INSTALL_PREFIX)$(ENGINESDIR)/$$pfx$$l$$sfx.new; \
+ 			  fi; \
+-			  chmod 555 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$$pfx$$l$$sfx.new; \
+-			  mv -f $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$$pfx$$l$$sfx.new $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$$pfx$$l$$sfx ); \
++			  chmod 555 $(INSTALL_PREFIX)$(ENGINESDIR)/$$pfx$$l$$sfx.new; \
++			  mv -f $(INSTALL_PREFIX)$(ENGINESDIR)/$$pfx$$l$$sfx.new $(INSTALL_PREFIX)$(ENGINESDIR)/$$pfx$$l$$sfx ); \
+ 		done; \
+ 	fi
+ 	@target=install; $(RECURSIVE_MAKE)
+--- openssl-1.0.0d/engines/ccgost/Makefile	2010-08-25 01:46:34 +0400
++++ openssl-1.0.0d/engines/ccgost/Makefile	2011-04-02 01:41:42 +0400
+@@ -50,16 +50,16 @@
+ 			*DSO_BEOS*) sfx=".so";; \
+ 			*DSO_DLFCN*) sfx=`expr "$(SHLIB_EXT)" : '.*\(\.[a-z][a-z]*\)' \| ".so"`;; \
+ 			*DSO_DL*) sfx=".sl";; \
+-			*DSO_WIN32*) sfx="eay32.dll"; pfx=;; \
++			*DSO_WIN32*) sfx=".dll";; \
+ 			*) sfx=".bad";; \
+ 			esac; \
+-			cp $${pfx}$(LIBNAME)$$sfx $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$${pfx}$(LIBNAME)$$sfx.new; \
++			cp $${pfx}$(LIBNAME)$$sfx $(INSTALL_PREFIX)$(ENGINESDIR)/$${pfx}$(LIBNAME)$$sfx.new; \
+ 		else \
+ 			sfx=".so"; \
+-			cp cyg$(LIBNAME).dll $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$${pfx}$(LIBNAME)$$sfx.new; \
++			cp cyg$(LIBNAME).dll $(INSTALL_PREFIX)$(ENGINESDIR)/$${pfx}$(LIBNAME)$$sfx.new; \
+ 		fi; \
+-		chmod 555 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$${pfx}$(LIBNAME)$$sfx.new; \
+-		mv -f $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$${pfx}$(LIBNAME)$$sfx.new $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/$${pfx}$(LIBNAME)$$sfx; \
++		chmod 555 $(INSTALL_PREFIX)$(ENGINESDIR)/$${pfx}$(LIBNAME)$$sfx.new; \
++		mv -f $(INSTALL_PREFIX)$(ENGINESDIR)/$${pfx}$(LIBNAME)$$sfx.new $(INSTALL_PREFIX)$(ENGINESDIR)/$${pfx}$(LIBNAME)$$sfx; \
+ 	fi
+ 
+ links:
