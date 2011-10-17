@@ -37,7 +37,6 @@ const
 var
     PackagesPage:TWizardPage;
     PackagesList:TNewCheckListBox;
-    Packages:TArrayOfString;
 
 {
     XML parsing stuff
@@ -202,8 +201,7 @@ procedure InitializeWizard;
 var
     PrevPageID:Integer;
 begin
-    // Show the package selection after / instead of the usual component selection.
-    PrevPageID:=wpSelectComponents;
+    PrevPageID:=wpInstalling;
 
     PackagesPage:=CreateCustomPage(
         PrevPageID,
@@ -220,17 +218,25 @@ begin
     end;
 end;
 
-procedure CurPageChanged(CurPageID:Integer);
+procedure CurStepChanged(CurStep:TSetupStep);
 var
+    Packages:TArrayOfString;
     NumPackages,i,Level,p:Integer;
     Hierarchy,Group,PrevPath,Path,PackageName,PackageClass:String;
     Required:Boolean;
 begin
-    if CurPageID<>PackagesPage.ID then begin
+    if CurStep<>ssPostInstall then begin
         Exit;
     end;
 
-    NumPackages:=GetArrayLength(Packages);
+    NumPackages:=GetAvailablePackages(Packages);
+
+    if NumPackages=0 then begin
+        // This should never happen as we bundle the package catalogue files with the installer.
+        MsgBox('No packages found, please report this as an error to the developers.',mbError,MB_OK);
+        Exit;
+    end;
+
     PackagesPage.Description:='Which of these '+IntToStr(NumPackages)+' packages would like to have installed?';
 
     for i:=0 to NumPackages-1 do begin
@@ -309,18 +315,9 @@ begin
 end;
 
 function ShouldSkipPage(PageID:Integer):Boolean;
-var
-    NumPackages:Integer;
 begin
-    if PageID=PackagesPage.ID then begin
-        NumPackages:=GetAvailablePackages(Packages);
-        if NumPackages>0 then begin
-            Result:=False;
-        end else begin
-            // This should never happen as we bundle the package catalogue files with the installer.
-            MsgBox('No packages found, please report this as an error to the developers.',mbError,MB_OK);
-            Result:=True;
-        end;
+    if (PageID=PackagesPage.ID) and (PackagesList.Items.Count=0) then begin
+        Result:=True;
     end else begin
         Result:=False;
     end;
