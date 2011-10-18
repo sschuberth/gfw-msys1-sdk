@@ -167,7 +167,7 @@ begin
     Packages.Sort;
 
     // Assigning packages to groups. Note that packages may belong to multiple groups
-    // because their group belongs to mutiple parent groups (see "MinGW Standard Libraries").
+    // if their group belongs to multiple parent groups (see "MinGW Standard Libraries").
     Log('There are '+IntToStr(Groups.Count)+' groups and '+IntToStr(Packages.Count)+' unique packages.');
 
     SetArrayLength(Entries,0);
