@@ -229,6 +229,8 @@ begin
         Exit;
     end;
 
+    // Note that NumPackages is the number of unique packages while GetArrayLength(Packages)
+    // is the number of entries in the tree (which is greater or equal).
     NumPackages:=GetAvailablePackages(Packages);
 
     if NumPackages=0 then begin
@@ -239,7 +241,7 @@ begin
 
     PackagesPage.Description:='Which of these '+IntToStr(NumPackages)+' packages would like to have installed?';
 
-    for i:=0 to NumPackages-1 do begin
+    for i:=0 to GetArrayLength(Packages)-1 do begin
         Hierarchy:=ExtractFilePath(Packages[i]);
 
         // Create only those groups of the hierarchy that were not previously created.
