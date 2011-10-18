@@ -46,6 +46,9 @@ mkdir -p root/mingw && cd root/mingw && (
 <profile project="MinGW" application="mingw-get">
     <repository uri="http://prdownloads.sourceforge.net/mingw/%F.xml.lzma?download">
     </repository>
+    <repository uri="https://github.com/downloads/sschuberth/mingwGitDevEnv/%F.xml.lzma">
+      <package-list catalogue="mingwgitdevenv-package-list" />
+    </repository>
     <system-map id="default">
       <sysroot subsystem="mingw32" path="%R" />
       <sysroot subsystem="msys" path="%R/../" />
