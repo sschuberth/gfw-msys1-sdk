@@ -29,6 +29,10 @@ WizardSmallImageFile=resources\git-small.bmp
 
 Source: root\*; DestDir: {app}; Flags: recursesubdirs
 
+[Run]
+
+Filename: "{app}\msys.bat"; Description: "Start the development environment"; Flags: postinstall 
+
 [Code]
 
 #include "xmlparser.inc.iss"
