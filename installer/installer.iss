@@ -33,6 +33,14 @@ Source: root\*; DestDir: {app}; Flags: recursesubdirs
 
 Filename: "{app}\msys.bat"; Description: "Start the development environment"; Flags: postinstall 
 
+[UninstallDelete]
+
+Type: filesandordirs; Name: "{app}"
+
+[Messages]
+
+ConfirmUninstall=This will uninstall %1 and remove all files in the installation directory including those that were added after installation (like custom packages and configuration files). Are you sure that you want to continue?
+
 [Code]
 
 #include "xmlparser.inc.iss"
