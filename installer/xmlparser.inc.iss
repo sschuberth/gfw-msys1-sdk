@@ -1,3 +1,4 @@
+// Returns the first quoted string contained in "Name" (without the quotes).
 function GetFirstQuotedString(Name:String):String;
 var
     p:Integer;
@@ -13,6 +14,8 @@ begin
     end;
 end;
 
+// Parses the "Lines" of the given XML file to extract a package group hierarchy.
+// The hierarchy is returned as a "List" of path strings separated by backslashes.
 procedure ParseForHierarchy(Lines:TArrayOfString;var List:TStringList);
 var
     i,p,s:Integer;
@@ -46,6 +49,9 @@ begin
     end;
 end;
 
+// Parses the "Lines" of the given XML file to extract package names. The package
+// name is returned as a "List" of strings in the form "<affiliate group>\<package>[@class]",
+// e.g. "MinGW Developer Toolkit\mingw-developer-toolkit@virtual".
 procedure ParseForPackages(Lines:TArrayOfString;var List:TStringList);
 var
     i,p,l:Integer;
@@ -88,6 +94,9 @@ begin
     end;
 end;
 
+// Gets the list of available packages by parsing mingw-get's XML files. The packages
+// "Entries" are returned as strings in the form "<group hierarchy>\<package>[@class]",
+// e.g. "MSYS\MinGW Developer Toolkit\mingw-developer-toolkit@virtual".
 function GetAvailablePackages(var Entries:TArrayOfString):Integer;
 var
     Groups,Packages:TStringList;
@@ -130,6 +139,7 @@ begin
     for g:=0 to Groups.Count-1 do begin
         Log('Assigning to group: '+Groups[g]);
 
+        // For each group hierarchy, try if its name is a prefix of the package and affiliate group.
         Group:=Lowercase(ExtractFileName(Groups[g]));
         for p:=0 to Packages.Count-1 do begin
             Parent:=Lowercase(ExtractFileDir(Packages[p]));
