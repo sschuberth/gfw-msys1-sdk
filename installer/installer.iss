@@ -14,6 +14,7 @@ SourceDir=..
 ; Installer-related
 AppName={#APP_NAME}
 AppVersion={#APP_VERSION}
+ChangesEnvironment=yes
 DefaultDirName={sd}\{#APP_NAME}
 DisableReadyPage=yes
 PrivilegesRequired=none
@@ -43,6 +44,7 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 
 [Code]
 
+#include "environment.inc.iss"
 #include "xmlparser.inc.iss"
 
 const
@@ -151,7 +153,8 @@ end;
 
 function NextButtonClick(CurPageID:Integer):Boolean;
 var
-    Packages:String;
+    Packages,HomePath:String;
+    Home:TArrayOfString;
     ResultCode:Integer;
 begin
     Result:=True;
@@ -167,6 +170,22 @@ begin
             if ResultCode<>0 then begin
                 MsgBox('mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.',mbError,MB_OK);
             end;
+
+            // Set the HOME environment variable if not set. This is better than changing /etc/profile
+            // because that file will be overwritten on msys-core upgrades.
+            HomePath:=ExpandConstant('{%HOME}');
+            if not DirExists(HomePath) then begin
+                HomePath:=ExpandConstant('{%HOMEDRIVE}')+ExpandConstant('{%HOMEPATH}');
+                if not DirExists(HomePath) then begin
+                    HomePath:=ExpandConstant('{%USERPROFILE}');
+                end;
+                if DirExists(HomePath) then begin
+                    SetArrayLength(Home,1);
+                    Home[0]:=HomePath;
+                    SetEnvStrings('HOME',False,False,Home);
+                end;
+            end;
+
             Result:=True;
         end else begin
             Result:=(MsgBox('You have not selected any packages. Are you sure you want to continue?',mbConfirmation,MB_YESNO)=IDYES);
