@@ -8,7 +8,7 @@ begin
         p:=Pos('"',Name);
         if p>0 then begin
             Delete(Name,p,Length(Name));
-            Result:=Trim(Name);
+            Result:=Name;
         end;
     end;
 end;
