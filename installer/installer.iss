@@ -134,7 +134,7 @@ begin
     end;
 end;
 
-function GetCheckedPackages:String;
+function GetSelectedPackages:String;
 var
     i:Integer;
 begin
@@ -160,7 +160,7 @@ begin
         MsgBox('The installation directory must not contain any spaces, please choose a different one.',mbError,MB_OK);
         Result:=False;
     end else if CurPageID=PackagesPage.ID then begin
-        Packages:=GetCheckedPackages;
+        Packages:=GetSelectedPackages;
         if Length(Packages)>0 then begin
             Log('Installing the following packages: '+Packages);
             Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
