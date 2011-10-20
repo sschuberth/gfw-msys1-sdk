@@ -164,7 +164,10 @@ begin
         if Length(Packages)>0 then begin
             Log('Installing the following packages: '+Packages);
             Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
-            Result:=(ResultCode=0);
+            if ResultCode<>0 then begin
+                MsgBox('mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.',mbError,MB_OK);
+            end;
+            Result:=True;
         end else begin
             Result:=(MsgBox('You have not selected any packages. Are you sure you want to continue?',mbConfirmation,MB_YESNO)=IDYES);
         end;
