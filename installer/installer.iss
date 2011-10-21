@@ -12,10 +12,12 @@ SolidCompression=yes
 SourceDir=..
 
 ; Installer-related
+AllowNoIcons=yes
 AppName={#APP_NAME}
 AppVersion={#APP_VERSION}
 ChangesEnvironment=yes
 DefaultDirName={sd}\{#APP_NAME}
+DefaultGroupName={#APP_NAME}
 DisableReadyPage=yes
 PrivilegesRequired=none
 
@@ -29,6 +31,10 @@ WizardSmallImageFile=resources\git-small.bmp
 [Files]
 
 Source: root\*; DestDir: {app}; Flags: recursesubdirs
+
+[Icons]
+
+Name: "{group}\Git Development Environment"; Filename: "{app}\msys.bat"; IconFilename: "{uninstallexe}"
 
 [Run]
 
