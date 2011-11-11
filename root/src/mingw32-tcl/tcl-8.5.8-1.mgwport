@@ -25,7 +25,7 @@ src_install() {
 	dolib libtcl${slotbin}.a
 
 	sed -i \
-		-e "s|^\(TCL_BUILD_LIB_SPEC\)='.*|\1='-Wl,/mingw/lib/libtcl${slotbin}.dll.a'|" \
+		-e "s|^\(TCL_BUILD_LIB_SPEC\)='.*|\1='-Wl,/mingw/lib/libtcl${slotbin}.a'|" \
 		-e "s|^\(TCL_SRC_DIR\)='.*'|\1='/mingw/include/tcl${slotdir}'|" \
 		-e "s|^\(TCL_BUILD_STUB_LIB_SPEC\)='.*|\1='-Wl,/mingw/lib/libtclstub${slotbin}.a'|" \
 		-e "s|^\(TCL_BUILD_STUB_LIB_PATH\)='.*/win|\1='/mingw/lib|" \
@@ -42,6 +42,6 @@ src_install() {
 	dosym tclsh${slotbin}.exe /mingw/bin/tclsh
 	dosym ../tclConfig.sh /mingw/lib/tcl${slotdir}/tclConfig.sh
 	dosym libtcl${slotbin}.a /mingw/lib/libtcl.a
-	dosym libtcl${slotbin}.dll.a /mingw/lib/libtcl.dll.a
+	dosym libtcl${slotbin}.a /mingw/lib/libtcl.a
 	dosym libtclstub${slotbin}.a /mingw/lib/libtclstub.a
 }
