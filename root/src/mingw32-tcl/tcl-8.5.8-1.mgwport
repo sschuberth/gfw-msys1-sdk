@@ -14,18 +14,18 @@ src_compile() {
 	cd ${S}/unix
 	ACLOCAL_FLAGS="-I ."
 	WANT_AUTOMAKE=1.4
-	cygautoreconf
+	mgwautoreconf
 
 	mkdir -p ${B}/unix
 	cd ${B}/unix
-	cygconf --enable-man-symlinks
-	cygmake -j1
-	cygmake libtcl${slot}.a STUB_LIB_FILE=libtcl${slot}.a STUB_LIB_OBJS=\${OBJS}
+	mgwconf --enable-man-symlinks
+	mgwmake -j1
+	mgwmake libtcl${slot}.a STUB_LIB_FILE=libtcl${slot}.a STUB_LIB_OBJS=\${OBJS}
 }
 
 src_install() {
 	cd ${B}/unix
-	cyginstall
+	mgwinstall
 
 	mv ${D}/usr/lib/libtcl${slot}.dll ${D}/usr/bin/
 	dolib libtcl${slot}.a
