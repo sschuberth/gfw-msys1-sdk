@@ -1,4 +1,5 @@
-slot=${PV_MAJ_MIN}
+slotdir=${PV_MAJ_MIN}
+slotbin=${PV_MAJ_MIN/./}
 
 DESCRIPTION="Tcl language interpreter"
 HOMEPAGE="http://tcl.tk/"
@@ -13,34 +14,34 @@ src_compile() {
 	cd ${B}/win
 	mgwconf --enable-man-symlinks
 	mgwmake -j1
-	mgwmake libtcl${slot}.a STUB_LIB_FILE=libtcl${slot}.a STUB_LIB_OBJS=\${OBJS}
+	mgwmake libtcl${slotbin}.a STUB_LIB_FILE=libtcl${slotbin}.a STUB_LIB_OBJS=\${OBJS}
 }
 
 src_install() {
 	cd ${B}/win
 	mgwinstall
 
-	mv ${D}/usr/lib/libtcl${slot}.dll ${D}/usr/bin/
-	dolib libtcl${slot}.a
+	mv ${D}/usr/lib/libtcl${slotbin}.dll ${D}/usr/bin/
+	dolib libtcl${slotbin}.a
 
 	sed -i \
-		-e "s|^\(TCL_BUILD_LIB_SPEC\)='.*|\1='-Wl,/usr/lib/libtcl${slot}.dll.a'|" \
-		-e "s|^\(TCL_SRC_DIR\)='.*'|\1='/usr/include/tcl${slot}'|" \
-		-e "s|^\(TCL_BUILD_STUB_LIB_SPEC\)='.*|\1='-Wl,/usr/lib/libtclstub${slot}.a'|" \
+		-e "s|^\(TCL_BUILD_LIB_SPEC\)='.*|\1='-Wl,/usr/lib/libtcl${slotbin}.dll.a'|" \
+		-e "s|^\(TCL_SRC_DIR\)='.*'|\1='/usr/include/tcl${slotdir}'|" \
+		-e "s|^\(TCL_BUILD_STUB_LIB_SPEC\)='.*|\1='-Wl,/usr/lib/libtclstub${slotbin}.a'|" \
 		-e "s|^\(TCL_BUILD_STUB_LIB_PATH\)='.*/win|\1='/usr/lib|" \
-		-e "s|^\(TCL_STUB_LIB_SPEC\)='.*|\1='-Wl,-ltclstub${slot}'|" \
+		-e "s|^\(TCL_STUB_LIB_SPEC\)='.*|\1='-Wl,-ltclstub${slotbin}'|" \
 		${D}/usr/lib/tclConfig.sh || error
 
 	# install private headers
-	insinto /usr/include/tcl${slot}/win
+	insinto /usr/include/tcl${slotdir}/win
 	doins ${S}/win/*.h
-	insinto /usr/include/tcl${slot}/generic
+	insinto /usr/include/tcl${slotdir}/generic
 	doins ${S}/generic/*.h
 
 	# make the default tcl version
-	dosym tclsh${slot}.exe /usr/bin/tclsh
-	dosym ../tclConfig.sh /usr/lib/tcl${slot}/tclConfig.sh
-	dosym libtcl${slot}.a /usr/lib/libtcl.a
-	dosym libtcl${slot}.dll.a /usr/lib/libtcl.dll.a
-	dosym libtclstub${slot}.a /usr/lib/libtclstub.a
+	dosym tclsh${slotbin}.exe /usr/bin/tclsh
+	dosym ../tclConfig.sh /usr/lib/tcl${slotdir}/tclConfig.sh
+	dosym libtcl${slotbin}.a /usr/lib/libtcl.a
+	dosym libtcl${slotbin}.dll.a /usr/lib/libtcl.dll.a
+	dosym libtclstub${slotbin}.a /usr/lib/libtclstub.a
 }
