@@ -1,0 +1,58 @@
+slot=${PV_MAJ_MIN}
+
+DESCRIPTION="Tcl language interpreter"
+HOMEPAGE="http://tcl.tk/"
+SRC_URI="mirror://sourceforge/tcl/${PN}${PV}-src.tar.gz
+         http://tcl.cvs.sourceforge.net/viewvc/tcl/tclconfig/tcl.m4"
+PATCH_URI="${slot}-cygwin.patch"
+
+SRC_DIR="${PN}${PV}"
+
+DIFF_EXCLUDES='aclocal.m4 configure'
+
+src_compile() {
+	cd ${S}/unix
+	ACLOCAL_FLAGS="-I ."
+	WANT_AUTOMAKE=1.4
+	cygautoreconf
+
+	mkdir -p ${B}/unix
+	cd ${B}/unix
+	cygconf --enable-man-symlinks
+	cygmake -j1
+	cygmake libtcl${slot}.a STUB_LIB_FILE=libtcl${slot}.a STUB_LIB_OBJS=\${OBJS}
+}
+
+src_install() {
+	cd ${B}/unix
+	cyginstall
+
+	mv ${D}/usr/lib/libtcl${slot}.dll ${D}/usr/bin/
+	dolib libtcl${slot}.a
+
+	sed -i \
+		-e "s|^\(TCL_BUILD_LIB_SPEC\)='.*|\1='-Wl,/usr/lib/libtcl${slot}.dll.a'|" \
+		-e "s|^\(TCL_SRC_DIR\)='.*'|\1='/usr/include/tcl${slot}'|" \
+		-e "s|^\(TCL_BUILD_STUB_LIB_SPEC\)='.*|\1='-Wl,/usr/lib/libtclstub${slot}.a'|" \
+		-e "s|^\(TCL_BUILD_STUB_LIB_PATH\)='.*/unix|\1='/usr/lib|" \
+		-e "s|^\(TCL_STUB_LIB_SPEC\)='.*|\1='-Wl,-ltclstub${slot}'|" \
+		${D}/usr/lib/tclConfig.sh || error
+
+	# install private headers
+	insinto /usr/include/tcl${slot}/unix
+	doins ${S}/unix/*.h
+	insinto /usr/include/tcl${slot}/generic
+	doins ${S}/generic/*.h
+
+	# install build system macros
+	insinto /usr/share/aclocal
+	newins ${S}/unix/tcl.m4 tcl-sc.m4
+	newins ${S}/tcl.m4 tcl-tea.m4
+
+	# make the default tcl version
+	dosym tclsh${slot}.exe /usr/bin/tclsh
+	dosym ../tclConfig.sh /usr/lib/tcl${slot}/tclConfig.sh
+	dosym libtcl${slot}.a /usr/lib/libtcl.a
+	dosym libtcl${slot}.dll.a /usr/lib/libtcl.dll.a
+	dosym libtclstub${slot}.a /usr/lib/libtclstub.a
+}
