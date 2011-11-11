@@ -9,15 +9,15 @@ SRC_DIR="${PN}${PV}"
 DIFF_EXCLUDES='configure'
 
 src_compile() {
-	mkdir -p ${B}/unix
-	cd ${B}/unix
+	mkdir -p ${B}/win
+	cd ${B}/win
 	mgwconf --enable-man-symlinks
 	mgwmake -j1
 	mgwmake libtcl${slot}.a STUB_LIB_FILE=libtcl${slot}.a STUB_LIB_OBJS=\${OBJS}
 }
 
 src_install() {
-	cd ${B}/unix
+	cd ${B}/win
 	mgwinstall
 
 	mv ${D}/usr/lib/libtcl${slot}.dll ${D}/usr/bin/
@@ -27,13 +27,13 @@ src_install() {
 		-e "s|^\(TCL_BUILD_LIB_SPEC\)='.*|\1='-Wl,/usr/lib/libtcl${slot}.dll.a'|" \
 		-e "s|^\(TCL_SRC_DIR\)='.*'|\1='/usr/include/tcl${slot}'|" \
 		-e "s|^\(TCL_BUILD_STUB_LIB_SPEC\)='.*|\1='-Wl,/usr/lib/libtclstub${slot}.a'|" \
-		-e "s|^\(TCL_BUILD_STUB_LIB_PATH\)='.*/unix|\1='/usr/lib|" \
+		-e "s|^\(TCL_BUILD_STUB_LIB_PATH\)='.*/win|\1='/usr/lib|" \
 		-e "s|^\(TCL_STUB_LIB_SPEC\)='.*|\1='-Wl,-ltclstub${slot}'|" \
 		${D}/usr/lib/tclConfig.sh || error
 
 	# install private headers
-	insinto /usr/include/tcl${slot}/unix
-	doins ${S}/unix/*.h
+	insinto /usr/include/tcl${slot}/win
+	doins ${S}/win/*.h
 	insinto /usr/include/tcl${slot}/generic
 	doins ${S}/generic/*.h
 
