@@ -4,7 +4,6 @@ DESCRIPTION="Tcl language interpreter"
 HOMEPAGE="http://tcl.tk/"
 SRC_URI="mirror://sourceforge/tcl/${PN}${PV}-src.tar.gz
          http://tcl.cvs.sourceforge.net/viewvc/tcl/tclconfig/tcl.m4"
-PATCH_URI="${slot}-cygwin.patch"
 
 SRC_DIR="${PN}${PV}"
 
