@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <software-distribution project="mingwGitDevEnv" home="https://github.com/sschuberth/mingwGitDevEnv" issue="2011101800">
-
-  <!-- File: mingw32-openssl.xml -->
-
   <package-collection subsystem="mingw32">
     <download-host uri="https://github.com/downloads/sschuberth/mingwGitDevEnv/%F" />
 

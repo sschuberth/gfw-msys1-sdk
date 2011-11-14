@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <software-distribution project="mingwGitDevEnv" home="https://github.com/sschuberth/mingwGitDevEnv" issue="2011101800">
 
-  <!-- File: package-list.xml -->
   <!-- This is the master package catalogue for the mingwGitDevEnv project -->
 
   <package-list catalogue="mingw32-openssl" />
