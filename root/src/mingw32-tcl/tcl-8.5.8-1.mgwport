@@ -9,6 +9,12 @@ SRC_DIR="${PN}${PV}"
 
 DIFF_EXCLUDES='configure'
 
+# The "src" package is created by default.
+PKG_COMPTYPES="bin dev doc"
+PKG_CONTENTS[0]="bin lib --exclude=lib/*.a --exclude=lib/*.sh"
+PKG_CONTENTS[1]="include lib/*.a lib/*.sh lib/${PN}${slotdir}/*.sh"
+PKG_CONTENTS[2]="share/doc"
+
 src_compile() {
 	mkdir -p ${B}/win
 	cd ${B}/win
