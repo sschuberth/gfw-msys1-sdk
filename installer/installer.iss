@@ -54,7 +54,9 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 #include "xmlparser.inc.iss"
 
 const
-    RequiredPackages='msys-base msys-lndir msys-patch msys-perl msys-wget mingw32-gcc mingw32-libz mingw32-mgwport';
+    RequiredPackages='msys-base msys-lndir msys-patch msys-perl msys-wget ' +
+                     'mingw32-gcc mingw32-libiconv mingw32-libopenssl mingw32-libz mingw32-tcl ' +
+                     'mingw32-mgwport';
 
 var
     PackagesPage:TWizardPage;
