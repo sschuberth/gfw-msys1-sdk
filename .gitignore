@@ -1,2 +1,4 @@
 root/mingw/
 *.exe
+*.tar.*
+*.zip

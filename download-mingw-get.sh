@@ -29,9 +29,9 @@ url=$(echo $url)
 mkdir -p root/mingw && cd root/mingw && (
     if [ -n "$url" ]; then
         echo "Downloading $file ..."
-        curl -# -L $url -o $file
+        file="../../$file"
+        curl -# -L $url -o $file -R -z $file
         $unpack $file
-        rm $file
     else
         echo "WARNING: Invalid URL, skipping download of mingw-get."
     fi
