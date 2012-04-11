@@ -99,6 +99,7 @@ var
     Hierarchy,Group,PrevPath,Path,PackageName,PackageClass:String;
     Required:Boolean;
 begin
+    // Initialize the package selection page just after the actual installation finishes.
     if CurStep<>ssPostInstall then begin
         Exit;
     end;
