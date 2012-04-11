@@ -213,6 +213,7 @@ end;
 function ShouldSkipPage(PageID:Integer):Boolean;
 begin
     if (PageID=PackagesPage.ID) and (PackagesList.Items.Count=0) then begin
+        // This should never happen as we bundle the package catalogue files with the installer.
         Result:=True;
     end else begin
         Result:=False;
