@@ -70,12 +70,19 @@ const
 var
     PackagesPage:TWizardPage;
     PackagesList:TNewCheckListBox;
+    SelectedPackages:String;
+    ProgressPage:TWizardPage;
+    ProgressLog:TNewMemo;
 
 procedure InitializeWizard;
 var
     PrevPageID:Integer;
 begin
     PrevPageID:=wpInstalling;
+
+    {
+        Package selection page
+    }
 
     PackagesPage:=CreateCustomPage(
         PrevPageID,
@@ -89,6 +96,24 @@ begin
         Parent:=PackagesPage.Surface;
         Width:=PackagesPage.SurfaceWidth;
         Height:=PackagesPage.SurfaceHeight;
+    end;
+
+    {
+        Package installation page
+    }
+
+    ProgressPage:=CreateCustomPage(
+        PrevPageID,
+        'Package installation',
+        'Running mingw-get to install the selected packages'
+    );
+    PrevPageID:=ProgressPage.ID;
+
+    ProgressLog:=TNewMemo.Create(ProgressPage);
+    with ProgressLog do begin
+        Parent:=ProgressPage.Surface;
+        Width:=ProgressPage.SurfaceWidth;
+        Height:=ProgressPage.SurfaceHeight;
     end;
 end;
 
@@ -170,10 +195,6 @@ begin
 end;
 
 function NextButtonClick(CurPageID:Integer):Boolean;
-var
-    Packages,HomePath:String;
-    Home:TArrayOfString;
-    ResultCode:Integer;
 begin
     Result:=True;
 
@@ -181,31 +202,8 @@ begin
         MsgBox('The installation directory must not contain any spaces, please choose a different one.',mbError,MB_OK);
         Result:=False;
     end else if CurPageID=PackagesPage.ID then begin
-        Packages:=GetSelectedPackages;
-        if Length(Packages)>0 then begin
-            Log('Installing the following packages: '+Packages);
-            Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
-            if ResultCode<>0 then begin
-                MsgBox('mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.',mbError,MB_OK);
-            end;
-
-            // Set the HOME environment variable if not set. This is better than changing /etc/profile
-            // because that file will be overwritten on msys-core upgrades.
-            HomePath:=ExpandConstant('{%HOME}');
-            if not DirExists(HomePath) then begin
-                HomePath:=ExpandConstant('{%HOMEDRIVE}')+ExpandConstant('{%HOMEPATH}');
-                if not DirExists(HomePath) then begin
-                    HomePath:=ExpandConstant('{%USERPROFILE}');
-                end;
-                if DirExists(HomePath) then begin
-                    SetArrayLength(Home,1);
-                    Home[0]:=HomePath;
-                    SetEnvStrings('HOME',False,False,Home);
-                end;
-            end;
-
-            Result:=True;
-        end else begin
+        SelectedPackages:=GetSelectedPackages;
+        if Length(SelectedPackages)=0 then begin
             Result:=(MsgBox('You have not selected any packages. Are you sure you want to continue?',mbConfirmation,MB_YESNO)=IDYES);
         end;
     end;
@@ -218,5 +216,38 @@ begin
         Result:=True;
     end else begin
         Result:=False;
+    end;
+end;
+
+procedure CurPageChanged(CurPageID:Integer);
+var
+    ResultCode:Integer;
+    HomePath:String;
+    Home:TArrayOfString;
+begin
+    if CurPageID<>ProgressPage.ID then begin
+        Exit;
+    end;
+
+    Log('Installing the following packages: '+SelectedPackages);
+
+    Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+SelectedPackages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
+    if ResultCode<>0 then begin
+        MsgBox('mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.',mbError,MB_OK);
+    end;
+
+    // Set the HOME environment variable if not set. This is better than changing /etc/profile
+    // because that file will be overwritten on msys-core upgrades.
+    HomePath:=ExpandConstant('{%HOME}');
+    if not DirExists(HomePath) then begin
+        HomePath:=ExpandConstant('{%HOMEDRIVE}')+ExpandConstant('{%HOMEPATH}');
+        if not DirExists(HomePath) then begin
+            HomePath:=ExpandConstant('{%USERPROFILE}');
+        end;
+        if DirExists(HomePath) then begin
+            SetArrayLength(Home,1);
+            Home[0]:=HomePath;
+            SetEnvStrings('HOME',False,False,Home);
+        end;
     end;
 end;
