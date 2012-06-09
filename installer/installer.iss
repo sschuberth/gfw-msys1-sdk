@@ -30,6 +30,7 @@ WizardSmallImageFile=resources\git-small.bmp
 
 [Files]
 
+Source: installer\is-procap.dll; Flags: dontcopy
 Source: root\*; DestDir: {app}; Flags: recursesubdirs
 
 [Icons]
@@ -114,6 +115,8 @@ begin
         Parent:=ProgressPage.Surface;
         Width:=ProgressPage.SurfaceWidth;
         Height:=ProgressPage.SurfaceHeight;
+        //ScrollBars:=ssBoth;
+        ScrollBars:=ssBoth;
     end;
 end;
 
@@ -219,9 +222,20 @@ begin
     end;
 end;
 
+function BeginProcessCapture(Executable,Arguments:PAnsiChar):Boolean;
+external 'BeginProcessCapture@files:is-procap.dll setuponly';
+
+function GetProcessOutput(var Text:PAnsiChar):Boolean;
+external 'GetProcessOutput@files:is-procap.dll setuponly';
+
+procedure EndProcessCapture;
+external 'EndProcessCapture@files:is-procap.dll setuponly';
+
 procedure CurPageChanged(CurPageID:Integer);
 var
-    ResultCode:Integer;
+    Output:PAnsiChar;
+    OutputStr:String;
+    LineIndex,CarriagePos,FeedPos:Integer;
     HomePath:String;
     Home:TArrayOfString;
 begin
@@ -231,9 +245,34 @@ begin
 
     Log('Installing the following packages: '+SelectedPackages);
 
-    Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+SelectedPackages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
-    if ResultCode<>0 then begin
-        MsgBox('mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.',mbError,MB_OK);
+    if BeginProcessCapture(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+SelectedPackages) then begin
+        while GetProcessOutput(Output) do begin
+            if Output<>nil then begin
+                OutputStr:=Output;
+
+                LineIndex:=ProgressLog.Lines.Count-1;
+                //ProgressLog.SelStart:=Length(ProgressLog.Text);
+                //ProgressLog.SelLength:=0;
+
+                CarriagePos:=Pos(#13,OutputStr);
+                FeedPos:=Pos(#10,OutputStr);
+                if (CarriagePos>0) and (CarriagePos+1<>FeedPos) then begin
+                    Delete(OutputStr,1,CarriagePos);
+                    ProgressLog.Lines.Strings[LineIndex]:=OutputStr;
+                    //ProgressLog.Update;
+                end else if (FeedPos>0) then begin
+                    ProgressLog.Text:=ProgressLog.Text+OutputStr;
+                
+                    // Auto-scroll to the end of the text.
+                    //SendMessage(ProgressLog.Handle,{EM_SCROLLCARET} $00b7,0,0);
+                end else begin
+                    ProgressLog.Lines.Strings[LineIndex]:=ProgressLog.Lines.Strings[LineIndex]+OutputStr;
+                    //ProgressLog.Update;
+                end;
+            end;
+        end;
+
+        EndProcessCapture;
     end;
 
     // Set the HOME environment variable if not set. This is better than changing /etc/profile
