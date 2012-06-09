@@ -9,7 +9,7 @@ if [ -f "$(which xz)" ]; then
     unpack="tar -xf"
 elif [ -f "$(which unzip)" ]; then
     ext="\.zip"
-    unpack="unzip -u"
+    unpack="unzip -o"
 else
     echo "ERROR: No suitable unpacking tool found."
     exit 1
