@@ -61,6 +61,7 @@ const
                      + 'msys-wget '
                      + 'mingw32-gcc '
                      + 'mingw32-libiconv '
+                     + 'mingw32-libintl '
                      + 'mingw32-libopenssl '
                      + 'mingw32-libz '
                      + 'mingw32-mgwport '
