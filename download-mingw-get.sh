@@ -47,8 +47,10 @@ mkdir -p root/mingw && cd root/mingw && (
         echo "WARNING: Invalid URL, skipping download of mingw-get."
     fi
 
-    if [ -f bin/mingw-get ]; then
-        version=$(bin/mingw-get --version | head -1)
+    wine=$(which wine)
+
+    if [ -f bin/mingw-get.exe ]; then
+        version=$($wine bin/mingw-get.exe --version 2> /dev/null | grep -m 1 -o -P ".*version.*[^\s]")
         echo "Using $version."
 
         # Install mingw in a directory below the msys root.
@@ -69,7 +71,7 @@ EOF
 
         # Get the list of available packages.
         echo "Downloading catalogues ..."
-        bin/mingw-get update
+        $wine bin/mingw-get.exe update
     else
         echo "WARNING: mingw-get not found, skipping download of catalogues."
     fi
