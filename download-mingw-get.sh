@@ -15,8 +15,17 @@ else
     exit 1
 fi
 
+sed_version=$(sed --version 2> /dev/null)
+if [ $? -eq 0 ]; then
+    # Assume GNU sed.
+    sed_args="-nr"
+else
+    # Assume BSD sed.
+    sed_args="-nE"
+fi
+
 link=$(curl -s http://sourceforge.net/api/file/index/project-id/2435/mtime/desc/limit/$limit/rss |
-     sed -nr "s/<link>(.+(mingw-get-[0-9]+\.[0-9]+-mingw32-.+-bin$ext).+)<\/link>/\2\t\1/p" |
+     sed $sed_args "s/<link>(.+(mingw-get-[0-9]+\.[0-9]+-mingw32-.+-bin$ext).+)<\/link>/\2\t\1/p" |
      head -1)
 
 file=$(echo "$link" | cut -f 1)
