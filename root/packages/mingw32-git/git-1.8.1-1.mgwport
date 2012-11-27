@@ -1,0 +1,27 @@
+DESCRIPTION="Git distributed version control system"
+HOMEPAGE="http://git-scm.com/"
+
+SRC_URI="https://github.com/msysgit/${PN}/archive/v${PV}.msysgit.${PR}.tar.gz"
+SRC_DIR="${P}.msysgit.${PR}"
+
+src_compile() {
+    # Mirror the source into the build directory.
+    lndirs
+
+    cd ${B}
+
+    # Tell Git's Makefile to use MSYSGIT settings.
+    touch ../THIS_IS_MSYSGIT
+
+    mgwmake prefix=${D}/mingw
+}
+
+src_test() {
+    cd ${B}/t
+    prove -v t[0-9]*.sh
+}
+
+src_install() {
+    cd ${B}
+    mgwinstall
+}
