@@ -55,13 +55,9 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 
 const
     RequiredPackages = 'msys-base '
-                     + 'msys-lndir '
-                     + 'msys-patch '
                      + 'msys-perl '
-                     + 'msys-wget '
                      + 'mingw32-gcc '
                      + 'mingw32-libiconv '
-                     + 'mingw32-libintl '
                      + 'mingw32-libopenssl '
                      + 'mingw32-libz '
                      + 'mingw32-mgwport '
