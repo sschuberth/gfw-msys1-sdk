@@ -58,9 +58,11 @@ const
                      + 'msys-perl '
                      + 'mingw32-gcc '
                      + 'mingw32-libiconv '
-                     + 'mingw32-libopenssl '
                      + 'mingw32-libz '
                      + 'mingw32-mgwport '
+
+                     // Our own packages:
+                     + 'mingw32-libopenssl '
                      + 'mingw32-tcl '
                      ;
 
