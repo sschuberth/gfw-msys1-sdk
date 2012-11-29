@@ -66,6 +66,9 @@ const
                      + 'mingw32-tcl '
                      ;
 
+    RecommendedPackages = 'msys-vim '
+                        ;
+
 var
     PackagesPage:TWizardPage;
     PackagesList:TNewCheckListBox;
@@ -96,7 +99,7 @@ var
     Packages:TArrayOfString;
     NumPackages,i,Level,p:Integer;
     Hierarchy,Group,PrevPath,Path,PackageName,PackageClass:String;
-    Required:Boolean;
+    Required,Recommended:Boolean;
 begin
     // Initialize the package selection page just after the actual installation finishes.
     if CurStep<>ssPostInstall then begin
@@ -149,7 +152,8 @@ begin
 
         // Enclose the package name by spaces for the lookup as one name may be a substring of another name.
         Required:=(Pos(' '+PackageName+' ',' '+RequiredPackages+' ')>0);
-        PackagesList.AddCheckBox(PackageName,PackageClass,Level,Required,not Required,False,True,nil);
+        Recommended:=(Pos(' '+PackageName+' ',' '+RecommendedPackages+' ')>0);
+        PackagesList.AddCheckBox(PackageName,PackageClass,Level,Required or Recommended,not Required,False,True,nil);
     end;
 end;
 
