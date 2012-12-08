@@ -4,10 +4,10 @@
 limit=500
 
 # Get the download link to the most recent version of mingw-get.
-if [ -f "$(which xz)" ]; then
+if [ -f "$(type -p xz)" ]; then
     ext="\.tar\.xz"
     unpack="tar -xf"
-elif [ -f "$(which unzip)" ]; then
+elif [ -f "$(type -p unzip)" ]; then
     ext="\.zip"
     unpack="unzip -o"
 else
@@ -48,7 +48,7 @@ mkdir -p root/mingw && cd root/mingw && (
     fi
 
     if [ -f bin/mingw-get.exe ]; then
-        wine=$(which wine)
+        wine=$(type -p wine)
         if [ $? -eq 0 ]; then
             version=$($wine bin/mingw-get.exe --version 2> /dev/null | grep -m 1 -o -P ".*version.*[^\s]")
         else
