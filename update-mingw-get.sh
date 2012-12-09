@@ -55,6 +55,9 @@ mkdir -p root/mingw && cd root/mingw && (
     if [ -n "$url" ]; then
         echo "Downloading $file ..."
         file="../../$file"
+        if [ "$download" == "curl" ]; then
+            download_args="$download_args $file -R -z"
+        fi
         $download $download_args $file $url
         $unpack $file
     else
