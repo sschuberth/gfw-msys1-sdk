@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <software-distribution project="mingwGitDevEnv" home="https://github.com/sschuberth/mingwGitDevEnv" issue="2011101800">
   <package-collection subsystem="mingw32">
-    <download-host uri="https://github.com/downloads/sschuberth/mingwGitDevEnv/%F" />
+    <download-host uri="https://dl.dropbox.com/u/6413030/mingwGitDevEnv/packages/mingw32-openssl/%F" />
 
     <package name="mingw32-openssl">
       <affiliate group="MinGW Developer Toolkit" />
