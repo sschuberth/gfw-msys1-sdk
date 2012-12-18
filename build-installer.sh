@@ -2,7 +2,7 @@
 
 iscc="c:/msysgit/share/InnoSetup/ISCC.exe"
 if [ ! -f "$iscc" ]; then
-    path=$(reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1" | grep InstallLocation | cut -c 34-)
+    path=$(reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1" 2> /dev/null | grep InstallLocation | cut -c 34-)
     iscc="$path/ISCC.exe"
 fi
 
