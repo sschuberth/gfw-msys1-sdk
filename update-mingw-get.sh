@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Get the download link to the most recent version of mingw-get.
+# Find a suitable download tool.
 if [ -f "$(type -p curl)" ]; then
     download="curl"
     download_args_rss="-s"
@@ -14,6 +14,7 @@ else
     exit 1
 fi
 
+# Find a suitable unpacking tool.
 if [ -f "$(type -p xz)" ]; then
     unpack="tar -xf"
     ext="\.tar\.xz"
