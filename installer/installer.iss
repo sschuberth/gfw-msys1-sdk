@@ -134,7 +134,7 @@ begin
             end;
 
             Delete(Hierarchy,1,p);
-            Inc(Level);
+            Level:=Level+1;
 
             p:=Pos('\',Hierarchy);
         end;
