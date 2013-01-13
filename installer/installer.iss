@@ -57,6 +57,7 @@ const
     RequiredPackages = 'msys-base '
                      + 'msys-perl '
                      + 'mingw32-gcc '
+                     + 'mingw32-libexpat '
                      + 'mingw32-libiconv '
                      + 'mingw32-libz '
                      + 'mingw32-mgwport '
