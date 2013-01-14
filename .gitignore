@@ -1,4 +1,4 @@
-root/mingw/
-*.exe
-*.tar.*
-*.zip
+/root/mingw/
+/*.exe
+/*.tar.*
+/*.zip
