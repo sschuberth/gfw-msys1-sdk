@@ -66,7 +66,8 @@ const
                      + 'mingw32-tcl '
                      ;
 
-    RecommendedPackages = 'msys-vim '
+    RecommendedPackages = 'msys-rsync '
+                        + 'msys-vim '
                         ;
 
 var
