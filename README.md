@@ -17,7 +17,6 @@ The installer strives to supersede the existing [msysgit net installer](http://c
 * Create an mgwport file for Git itself.
 * Use a minimal Git client to clone the Git repository into the mingwGitDevEnv installation directory.
 * Create an mgwport file for Tk.
-* Convert the current pkgbuild.sh script for OpenSSL to an mgwport file.
 * Make all Git tests pass (compiling Git works, but there seems to be a permission problem with some of the tests).
 * Create a new "Git for Windows" installer which also comes with mingw-get package management.
 * Capture the console output of mingw-get and show the progress in the mingwGitDevEnv GUI

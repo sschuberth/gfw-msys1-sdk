@@ -26,17 +26,17 @@
       <source tarname="openssl-%-mingw32-%-src.tar.%" />
 
       <component class="bin">
-        <release tarname="openssl-1.0.0e-1-mingw32-bin.tar.xz" >
+        <release tarname="openssl-1.0.0j-1-mingw32-bin.tar.lzma" >
           <requires eq="mingw32-libopenssl-%-mingw32-dll-100.tar" />
         </release>
       </component>
 
       <component class="doc">
-        <release tarname="openssl-1.0.0e-1-mingw32-doc.tar.xz" />
+        <release tarname="openssl-1.0.0j-1-mingw32-doc.tar.lzma" />
       </component>
 
       <component class="lic">
-        <release tarname="openssl-1.0.0e-1-mingw32-lic.tar.xz" />
+        <release tarname="openssl-1.0.0j-1-mingw32-lic.tar.lzma" />
       </component>
     </package>
 
@@ -63,11 +63,11 @@
       <source tarname="openssl-%-mingw32-src.tar.%" />
 
       <component class="dll">
-        <release tarname="libopenssl-1.0.0e-1-mingw32-dll-100.tar.xz" />
+        <release tarname="libopenssl-1.0.0j-1-mingw32-dll-100.tar.lzma" />
       </component>
 
       <component class="dev">
-        <release tarname="libopenssl-1.0.0e-1-mingw32-dev.tar.xz" >
+        <release tarname="libopenssl-1.0.0j-1-mingw32-dev.tar.lzma" >
           <requires eq="mingw32-libopenssl-%-mingw32-dll-100.tar" />
         </release>
       </component>
