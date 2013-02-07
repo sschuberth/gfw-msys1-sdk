@@ -94,6 +94,9 @@ mkdir -p root/mingw && cd root/mingw && (
 </profile>
 EOF
 
+        # Remove all packages first as updating does not always seems to reliably overwrite old files.
+        rm -f var/lib/mingw-get/data/mingw*.xml var/lib/mingw-get/data/msys*.xml
+
         # Get the list of available packages.
         echo "Downloading catalogues ..."
         $wine bin/mingw-get.exe update
