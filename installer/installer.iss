@@ -62,6 +62,7 @@ const
                      + 'mingw32-mgwport '
 
                      // Our own packages:
+                     + 'mingw32-libcurl '
                      + 'mingw32-libopenssl '
                      + 'mingw32-tcl '
                      ;
