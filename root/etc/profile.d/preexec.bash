@@ -122,7 +122,11 @@ function preexec_install () {
     shopt -s extdebug > /dev/null 2>&1
 
     # Finally, install the actual traps.
-    PROMPT_COMMAND="${PROMPT_COMMAND};preexec_invoke_cmd"
+    if [[ -n "$PROMPT_COMMAND" ]]
+    then
+        PROMPT_COMMAND="${PROMPT_COMMAND};"
+    fi
+    PROMPT_COMMAND="${PROMPT_COMMAND}preexec_invoke_cmd"
     trap 'preexec_invoke_exec' DEBUG
 }
 
