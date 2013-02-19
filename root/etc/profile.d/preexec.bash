@@ -103,6 +103,9 @@ function preexec_invoke_exec () {
     # but only as "ps auxf" if not.
     local this_command=`history 1 | sed -e "s/^[ ]*[0-9]*[ ]*//g"`;
 
+    # Trim leading / trailing whitespaces.
+    this_command=$(echo $this_command)
+
     # If none of the previous checks have earlied out of this function, then
     # the command is in fact interactive and we should invoke the user's
     # preexec hook with the running command as an argument.
