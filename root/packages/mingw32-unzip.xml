@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<software-distribution project="mingwGitDevEnv" home="https://github.com/sschuberth/mingwGitDevEnv" issue="2013032000">
+  <package-collection subsystem="mingw32">
+    <download-host uri="https://dl.dropbox.com/u/6413030/mingwGitDevEnv/packages/mingw32-unzip/%F" />
+
+    <package name="mingw32-unzip">
+      <description lang="en" title="Command-line unpacker for .zip archives" >
+        <paragraph>UnZip from the InfoZIP project is an open-source,
+          command-line alternative to other tools, such as WinZip, for
+          unpacking zip-format archives.
+        </paragraph>
+      </description>
+
+      <licence tarname="unzip-%-mingw32-lic.tar.%" />
+      <source tarname="unzip-%-mingw32-src.tar.%" />
+
+      <component class="bin">
+        <release tarname="unzip-60-1-mingw32-bin.tar.lzma" />
+      </component>
+
+      <component class="doc">
+        <release tarname="unzip-60-1-mingw32-doc.tar.lzma" />
+      </component>
+
+      <component class="lic">
+        <release tarname="unzip-60-1-mingw32-lic.tar.lzma" />
+      </component>
+    </package>
+
+  </package-collection>
+</software-distribution>
+<!-- vim: set nocompatible expandtab fileformat=unix textwidth=80 tabstop=2 shiftwidth=2: -->
