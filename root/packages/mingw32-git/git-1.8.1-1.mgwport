@@ -4,6 +4,8 @@ HOMEPAGE="http://git-scm.com/"
 SRC_URI="https://github.com/msysgit/${PN}/archive/v${PV}.msysgit.${PR}.tar.gz"
 SRC_DIR="${P}.msysgit.${PR}"
 
+PATCH_URI="git-do-not-install-built-ins.mingw32.patch"
+
 src_compile() {
     # Mirror the source into the build directory.
     lndirs
