@@ -57,13 +57,18 @@ const
     RequiredPackages = 'msys-base '
                      + 'msys-perl '
                      + 'mingw32-gcc '
+                     + 'mingw32-libexpat '
                      + 'mingw32-libiconv '
                      + 'mingw32-libz '
                      + 'mingw32-mgwport '
 
                      // Our own packages:
+                     + 'mingw32-libcurl '
                      + 'mingw32-libopenssl '
                      + 'mingw32-tcl '
+
+                     // A minimal Git client for initial cloning:
+                     + 'mingw32-git '
                      ;
 
     RecommendedPackages = 'msys-rsync '

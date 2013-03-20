@@ -14,7 +14,6 @@ The installer strives to supersede the existing [msysgit net installer](http://c
 
 # TODOs
 
-* Create an mgwport file for Git itself.
 * Use a minimal Git client to clone the Git repository into the mingwGitDevEnv installation directory.
 * Create an mgwport file for Tk.
 * Make all Git tests pass (compiling Git works, but there seems to be a permission problem with some of the tests).
