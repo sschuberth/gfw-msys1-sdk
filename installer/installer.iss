@@ -66,6 +66,9 @@ const
                      + 'mingw32-libcurl '
                      + 'mingw32-libopenssl '
                      + 'mingw32-tcl '
+
+                     // A minimal Git client for initial cloning:
+                     + 'mingw32-git '
                      ;
 
     RecommendedPackages = 'msys-rsync '
