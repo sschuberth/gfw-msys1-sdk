@@ -4,6 +4,7 @@
   <!-- This is the master package catalogue for the mingwGitDevEnv project -->
 
   <package-list catalogue="mingw32-curl" />
+  <package-list catalogue="mingw32-git" />
   <package-list catalogue="mingw32-openssl" />
   <package-list catalogue="mingw32-tcl" />
 
