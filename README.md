@@ -26,7 +26,42 @@ In order to create packages for use with mingw-get the following steps are neces
 # TODOs
 
 * Create an mgwport file for Tk.
-* Make all Git tests pass (compiling Git works, but there seems to be a permission problem with some of the tests).
+* Make all Git tests pass. The tests that are currently failing are:
+  * t0061-run-command.sh (1 subtest fails)
+  * t1506-rev-parse-diagnosis.sh (11 subtests fail)
+  * t3404-rebase-interactive.sh (1 subtest fails)
+  * t3703-add-magic-pathspec.sh (2 subtests fail)
+  * t3900-i18n-commit.sh (16 subtests fail)
+  * t3901-i18n-patch.sh (10 subtests fail)
+  * t4003-diff-rename-1.sh (3 subtests fail)
+  * t4013-diff-various.sh (83 subtests fail)
+  * t4014-format-patch.sh (4 subtests fail)
+  * t4034-diff-words.sh (15 subtests fail)
+  * t4100-apply-stat.sh (2 subtests fail)
+  * t4101-apply-nonl.sh (12 subtests fail)
+  * t4109-apply-multifrag.sh (3 subtests fail)
+  * t4110-apply-scan.sh (1 subtest fails)
+  * t4135-apply-weird-filenames.sh (9 subtests fail)
+  * t4208-log-magic-pathspec.sh (2 subtests fail)
+  * t4252-am-options.sh (3 subtests fail)
+  * t5000-tar-tree.sh (2 subtests fail)
+  * t5100-mailinfo.sh (30 subtests fail)
+  * t5300-pack-object.sh (4 subtests fail)
+  * t5302-pack-index.sh (9 subtests fail)
+  * t5303-pack-corruption-resilience.sh (8 subtests fail)
+  * t5509-fetch-push-namespaces.sh (1 subtest fails)
+  * t5510-fetch.sh (3 subtests fail)
+  * t5515-fetch-merge-logic.sh (64 subtests fail)
+  * t5516-fetch-push.sh (3 subtests fail)
+  * t5602-clone-remote-exec.sh (2 subtests fail)
+  * t7003-filter-branch.sh (1 subtest fails)
+  * t7201-co.sh (1 subtest fails)
+  * t7400-submodule-basic.sh (1 subtest fails)
+  * t7401-submodule-summary.sh (11 subtests fail)
+  * t7405-submodule-merge.sh (2 subtests fail)
+  * t9001-send-email.sh (2 subtests fail)
+  * t9700-perl-git.sh (1 subtest fails)
+  * t9903-bash-prompt.sh (4 subtests fail)
 * Create a new "Git for Windows" installer which also comes with mingw-get package management.
 * Capture the console output of mingw-get and show the progress in the mingwGitDevEnv GUI.
 * Contribute msysGit's patches to MSYS / MinGW back upstream.
