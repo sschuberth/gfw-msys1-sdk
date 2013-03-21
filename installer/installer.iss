@@ -1,5 +1,9 @@
 #define APP_NAME    'mingwGitDevEnv'
-#define APP_VERSION '0.1'
+#define APP_VERSION GetEnv('APP_VERSION')
+
+#if APP_VERSION==''
+    #define APP_VERSION 'Snapshot'
+#endif
 
 #define GIT_REPO_URL 'https://github.com/msysgit/git.git'
 
@@ -8,7 +12,7 @@
 ; Compiler-related
 Compression=lzma2/ultra
 LZMAUseSeparateProcess=yes
-OutputBaseFilename={#APP_NAME+'-v'+APP_VERSION}
+OutputBaseFilename={#APP_NAME+'-'+APP_VERSION}
 OutputDir=.
 SolidCompression=yes
 SourceDir=..

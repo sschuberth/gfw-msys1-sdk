@@ -8,7 +8,7 @@ fi
 
 if [ -f "$iscc" ]; then
     wine=$(type -p wine)
-    $wine $iscc installer/installer.iss
+    APP_VERSION=$(git describe --tags) $wine $iscc installer/installer.iss
 else
     echo "ERROR: Unable to find an Inno Setup installation."
     exit 1
