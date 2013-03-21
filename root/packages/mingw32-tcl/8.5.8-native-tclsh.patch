@@ -1,0 +1,20 @@
+The MinGW tclsh doesn't properly understand the *NIX paths in the Makefile
+
+--- origsrc/tcl8.5.8/win/Makefile.in	2009-11-13 12:38:45.000000000 -0600
++++ src/tcl8.5.8/win/Makefile.in	2010-07-15 23:18:19.554373000 -0500
+@@ -658,13 +658,13 @@ install-libraries: libraries install-tzd
+ install-tzdata:
+ 	@echo "Installing time zone data"
+ 	@TCL_LIBRARY="${LIBRARY_DIR}"; export TCL_LIBRARY; \
+-	./$(TCLSH) "$(ROOT_DIR)/tools/installData.tcl" \
++	tclsh "$(ROOT_DIR)/tools/installData.tcl" \
+ 	    "$(ROOT_DIR)/library/tzdata" "$(SCRIPT_INSTALL_DIR)/tzdata"
+ 
+ install-msgs:
+ 	@echo "Installing message catalogs"
+ 	@TCL_LIBRARY="${LIBRARY_DIR}"; export TCL_LIBRARY; \
+-	./$(TCLSH) "$(ROOT_DIR)/tools/installData.tcl" \
++	tclsh "$(ROOT_DIR)/tools/installData.tcl" \
+ 	    "$(ROOT_DIR)/library/msgs" "$(SCRIPT_INSTALL_DIR)/msgs"
+ 
+ install-doc: doc
