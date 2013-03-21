@@ -25,7 +25,6 @@ In order to create packages for use with mingw-get the following steps are neces
 
 # TODOs
 
-* Create an mgwport file for Tk.
 * Make all Git tests pass. The tests that are currently failing are:
   * t0061-run-command.sh (1 subtest fails)
   * t1506-rev-parse-diagnosis.sh (11 subtests fail)

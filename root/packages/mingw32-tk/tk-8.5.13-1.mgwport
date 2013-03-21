@@ -1,0 +1,46 @@
+DESCRIPTION="Tk graphical user interface toolkit"
+HOMEPAGE="http://tcl.tk/"
+SRC_URI="mirror://sourceforge/tcl/${PN}${PV}-src.tar.gz"
+SRC_DIR="${PN}${PV}"
+CROSS_LIBDIR="/mingw/lib"
+CROSS_INCLUDEDIR="/mingw/include"
+
+slotdir=${PV_MAJ_MIN}
+slotbin=${PV_MAJ_MIN/./}
+
+# The "src" package is created by default.
+PKG_COMPTYPES="bin dev doc"
+PKG_CONTENTS[0]="bin lib --exclude=lib/*.a --exclude=lib/*.sh"
+PKG_CONTENTS[1]="include lib/*.a lib/*.sh"
+PKG_CONTENTS[2]="share/doc"
+
+src_compile() {
+    lndirs
+    cd ${B}/win
+    mgwconf --with-tcl=${CROSS_LIBDIR} --includedir=${CROSS_INCLUDEDIR}/tcl${slot}
+    mgwmake -j1
+}
+
+src_install() {
+    cd ${B}/win
+
+    USE_DESTDIR=0
+    mgwinstall includedir=${D}${CROSS_INCLUDEDIR}/tcl${slot}
+
+    sed -i \
+        -e "s|^\(TK_BUILD_LIB_SPEC\)='.*|\1='-Wl,${CROSS_LIBDIR}/libtk${slot//.}.a'|" \
+        -e "s|^\(TK_SRC_DIR\)='.*'|\1='${CROSS_INCLUDEDIR}/tcl${slot}'|" \
+        -e "s|^\(TK_BUILD_STUB_LIB_SPEC\)='.*|\1='-Wl,${CROSS_LIBDIR}/libtkstub${slot//.}.a'|" \
+        -e "s|^\(TK_BUILD_STUB_LIB_PATH\)='.*/win|\1='${CROSS_LIBDIR}|" \
+        -e "s|^\(TK_STUB_LIB_SPEC\)='.*|\1='-Wl,-ltkstub${slot//.}'|" \
+        ${D}${CROSS_LIBDIR}/tkConfig.sh || error
+
+    # install private headers
+    includeinto tcl${slot}/win
+    doinclude ${S}/win/*.h
+    includeinto tcl${slot}/generic
+    doinclude ${S}/generic/*.h
+
+    # make the default tk version
+    dosym wish${slotbin}.exe /mingw/bin/wish.exe
+}
