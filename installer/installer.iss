@@ -72,7 +72,7 @@ const
                      // Our own packages:
                      + 'mingw32-libcurl '
                      + 'mingw32-libopenssl '
-                     + 'mingw32-tcl '
+                     + 'mingw32-tk '
                      + 'mingw32-unzip '
 
                      // A minimal Git client for initial cloning:
