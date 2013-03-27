@@ -82,7 +82,8 @@ const
                      + 'mingw32-git '
                      ;
 
-    RecommendedPackages = 'msys-rsync '
+    RecommendedPackages = 'msys-gcc '
+                        + 'msys-rsync '
                         + 'msys-vim '
                         ;
 
