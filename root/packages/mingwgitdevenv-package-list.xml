@@ -9,6 +9,7 @@
   <package-list catalogue="mingw32-tcl" />
   <package-list catalogue="mingw32-tk" />
   <package-list catalogue="mingw32-unzip" />
+  <package-list catalogue="msys-openssl" />
 
 </software-distribution>
 <!-- vim: set nocompatible expandtab fileformat=unix textwidth=80 tabstop=2 shiftwidth=2: -->
