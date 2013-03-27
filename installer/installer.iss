@@ -85,6 +85,7 @@ const
     RecommendedPackages = 'msys-gcc '
                         + 'msys-rsync '
                         + 'msys-vim '
+                        + 'msys-zlib '
                         ;
 
 var
