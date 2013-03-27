@@ -5,7 +5,7 @@
 # and
 #     http://msdn.microsoft.com/en-us/library/windows/desktop/aa511280.aspx#size
 # for details.
-convert -colorspace sRGB -density 256x256 Git-Icon-1788C.eps \
+convert -colorspace sRGB -density 256x256 Git-Icon-1788C.eps -negate \
     \( -clone 0 -resize 256x256 \) \
     \( -clone 0 -resize 64x64 \) \
     \( -clone 0 -resize 48x48 \) \
