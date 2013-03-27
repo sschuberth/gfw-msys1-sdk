@@ -1,4 +1,6 @@
-/root/mingw/
+/root/mingw/bin/mingw-get.exe
+/root/mingw/libexec/
+/root/mingw/var/
 /*.exe
 /*.tar.*
 /*.zip
