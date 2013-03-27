@@ -3,6 +3,8 @@
 
 #if APP_VERSION==''
     #define APP_VERSION 'Snapshot'
+#else
+    #define APP_VERSION Delete(APP_VERSION,1,1)
 #endif
 
 #define GIT_REPO_URL 'https://github.com/msysgit/git.git'
@@ -12,7 +14,7 @@
 ; Compiler-related
 Compression=lzma2/ultra
 LZMAUseSeparateProcess=yes
-OutputBaseFilename={#APP_NAME+'-'+APP_VERSION}
+OutputBaseFilename={#APP_NAME+'-v'+APP_VERSION}
 OutputDir=.
 SolidCompression=yes
 SourceDir=..
