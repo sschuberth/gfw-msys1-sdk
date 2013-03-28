@@ -47,7 +47,7 @@ Name: "{group}\Git Development Environment"; Filename: "{app}\msys.bat"; IconFil
 [Run]
 
 Filename: "{app}\mingw\bin\git.exe"; Description: "Clone the Git repository"; Parameters: "clone {#GIT_REPO_URL}"; WorkingDir: "{app}"; Flags: postinstall
-Filename: "{app}\msys.bat"; Description: "Start the development environment"; Flags: postinstall
+Filename: "{app}\msys.bat"; Description: "Start the development environment"; Flags: postinstall skipifsilent
 
 [UninstallDelete]
 
