@@ -33,7 +33,7 @@ if [ -f $file ]; then
         $wine $file /verysilent /dir="root\share\InnoSetup" /noicons /tasks="" /portable=1
     else
         # See http://www.mingw.org/wiki/Posix_path_conversion.
-        $file //verysilent //dir="root\share\InnoSetup" //noicons //tasks="" //portable=1
+        ./$file //verysilent //dir="root\share\InnoSetup" //noicons //tasks="" //portable=1
     fi
 
     # Remove unneeded files from the installation.

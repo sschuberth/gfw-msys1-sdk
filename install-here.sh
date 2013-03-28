@@ -8,4 +8,4 @@ if [ ! -f $installer ]; then
 fi
 
 log=$(basename $installer .exe).log
-$installer //log="$log" //verysilent //dir="mingwGitDevEnv" //noicons //portable=1
+./$installer //log="$log" //verysilent //dir="mingwGitDevEnv" //noicons //portable=1
