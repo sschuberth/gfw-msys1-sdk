@@ -1,1 +1,2 @@
 /root/share/InnoSetup/ -text
+*.cmd eol=crlf
