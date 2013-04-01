@@ -12,6 +12,10 @@ The installer strives to supersede the existing [msysgit net installer](http://c
 
 * **More consistent naming:** As with [msysgit](http://code.google.com/p/msysgit/), the shipped Git executable is a native Windows application that has been compiled using MinGW. It is not an MSYS application using a Unix emulation layer. Only the shell environment and some tools Git depends on are provided by MSYS. As such, the project is called mingwGitDevEnv (instead of msysGitDevEnv). Moreover, this distinguishes the project from the upcoming "msys git" project, which will be a Git distribution by the MinGW folks that is actually compiled against MSYS.
 
+# Download
+
+Choose between the latest [stable release](https://dl.dropbox.com/u/6413030/mingwGitDevEnv/mingwGitDevEnv-v0.1.exe) or the latest [snapshot release](https://qa.nest-initiative.org/view/msysGit/job/msysgit-mingwGitDevEnv/lastSuccessfulBuild/artifact/download.html).
+
 # Creating mingw-get packages
 
 In order to create packages for use with mingw-get the following steps are necessary:
