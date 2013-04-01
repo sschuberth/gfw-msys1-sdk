@@ -1,6 +1,6 @@
 #!/bin/sh
 
-installer=$(ls -t -1 mingwGitDevEnv*.exe | head -1)
+installer=$(ls -t -1 mingwGitDevEnv-*.exe | head -1)
 
 if [ ! -f $installer ]; then
     echo "ERROR: No installer found, please build it first."
