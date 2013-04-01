@@ -1,8 +1,10 @@
 @echo off
 
-setlocal
+wmic /output:process.log process get executablepath,processid
 
-set command="wmic process get executablepath,processid | findstr /c:"mingwGitDevEnv\bin\sh.exe""
-for /f "tokens=2" %%p in ('%command%') do (
-    taskkill /f /pid %%p
+REM Use "type" to convert Unicode to ASCII text before using "findstr".
+type process.log | findstr /c:"mingwGitDevEnv\bin\sh.exe"
+if errorlevel 1 (
+    echo No shell process found that needs to be terminated.
+    exit /b 0
 )
