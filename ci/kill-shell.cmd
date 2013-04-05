@@ -7,5 +7,5 @@ if errorlevel 1 (
 )
 
 for /f "tokens=2" %%p in (process.log) do (
-    taskkill /f /pid %%p
+    taskkill /t /f /pid %%p
 )
