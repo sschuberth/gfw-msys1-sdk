@@ -2,6 +2,6 @@
 /root/mingw/libexec/
 /root/mingw/var/
 /*.exe
-/*.log
 /*.tar.*
 /*.zip
+*.log
