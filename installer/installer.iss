@@ -43,6 +43,7 @@ Source: root\*; DestDir: {app}; Flags: recursesubdirs
 [Icons]
 
 Name: "{group}\Git Development Environment"; Filename: "{app}\msys.bat"; IconFilename: "{uninstallexe}"
+Name: "{group}\Git Development Environment (MSYS Mode)"; Filename: "{app}\msys.bat"; Parameters: "MSYS"; IconFilename: "{uninstallexe}"
 
 [Run]
 
