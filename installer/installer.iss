@@ -28,6 +28,7 @@ DefaultDirName={sd}\{#APP_NAME}
 DefaultGroupName={#APP_NAME}
 DisableReadyPage=yes
 PrivilegesRequired=none
+Uninstallable=not IsPortableMode
 
 ; Cosmetic
 SetupIconFile=resources\git.ico
@@ -88,6 +89,11 @@ const
 var
     PackagesPage:TWizardPage;
     PackagesList:TNewCheckListBox;
+
+function IsPortableMode:Boolean;
+begin
+    Result:=(ExpandConstant('{param:portable|0}')='1');
+end;
 
 procedure InitializeWizard;
 var
