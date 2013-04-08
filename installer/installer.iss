@@ -64,23 +64,24 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 #include "xmlparser.inc.iss"
 
 const
-    RequiredPackages = 'msys-base '
-                     + 'msys-perl '
-                     + 'mingw32-gcc '
-                     + 'mingw32-libexpat '
-                     + 'mingw32-libiconv '
-                     + 'mingw32-libz '
-                     + 'mingw32-mgwport '
+    RequiredPackages    = 'msys-base '
+                        + 'msys-perl '
 
-                     // Our own packages:
-                     + 'mingw32-libcurl '
-                     + 'mingw32-libopenssl '
-                     + 'mingw32-tk '
-                     + 'mingw32-unzip '
+                        + 'mingw32-gcc '
+                        + 'mingw32-libexpat '
+                        + 'mingw32-libiconv '
+                        + 'mingw32-libz '
+                        + 'mingw32-mgwport '
 
-                     // A minimal Git client for initial cloning:
-                     + 'mingw32-git '
-                     ;
+                        // Our own packages:
+                        + 'mingw32-libcurl '
+                        + 'mingw32-libopenssl '
+                        + 'mingw32-tk '
+                        + 'mingw32-unzip '
+
+                        // A minimal Git client for initial cloning:
+                        + 'mingw32-git '
+                        ;
 
     RecommendedPackages = 'msys-gcc '
                         + 'msys-rsync '
