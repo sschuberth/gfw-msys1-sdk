@@ -27,6 +27,7 @@ ChangesEnvironment=yes
 DefaultDirName={sd}\{#APP_NAME}
 DefaultGroupName={#APP_NAME}
 DisableReadyPage=yes
+InfoBeforeFile=installer\note.rtf
 PrivilegesRequired=none
 Uninstallable=not IsPortableMode
 
