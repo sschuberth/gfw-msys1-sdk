@@ -3,7 +3,9 @@
 
 #if APP_VERSION==''
     #define APP_VERSION 'Snapshot'
+    #define OUT_NAME    APP_NAME+'-'+APP_VERSION
 #else
+    #define OUT_NAME    APP_NAME+'-'+APP_VERSION
     #define APP_VERSION Delete(APP_VERSION,1,1)
 #endif
 
@@ -14,7 +16,7 @@
 ; Compiler-related
 Compression=lzma2/ultra
 LZMAUseSeparateProcess=yes
-OutputBaseFilename={#APP_NAME+'-v'+APP_VERSION}
+OutputBaseFilename={#OUT_NAME}
 OutputDir=.
 SolidCompression=yes
 SourceDir=..
