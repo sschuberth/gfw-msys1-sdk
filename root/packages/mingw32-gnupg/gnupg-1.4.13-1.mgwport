@@ -3,6 +3,8 @@ HOMEPAGE="http://www.gnupg.org"
 SRC_URI="http://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/${PN}-${PV}.tar.bz2
          http://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/${PN}-${PV}.tar.bz2.sig"
 
+PATCH_URI="mingw32-libiconv-dll-name.patch"
+
 PKG_NAMES="${PN} ${PN} ${PN}"
 PKG_COMPTYPES="bin doc lic"
 PKG_CONTENTS[0]="bin"
