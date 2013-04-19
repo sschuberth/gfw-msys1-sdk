@@ -98,6 +98,8 @@ const
 
                         // Our own packages:
                         + 'msys-libopenssl '
+
+                        + 'mingw32-gnupg '
                         ;
 
 var
