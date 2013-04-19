@@ -16,6 +16,7 @@
       <component class="bin">
         <release tarname="gnupg-1.4.13-1-mingw32-bin.tar.lzma">
           <requires eq="mingw32-libiconv-*-mingw32-*-dll-2.tar" />
+          <requires eq="mingw32-libz-*-mingw32-*-dev.tar" />
         </release>
       </component>
 
