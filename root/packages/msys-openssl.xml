@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <software-distribution project="mingwGitDevEnv" home="https://github.com/sschuberth/mingwGitDevEnv" issue="2013032700">
   <package-collection subsystem="msys">
-    <download-host uri="https://dl.dropbox.com/u/6413030/mingwGitDevEnv/packages/msys-openssl/%F" />
+    <download-host uri="https://dl.bintray.com/content/sschuberth/mingwGitDevEnv/%F?direct" />
 
     <package name="msys-openssl">
       <affiliate group="MinGW Developer Toolkit" />

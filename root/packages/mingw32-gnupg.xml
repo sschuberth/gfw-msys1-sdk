@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <software-distribution project="mingwGitDevEnv" home="https://github.com/sschuberth/mingwGitDevEnv" issue="2013041500">
   <package-collection subsystem="mingw32">
-    <download-host
-      uri="https://dl.dropbox.com/u/6413030/mingwGitDevEnv/packages/mingw32-gnupg/%F" />
+    <download-host uri="https://dl.bintray.com/content/sschuberth/mingwGitDevEnv/%F?direct" />
 
     <package name="mingw32-gnupg">
       <description lang="en" title="GnuPG is the GNU project's complete and free implementation of the OpenPGP standard as defined by RFC4880.">

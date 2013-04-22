@@ -84,7 +84,7 @@ mkdir -p root/mingw && cd root/mingw && (
 <profile project="MinGW" application="mingw-get">
     <repository uri="http://prdownloads.sourceforge.net/mingw/%F.xml.lzma?download">
     </repository>
-    <repository uri="https://dl.dropbox.com/u/6413030/mingwGitDevEnv/packages/%F.xml.lzma">
+    <repository uri="https://dl.bintray.com/content/sschuberth/mingwGitDevEnv/%F.xml.lzma?direct">
       <package-list catalogue="mingwgitdevenv-package-list" />
     </repository>
     <system-map id="default">
