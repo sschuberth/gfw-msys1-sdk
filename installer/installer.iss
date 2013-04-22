@@ -261,3 +261,12 @@ begin
         Result:=False;
     end;
 end;
+
+procedure CurPageChanged(CurPageID:Integer);
+begin
+    if CurPageID=wpInfoBefore then begin
+        if WizardForm.NextButton.Enabled then begin
+            WizardForm.ActiveControl:=WizardForm.NextButton;
+        end;
+    end;
+end;
