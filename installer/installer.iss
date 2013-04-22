@@ -2,11 +2,17 @@
 #define APP_VERSION GetEnv('APP_VERSION')
 
 #if APP_VERSION==''
-    #define APP_VERSION 'Snapshot'
-    #define OUT_NAME    APP_NAME+'-'+APP_VERSION
+    #define APP_VERSION  'Snapshot'
+    #define OUT_NAME     APP_NAME+'-'+APP_VERSION
+    #define FILE_VERSION '0.0.0.0'
 #else
-    #define OUT_NAME    APP_NAME+'-'+APP_VERSION
-    #define APP_VERSION Delete(APP_VERSION,1,1)
+    #define OUT_NAME     APP_NAME+'-'+APP_VERSION
+    #define APP_VERSION  Delete(APP_VERSION,1,1)
+    #if Pos('-g',APP_VERSION)>0
+        #define FILE_VERSION ChangeFileExt(StringChange(APP_VERSION,'-','.'),'0')
+    #else
+        #define FILE_VERSION APP_VERSION
+    #endif
 #endif
 
 #define GIT_REPO_URL 'https://github.com/msysgit/git.git'
@@ -20,6 +26,7 @@ OutputBaseFilename={#OUT_NAME}
 OutputDir=.
 SolidCompression=yes
 SourceDir=..
+VersionInfoVersion={#FILE_VERSION}
 
 ; Installer-related
 AllowNoIcons=yes
