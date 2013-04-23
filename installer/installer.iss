@@ -58,6 +58,7 @@ Name: "{group}\Git Development Environment (MSYS Mode)"; Filename: "{app}\msys.b
 
 [Run]
 
+Filename: "{app}\rebaseall.cmd"; Description: "Rebase DLLs"; Flags: postinstall skipifsilent
 Filename: "{app}\mingw\bin\git.exe"; Description: "Clone the Git repository"; Parameters: "clone {#GIT_REPO_URL}"; WorkingDir: "{app}"; Flags: postinstall
 Filename: "{app}\msys.bat"; Description: "Start the development environment"; Flags: postinstall skipifsilent
 
