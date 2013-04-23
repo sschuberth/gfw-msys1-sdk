@@ -78,6 +78,7 @@ const
     RequiredPackages    = 'msys-base '
                         + 'msys-perl '
                         + 'msys-openssh '
+                        + 'msys-rebase '
 
                         + 'mingw32-gcc '
                         + 'mingw32-gettext '
