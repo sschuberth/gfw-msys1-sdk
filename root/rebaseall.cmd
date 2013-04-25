@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 pushd %~dp0
  
 rem Fix permissions for Perl DLLs.
-attrib -r *.dll /s
+attrib -r lib\perl5\*.dll /s
 
 :retry
 
