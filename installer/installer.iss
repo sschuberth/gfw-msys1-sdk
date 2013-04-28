@@ -3,11 +3,13 @@
 
 #if APP_VERSION==''
     #define APP_VERSION  'Snapshot'
-    #define OUT_NAME     APP_NAME+'-'+APP_VERSION
+    #define APP_VER_NAME APP_NAME+' '+APP_VERSION
+    #define OUT_NAME     StringChange(APP_VER_NAME,' ','-')
     #define FILE_VERSION '0.0.0.0'
 #else
-    #define OUT_NAME     APP_NAME+'-'+APP_VERSION
+    #define APP_VER_NAME APP_NAME+' '+APP_VERSION
     #define APP_VERSION  Delete(APP_VERSION,1,1)
+    #define OUT_NAME     StringChange(APP_VER_NAME,' ','-')
     #if Pos('-g',APP_VERSION)>0
         #define FILE_VERSION ChangeFileExt(StringChange(APP_VERSION,'-','.'),'0')
     #else
@@ -32,6 +34,7 @@ VersionInfoVersion={#FILE_VERSION}
 AllowNoIcons=yes
 AppName={#APP_NAME}
 AppVersion={#APP_VERSION}
+AppVerName={#APP_VER_NAME}
 ChangesEnvironment=yes
 DefaultDirName={sd}\{#APP_NAME}
 DefaultGroupName={#APP_NAME}
