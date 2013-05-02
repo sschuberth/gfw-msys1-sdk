@@ -94,4 +94,4 @@ If you want to create a new package for use with mingw-get the following steps a
 * Create a new "Git for Windows" installer which also comes with mingw-get package management.
 * Upgrade Perl (to a version that includes [this patch](https://github.com/msysgit/msysgit/issues/61#issuecomment-10695361))
 * Upgrade SVN libraries (requires new Perl)
-* Contribute msysGit's patches to MSYS / MinGW back upstream.
+* Contribute [msysgit's patches to MSYS](https://github.com/msysgit/msysgit/tree/msys-upstream-git/src/rt/patches) back upstream.
