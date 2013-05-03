@@ -1,14 +1,14 @@
 @echo off
 
 rem The order of columns is fixed and cannot be changed by the order of arguments.
-wmic process get executablepath,processid | findstr /c:"mingwGitDevEnv" > process.log
+wmic process get executablepath,processid | findstr /c:"mingwGitDevEnv\bin\sh.exe" > process.log
 goto findstr_mingwGitDevEnv_%errorlevel%
 
 :findstr_mingwGitDevEnv_0
 
 rem Do not kill child processes automatically to avoid error messages about non-existing PIDs.
 for /f "tokens=2" %%p in (process.log) do (
-    taskkill /f /pid %%p
+    taskkill /pid %%p /t /f
 )
 
 goto findstr_sh
