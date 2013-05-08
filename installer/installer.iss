@@ -87,30 +87,24 @@ const
 
                         + 'mingw32-gcc '
                         + 'mingw32-gettext '
+                        + 'mingw32-git '
+                        + 'mingw32-libcurl '
                         + 'mingw32-libexpat '
                         + 'mingw32-libiconv '
+                        + 'mingw32-libopenssl '
                         + 'mingw32-libz '
                         + 'mingw32-mgwport '
-
-                        // Our own packages:
-                        + 'mingw32-libcurl '
-                        + 'mingw32-libopenssl '
                         + 'mingw32-tk '
                         + 'mingw32-unzip '
-
-                        // A minimal Git client for initial cloning:
-                        + 'mingw32-git '
                         ;
 
     RecommendedPackages = 'msys-gcc '
                         + 'msys-libcrypt '
                         + 'msys-libminires '
+                        + 'msys-libopenssl '
                         + 'msys-rsync '
                         + 'msys-vim '
                         + 'msys-zlib '
-
-                        // Our own packages:
-                        + 'msys-libopenssl '
 
                         + 'mingw32-gnupg '
                         ;
