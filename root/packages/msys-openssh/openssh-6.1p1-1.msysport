@@ -15,9 +15,9 @@ PKG_CONTENTS[1]="share/man share/doc
 PKG_CONTENTS[2]="share/doc/${PN}/${PV}/LICENCE"
 
 MGWCONF_ARGS="--without-rpath \
-           --sysconfdir=/etc/ssh \
-           --with-mantype=man \
-           --with-libs=-lminires"
+              --sysconfdir=/etc/ssh \
+              --with-mantype=man \
+              --with-libs=-lminires"
 
 CFLAGS="-O3 -fno-unit-at-a-time -s -mtune=i686"
 LDFLAGS="-Wl,--enable-auto-import"
@@ -28,44 +28,44 @@ PATCH_URI="01-openssh-6.1p1-msys.patch
            openssh-6.1p1-hpn13v14.msys.patch"
 
 create_textreadmode() {
-    if [ ! -f /usr/lib/textreadmode.o ]; then
-        cat > ${B}/textreadmode.c <<-"EOF"
-            /* textreadmode.c
+  if [ ! -f /usr/lib/textreadmode.o ]; then
+    cat > ${B}/textreadmode.c <<-"EOF"
+      /* textreadmode.c
 
-               Copyright 2004 Red Hat, Inc.
+         Copyright 2004 Red Hat, Inc.
 
-            This file is part of Cygwin.
+      This file is part of Cygwin.
 
-            This software is a copyrighted work licensed under the terms of the
-            Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
-            details. */
+      This software is a copyrighted work licensed under the terms of the
+      Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
+      details. */
 
-            #include <windows.h>
-            #include <sys/fcntl.h>
-            #include <sys/cygwin.h>
+      #include <windows.h>
+      #include <sys/fcntl.h>
+      #include <sys/cygwin.h>
 
-            extern int _fmode;
-            void
-            cygwin_premain0 (int argc, char **argv, struct per_process *myself)
-            {
-              static struct __cygwin_perfile pf[] =
-                {
-                  {"", O_RDONLY | O_TEXT},
-                  {NULL, 0}
-                };
-              cygwin_internal (CW_PERFILE, pf);
-            }
+      extern int _fmode;
+      void
+      cygwin_premain0 (int argc, char **argv, struct per_process *myself)
+      {
+        static struct __cygwin_perfile pf[] =
+          {
+            {"", O_RDONLY | O_TEXT},
+            {NULL, 0}
+          };
+        cygwin_internal (CW_PERFILE, pf);
+      }
 EOF
-        if ! gcc -D__CYGWIN__ -o /usr/lib/textreadmode.o -c ${B}/textreadmode.c; then
-            error "Unable to build textreadmode.o as required by conftest.exe"
-        fi
+    if ! gcc -D__CYGWIN__ -o /usr/lib/textreadmode.o -c ${B}/textreadmode.c; then
+      error "Unable to build textreadmode.o as required by conftest.exe"
     fi
+  fi
 }
 
 remove_textreadmode() {
-    if [ -f ${B}/textreadmode.c ]; then
-        rm -f /usr/lib/textreadmode.o
-    fi
+  if [ -f ${B}/textreadmode.c ]; then
+    rm -f /usr/lib/textreadmode.o
+  fi
 }
 
 #OpenSSH has been configured with the following options:
@@ -111,39 +111,39 @@ remove_textreadmode() {
 #user can connect to your agent.
 
 src_compile() {
-    create_textreadmode
+  create_textreadmode
 
-    # Create /var/run/ so "configure" will use this location for ${piddir}.
-    mkdir -p /var/run/
+  # Create /var/run/ so "configure" will use this location for ${piddir}.
+  mkdir -p /var/run/
 
-    cd ${S}
-    mgwautoreconf
+  cd ${S}
+  mgwautoreconf
 
-    cd ${B}
-    mgwconf
+  cd ${B}
+  mgwconf
 
-    mgwmake
+  mgwmake
 
-    remove_textreadmode
+  remove_textreadmode
 }
 
 src_test() {
-    cd ${B}
-    mgwmake tests
+  cd ${B}
+  mgwmake tests
 }
 
 src_install() {
-    cd ${B}
-    mgwinstall
+  cd ${B}
+  mgwinstall
 
-    # Remove sshd server related files.
-    rm -f ${D}${prefix}/share/info/dir
-    rm -f ${D}${prefix}/sbin/sshd.exe
-    rm -f ${D}${prefix}/lib/sftp-server.exe
-    rm -f ${D}/etc/ssh/sshd_config
-    rm -f ${D}${prefix}/share/man/man8/sftp-server.8
-    rm -f ${D}${prefix}/share/man/man8/sshd.8
-    rm -f ${D}${prefix}/share/man/man5/sshd_config.5
+  # Remove sshd server related files.
+  rm -f ${D}${prefix}/share/info/dir
+  rm -f ${D}${prefix}/sbin/sshd.exe
+  rm -f ${D}${prefix}/lib/sftp-server.exe
+  rm -f ${D}/etc/ssh/sshd_config
+  rm -f ${D}${prefix}/share/man/man8/sftp-server.8
+  rm -f ${D}${prefix}/share/man/man8/sshd.8
+  rm -f ${D}${prefix}/share/man/man5/sshd_config.5
 
-    mv -f ${D}/etc ${D}${prefix}/
+  mv -f ${D}/etc ${D}${prefix}/
 }

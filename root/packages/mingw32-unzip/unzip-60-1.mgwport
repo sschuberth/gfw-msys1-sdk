@@ -14,17 +14,17 @@ PKG_CONTENTS[1]="share/doc
 PKG_CONTENTS[2]="share/doc/${PN}/${PV}/LICENSE"
 
 src_compile() {
-    lndirs
-    cd ${B}
-    make -f win32/Makefile.gcc
+  lndirs
+  cd ${B}
+  make -f win32/Makefile.gcc
 }
 
 src_install() {
-    cd ${B} 
-    dobin unzip.exe
-    dobin funzip.exe
-    dobin unzipsfx.exe
+  cd ${B} 
+  dobin unzip.exe
+  dobin funzip.exe
+  dobin unzipsfx.exe
 
-    dodoc unzip.txt funzip.txt unzipsfx.txt
-    dodoc INSTALL README BUGS MANUAL ToDo WHERE History.600
+  dodoc unzip.txt funzip.txt unzipsfx.txt
+  dodoc INSTALL README BUGS MANUAL ToDo WHERE History.600
 }

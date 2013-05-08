@@ -45,18 +45,18 @@ PATCH_URI="01-mingw32-initial.mingw32.patch
            openssl-1.0.0e-enginesdir-install.all.patch"
 
 src_compile() {
-    lndirs
-    cd ${B}
-    ./config ${CONF_ARGS}
-    mgwmake
+  lndirs
+  cd ${B}
+  ./config ${CONF_ARGS}
+  mgwmake
 }
 
 src_test() {
-    cd ${B}
-    make tests
+  cd ${B}
+  make tests
 }
 
 src_install() {
-    cd ${B}
-    make install MANDIR=${prefix}/share/man INSTALL_PREFIX=${D} MANSUFFIX=ssl
+  cd ${B}
+  make install MANDIR=${prefix}/share/man INSTALL_PREFIX=${D} MANSUFFIX=ssl
 }

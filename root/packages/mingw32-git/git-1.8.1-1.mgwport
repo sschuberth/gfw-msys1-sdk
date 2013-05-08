@@ -7,23 +7,23 @@ SRC_DIR="${P}.msysgit.${PR}"
 PATCH_URI="git-do-not-install-built-ins.mingw32.patch"
 
 src_compile() {
-    # Mirror the source into the build directory.
-    lndirs
+  # Mirror the source into the build directory.
+  lndirs
 
-    cd ${B}
+  cd ${B}
 
-    # Tell Git's Makefile to use MSYSGIT settings.
-    touch ../THIS_IS_MSYSGIT
+  # Tell Git's Makefile to use MSYSGIT settings.
+  touch ../THIS_IS_MSYSGIT
 
-    mgwmake prefix=${D}/mingw
+  mgwmake prefix=${D}/mingw
 }
 
 src_test() {
-    cd ${B}/t
-    prove -v t[0-9]*.sh
+  cd ${B}/t
+  prove -v t[0-9]*.sh
 }
 
 src_install() {
-    cd ${B}
-    mgwinstall
+  cd ${B}
+  mgwinstall
 }

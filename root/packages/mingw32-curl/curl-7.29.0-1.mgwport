@@ -15,24 +15,24 @@ PKG_CONTENTS[3]="include lib/*.a"
 PKG_CONTENTS[4]="bin/*.dll"
 
 src_compile() {
-    lndirs
-    cd ${B}
-    export CFG="-ipv6 -zlib -sspi -winssl -spnego -ldaps"
-    make mingw32
+  lndirs
+  cd ${B}
+  export CFG="-ipv6 -zlib -sspi -winssl -spnego -ldaps"
+  make mingw32
 }
 
 src_install() {
-    cd ${B}
+  cd ${B}
 
-    # Fix the file naming.
-    mv lib/libcurldll.a lib/libcurl.dll.a
+  # Fix the file naming.
+  mv lib/libcurldll.a lib/libcurl.dll.a
 
-    dolib lib/libcurl*.a
-    dobin lib/libcurl*dll
-    dobin src/curl.exe
+  dolib lib/libcurl*.a
+  dobin lib/libcurl*dll
+  dobin src/curl.exe
 
-    insinto /mingw/include/curl
-    doins include/curl/*.h
+  insinto /mingw/include/curl
+  doins include/curl/*.h
 
-    dodoc docs/{FAQ,MANUAL,THANKS,TODO,curl.pdf,curl-config.pdf}
+  dodoc docs/{FAQ,MANUAL,THANKS,TODO,curl.pdf,curl-config.pdf}
 }

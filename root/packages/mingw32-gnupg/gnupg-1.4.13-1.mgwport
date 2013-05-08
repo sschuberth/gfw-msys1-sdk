@@ -13,14 +13,14 @@ PKG_CONTENTS[1]="share/doc share/man share/info
 PKG_CONTENTS[2]="share/doc/${PN}/${PV}/COPYING"
 
 src_compile() {
-    cd ${B}
-    mgwconf
-    mgwmake
+  cd ${B}
+  mgwconf
+  mgwmake
 }
 
 src_install() {
-    cd ${B}
-    mgwinstall
-    rm -rf ${D}/mingw/share/gnupg
-    mv -v ${D}/mingw/lib/gnupg/* ${D}/mingw/bin
+  cd ${B}
+  mgwinstall
+  rm -rf ${D}/mingw/share/gnupg
+  mv -v ${D}/mingw/lib/gnupg/* ${D}/mingw/bin
 }

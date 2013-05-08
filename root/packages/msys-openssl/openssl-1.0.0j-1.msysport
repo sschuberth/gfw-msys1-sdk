@@ -41,18 +41,18 @@ PATCH_URI="01-msys-initial.msys.patch
            openssl-1.0.0j-enginesdir-install.msys.patch"
 
 src_compile() {
-    lndirs
-    cd ${B}
-    ./config ${CONF_ARGS}
-    mgwmake
+  lndirs
+  cd ${B}
+  ./config ${CONF_ARGS}
+  mgwmake
 }
 
 src_test() {
-    cd ${B}
-    mgwmake tests
+  cd ${B}
+  mgwmake tests
 }
 
 src_install() {
-    cd ${B}
-    mgwmake install MANDIR=${prefix}/share/man INSTALL_PREFIX=${D} MANSUFFIX=ssl
+  cd ${B}
+  mgwmake install MANDIR=${prefix}/share/man INSTALL_PREFIX=${D} MANSUFFIX=ssl
 }
