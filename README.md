@@ -10,6 +10,8 @@ The installer strives to supersede the existing [msysgit net installer](http://c
 
 * **Package management:** All required packages are installed via MinGW's new [mingw-get](http://sourceforge.net/projects/mingw/files/Installer/mingw-get/) tool. This means that the installed packages can be updated independently of updates to the mingwGitDevEnv installer, and in turn that there is no need to create a new mingwGitDevEnv installer just because of updates to packages. You have full access to all upstream MSYS / MinGW packages in addition to custom mingwGitDevEnv packages.
 
+* **Custom packages:** As a result of the previous point, mingwGitDevEnv provides several updated and custom packages to improve the Git experience on Windows, for example OpenSSH with [HPN patches](http://www.psc.edu/index.php/hpn-ssh) which greatly improves network performance especially in distributed corporate environments.
+
 * **More consistent naming:** As with [msysgit](http://code.google.com/p/msysgit/), the shipped Git executable is a native Windows application that has been compiled using MinGW. It is not an MSYS application using a Unix emulation layer. Only the shell environment and some tools Git depends on are provided by MSYS. As such, the project is called mingwGitDevEnv (instead of msysGitDevEnv). Moreover, this distinguishes the project from the upcoming "msys git" project, which will be a Git distribution by the MinGW folks that is actually compiled against MSYS.
 
 # Download
@@ -55,8 +57,9 @@ If you want to create a new package for use with mingw-get the following steps a
 ## TODOs (roughly in order of priority)
 
 * Make all Git tests pass, see the [test results](https://qa.nest-initiative.org/view/msysGit/job/msysgit-mingwGitDevEnv-test/lastCompletedBuild/tapResults/) for the latest [snapshot build](https://qa.nest-initiative.org/view/msysGit/job/msysgit-mingwGitDevEnv/lastSuccessfulBuild/).
-* Capture the console output of mingw-get and show the progress in the mingwGitDevEnv GUI.
 * Create a new "Git for Windows" installer which also comes with mingw-get package management.
+* Create a 64-bit version of "Git for Windows".
 * Upgrade Perl (to a version that includes [this patch](https://github.com/msysgit/msysgit/issues/61#issuecomment-10695361))
 * Upgrade SVN libraries (requires new Perl)
 * Contribute [msysgit's patches to MSYS](https://github.com/msysgit/msysgit/tree/msys-upstream-git/src/rt/patches) back upstream.
+* Capture the console output of mingw-get and show the progress in the mingwGitDevEnv GUI.
