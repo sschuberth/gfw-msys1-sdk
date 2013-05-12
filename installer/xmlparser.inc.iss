@@ -54,40 +54,47 @@ end;
 // e.g. "MinGW Developer Toolkit\mingw-developer-toolkit@virtual".
 procedure ParseForPackages(Lines:TArrayOfString;var List:TStringList);
 var
-    i,p,l:Integer;
-    Line,Name:String;
+    WithinPackageTag:Boolean;
+    i,p:Integer;
+    Line,Name,LocalGroup,GlobalGroup:String;
 begin
+    WithinPackageTag:=False;
+
     for i:=0 to GetArrayLength(Lines)-1 do begin
         Line:=Lines[i];
 
         // Look for a package name.
         p:=Pos('<package name',Line);
         if p>0 then begin
+            WithinPackageTag:=True;
             Name:=GetFirstQuotedString(Line);
-
-            // Append the name to the list.
-            if Length(Name)>0 then begin
-                List.Append(Name);
-            end;
 
             // Append the class (e.g. "virtual"), if any, to the name.
             p:=Pos('class',Line);
             if p>0 then begin
                 Delete(Line,1,p);
-                Name:=GetFirstQuotedString(Line);
-                l:=List.Count-1;
-                List.Strings[l]:=List.Strings[l]+'@'+Name;
+                Name:=Name+'@'+GetFirstQuotedString(Line);
             end;
+        end else if Pos('</package>',Line)>0 then begin
+            WithinPackageTag:=False;
+
+            if Length(LocalGroup)>0 then begin
+                Name:=LocalGroup+'\'+Name;
+            end else if Length(GlobalGroup)>0 then begin
+                Name:=GlobalGroup+'\'+Name;
+            end;
+            List.Append(Name);
+
+            LocalGroup:='';
         end else begin
-            // Look for a group name.
+            // Look for a group name. Usually the group is a child of the package, but for some
+            // meta packages the group is defined before the package.
             p:=Pos('<affiliate group',Line);
             if p>0 then begin
-                Name:=GetFirstQuotedString(Line);
-
-                // Append the group name to the current name.
-                if Length(Name)>0 then begin
-                    l:=List.Count-1;
-                    List.Strings[l]:=Name+'\'+List.Strings[l];
+                if WithinPackageTag then begin
+                    LocalGroup:=GetFirstQuotedString(Line);
+                end else begin
+                    GlobalGroup:=GetFirstQuotedString(Line);
                 end;
             end;
         end;
