@@ -104,7 +104,7 @@ var
     FindRec:TFindRec;
     Lines:TArrayOfString;
     g,p,l:Integer;
-    Group,Parent:String;
+    Group,Parent,Name,Members:String;
 begin
     Groups:=TStringList.Create;
     Packages:=TStringList.Create;
@@ -137,7 +137,8 @@ begin
 
     SetArrayLength(Entries,0);
     for g:=0 to Groups.Count-1 do begin
-        Log('Assigning to group: '+Groups[g]);
+        Members:='    ';
+        Log('Assigning the following packages to group "'+Groups[g]+'":');
 
         // For each group hierarchy, try if its name is a prefix of the package and affiliate group.
         Group:=Lowercase(ExtractFileName(Groups[g]));
@@ -146,12 +147,19 @@ begin
             if (Group=Parent) or ((Length(Parent)=0) and (Pos(Group,Lowercase(Packages[p]))>0)) then begin
                 l:=GetArrayLength(Entries);
                 SetArrayLength(Entries,l+1);
-                Entries[l]:=Groups.Strings[g]+'\'+ExtractFileName(Packages.Strings[p]);
+                Name:=ExtractFileName(Packages.Strings[p]);
+                Entries[l]:=Groups.Strings[g]+'\'+Name;
+                Members:=Members+Name+', ';
             end;
         end;
+
+        // Remove the trailing whitespace and comma.
+        Delete(Members,Length(Members)-1,2);
+
+        Log(Members);
     end;
 
-    Log('Created '+IntToStr(l+1)+' package entries.');
+    Log('Created a total of '+IntToStr(l+1)+' package entries.');
 
     Result:=Packages.Count;
 
