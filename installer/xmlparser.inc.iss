@@ -64,8 +64,7 @@ begin
         Line:=Lines[i];
 
         // Look for a package name.
-        p:=Pos('<package name',Line);
-        if p>0 then begin
+        if Pos('<package name',Line)>0 then begin
             WithinPackageTag:=True;
             Name:=GetFirstQuotedString(Line);
 
@@ -86,16 +85,13 @@ begin
             List.Append(Name);
 
             LocalGroup:='';
-        end else begin
+        end else if Pos('<affiliate group',Line)>0 then begin
             // Look for a group name. Usually the group is a child of the package, but for some
             // meta packages the group is defined before the package.
-            p:=Pos('<affiliate group',Line);
-            if p>0 then begin
-                if WithinPackageTag then begin
-                    LocalGroup:=GetFirstQuotedString(Line);
-                end else begin
-                    GlobalGroup:=GetFirstQuotedString(Line);
-                end;
+            if WithinPackageTag then begin
+                LocalGroup:=GetFirstQuotedString(Line);
+            end else begin
+                GlobalGroup:=GetFirstQuotedString(Line);
             end;
         end;
     end;
