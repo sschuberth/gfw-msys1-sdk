@@ -10,6 +10,7 @@
   <package-list catalogue="mingw32-tcl" />
   <package-list catalogue="mingw32-tk" />
   <package-list catalogue="mingw32-unzip" />
+  <package-list catalogue="msys-grep" />
   <package-list catalogue="msys-openssh" />
   <package-list catalogue="msys-openssl" />
   <package-list catalogue="msys-pcre" />

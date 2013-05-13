@@ -102,6 +102,7 @@ const
                         + 'msys-libcrypt '
                         + 'msys-libminires '
                         + 'msys-libopenssl '
+                        + 'msys-pcre '
                         + 'msys-rsync '
                         + 'msys-vim '
                         + 'msys-zlib '
