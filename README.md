@@ -56,7 +56,7 @@ If you want to create a new package for use with mingw-get the following steps a
 
 ## TODOs (roughly in order of priority)
 
-* Make all Git tests pass, see the [test results](https://qa.nest-initiative.org/view/msysGit/job/msysgit-mingwGitDevEnv-test/lastCompletedBuild/) for the latest [snapshot build](https://qa.nest-initiative.org/view/msysGit/job/msysgit-mingwGitDevEnv/lastSuccessfulBuild/).
+* Make all Git tests pass, see the [test results](https://qa.nest-initiative.org/view/msysGit/job/msysgit-mingwGitDevEnv-test/lastSuccessfulBuild/) for the latest [snapshot build](https://qa.nest-initiative.org/view/msysGit/job/msysgit-mingwGitDevEnv/lastSuccessfulBuild/).
 * Create a new "Git for Windows" installer which also comes with mingw-get package management.
 * Create a 64-bit version of "Git for Windows".
 * Upgrade Perl (to a version that includes [this patch](https://github.com/msysgit/msysgit/issues/61#issuecomment-10695361))
