@@ -10,9 +10,9 @@ The installer strives to supersede the existing [msysgit net installer](http://c
 
 * **Package management:** All required packages are installed via MinGW's new [mingw-get](http://sourceforge.net/projects/mingw/files/Installer/mingw-get/) tool. This means that the installed packages can be updated independently of updates to the mingwGitDevEnv installer, and in turn that there is no need to create a new mingwGitDevEnv installer just because of updates to packages. You have full access to all upstream MSYS / MinGW packages in addition to custom mingwGitDevEnv packages.
 
-* **Custom packages:** As a result of the previous point, mingwGitDevEnv provides several updated and custom packages to improve the Git experience on Windows, for example OpenSSH with [HPN patches](http://www.psc.edu/index.php/hpn-ssh) which greatly improves network performance especially in distributed corporate environments.
+* **Custom packages:** mingwGitDevEnv provides several updated and custom packages to improve the Git experience on Windows, for example OpenSSH with [HPN patches](http://www.psc.edu/index.php/hpn-ssh) which greatly improves network performance especially in distributed corporate environments.
 
-* **More consistent naming:** As with [msysgit](http://code.google.com/p/msysgit/), the shipped Git executable is a native Windows application that has been compiled using MinGW. It is not an MSYS application using a Unix emulation layer. Only the shell environment and some tools Git depends on are provided by MSYS. As such, the project is called mingwGitDevEnv (instead of msysGitDevEnv). Moreover, this distinguishes the project from the upcoming "msys git" project, which will be a Git distribution by the MinGW folks that is actually compiled against MSYS.
+* **More consistent naming:** The included Git executable is a native Windows application that has been compiled using MinGW, it is not an MSYS application using a Unix emulation layer. Only the shell environment and some tools Git depends on are provided by MSYS. This is also the case for the [msysgit](http://code.google.com/p/msysgit/) project, but as it contains "msys" in its name this has always been a source of confusion. Consequently, this project is called *mingw*GitDevEnv.
 
 # Download
 
