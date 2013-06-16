@@ -15,6 +15,9 @@ src_compile() {
   # Tell Git's Makefile to use MSYSGIT settings.
   touch ../THIS_IS_MSYSGIT
 
+  # Be explicit about the version as we cannot rely on git-describe nor the default.
+  echo "${PV}.msysgit.${PR}" > version
+
   mgwmake prefix=${D}/mingw
 }
 
