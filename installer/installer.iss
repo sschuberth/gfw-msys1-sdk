@@ -88,6 +88,7 @@ const
                         + 'msys-rebase '
 
                         + 'mingw32-gcc '
+                        + 'mingw32-gcc-g++ '
                         + 'mingw32-gettext '
                         + 'mingw32-git '
                         + 'mingw32-libcurl '
