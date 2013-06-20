@@ -12,6 +12,8 @@ The installer strives to supersede the existing [msysgit net installer](http://c
 
 * **Custom packages:** mingwGitDevEnv provides several updated and custom packages to improve the Git experience on Windows, for example OpenSSH with [HPN patches](http://www.psc.edu/index.php/hpn-ssh) which greatly improves network performance especially in distributed corporate environments.
 
+* **Execution of batch files:** You can execute _*.bat_ / _*.cmd_ files right away without manually prefixing them with _cmd.exe_.
+
 * **More consistent naming:** The included Git executable is a native Windows application that has been compiled using MinGW, it is not an MSYS application using a Unix emulation layer. Only the shell environment and some tools Git depends on are provided by MSYS. This is also the case for the [msysgit](http://code.google.com/p/msysgit/) project, but as it contains "msys" in its name this has always been a source of confusion. Consequently, this project is called _mingwGitDevEnv_.
 
 # Download
