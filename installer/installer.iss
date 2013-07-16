@@ -17,8 +17,11 @@
     #endif
 #endif
 
-#define PACKAGES_REPO_URL 'https://github.com/sschuberth/mingwGitDevEnv-packages.git'
-#define GIT_REPO_URL      'https://github.com/msysgit/git.git'
+#define PACKAGES_REPO_URL    'https://github.com/sschuberth/mingwGitDevEnv-packages.git'
+#define PACKAGES_REPO_CONFIG '-c diff.lzma.textconv=""lzma -d -c"" -c diff.lzma.cachetextconv=true -c filter.lzma.smudge=""lzma -d"" -c filter.lzma.clean=""lzma -z""'
+
+#define GIT_REPO_URL    'https://github.com/msysgit/git.git'
+#define GIT_REPO_CONFIG '-c core.autocrlf=false'
 
 [Setup]
 
@@ -64,8 +67,8 @@ Name: "{group}\Git Development Environment (MSYS Mode)"; Filename: "{app}\msys.b
 
 Filename: "{app}\rebaseall.cmd"; Description: "Rebase DLLs"; Flags: postinstall
 Filename: "{app}\bin\sh.exe"; Description: "Update Perl modules"; Parameters: "--login -c update-perl-modules.sh"; WorkingDir: "{app}"; Flags: postinstall
-Filename: "{app}\mingw\bin\git.exe"; Description: "Clone the packages repository"; Parameters: "clone {#PACKAGES_REPO_URL} packages"; WorkingDir: "{app}"; Flags: postinstall
-Filename: "{app}\mingw\bin\git.exe"; Description: "Clone the Git repository"; Parameters: "clone -c core.autocrlf=false {#GIT_REPO_URL}"; WorkingDir: "{app}"; Flags: postinstall
+Filename: "{app}\mingw\bin\git.exe"; Description: "Clone the packages repository"; Parameters: "clone {#PACKAGES_REPO_CONFIG} {#PACKAGES_REPO_URL} packages"; WorkingDir: "{app}"; Flags: postinstall
+Filename: "{app}\mingw\bin\git.exe"; Description: "Clone the Git repository"; Parameters: "clone {#GIT_REPO_CONFIG} {#GIT_REPO_URL}"; WorkingDir: "{app}"; Flags: postinstall
 Filename: "{app}\msys.bat"; Description: "Start the development environment"; Flags: postinstall skipifsilent
 
 [UninstallDelete]
