@@ -18,7 +18,7 @@
 #endif
 
 #define PACKAGES_REPO_URL    'https://github.com/sschuberth/mingwGitDevEnv-packages.git'
-#define PACKAGES_REPO_CONFIG '-c diff.lzma.textconv=""lzma -d -c"" -c diff.lzma.cachetextconv=true -c filter.lzma.smudge=""lzma -d"" -c filter.lzma.clean=""lzma -z""'
+#define PACKAGES_REPO_CONFIG '-c diff.lzma.textconv=""lzma -d -c -qq | cat"" -c diff.lzma.cachetextconv=true -c filter.lzma.smudge=""lzma -d"" -c filter.lzma.clean=""lzma -z""'
 
 #define GIT_REPO_URL    'https://github.com/msysgit/git.git'
 #define GIT_REPO_CONFIG '-c core.autocrlf=false'
