@@ -18,7 +18,7 @@ The installer strives to supersede the existing [msysgit net installer](http://c
 
 # Download
 
-Choose between the latest [stable release](https://dl.bintray.com/content/sschuberth/mingwGitDevEnv/mingwGitDevEnv-v0.2.exe?direct) or the latest [snapshot release](https://qa.nest-initiative.org/view/msysGit/job/msysgit-mingwGitDevEnv/lastSuccessfulBuild/artifact/download.html).
+Choose between the latest [stable release](https://github.com/sschuberth/mingwGitDevEnv/releases/download/v0.2/mingwGitDevEnv-v0.2.exe) or the latest [snapshot release](https://qa.nest-initiative.org/view/msysGit/job/msysgit-mingwGitDevEnv/lastSuccessfulBuild/artifact/download.html).
 
 # Getting involved
 
