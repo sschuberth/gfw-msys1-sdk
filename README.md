@@ -40,7 +40,7 @@ If everything went fine you should now have a file matching _mingwGitDevEnv-*.ex
 
 ## Creating mingw-get packages
 
-Please see the separate [mingwGitDevEnv-packages repository](https://github.com/sschuberth/mingwGitDevEnv-packages) for details.
+Please see the separate [mingwGitDevEnv-packages](https://github.com/sschuberth/mingwGitDevEnv-packages) repository for details.
 
 ## TODOs (roughly in order of priority)
 
