@@ -45,9 +45,9 @@ Please see the separate [mingwGitDevEnv-packages](https://github.com/sschuberth/
 ## TODOs (roughly in order of priority)
 
 * Make all Git tests pass, see the [test results](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-test/lastSuccessfulBuild/) for the latest [snapshot build](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-installer/lastSuccessfulBuild/).
-* Create a new "Git for Windows" installer which also comes with mingw-get package management.
-* Create a 64-bit version of "Git for Windows".
 * Upgrade Perl (to a version that includes [this patch](https://github.com/msysgit/msysgit/issues/61#issuecomment-10695361))
 * Upgrade SVN libraries (requires new Perl)
-* Contribute [msysgit's patches to MSYS](https://github.com/msysgit/msysgit/tree/msys-upstream-git/src/rt/patches) back upstream.
+* Create a new "Git for Windows" installer which also comes with mingw-get package management.
+* Create a 64-bit version of "Git for Windows".
+* Contribute [patches to MSYS](https://github.com/sschuberth/mingwGitDevEnv-packages/tree/master/msys-core) back upstream.
 * Capture the console output of mingw-get and show the progress in the mingwGitDevEnv GUI.
