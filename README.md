@@ -48,6 +48,7 @@ Please see the separate [mingwGitDevEnv-packages](https://github.com/sschuberth/
 * Upgrade Perl (to a version that includes [this patch](https://github.com/msysgit/msysgit/issues/61#issuecomment-10695361))
 * Upgrade SVN libraries (requires new Perl)
 * Create a new "Git for Windows" installer which also comes with mingw-get package management.
+* Integrate [Karsten Blees' Unicode patches](https://github.com/kblees/msysgit).
 * Create a 64-bit version of "Git for Windows".
 * Contribute [patches to MSYS](https://github.com/sschuberth/mingwGitDevEnv-packages/tree/master/msys-core) back upstream.
 * Capture the console output of mingw-get and show the progress in the mingwGitDevEnv GUI.
