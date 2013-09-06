@@ -42,7 +42,7 @@ url=http://sourceforge.net/api/file/index/project-id/2435/mtime/desc/limit/$limi
 # Parse the RSS feed for the most recent download link and construct a line with the file name and URL separated by a
 # tab character so we can easily separate it via "cut" later.
 link=$($download $download_args_rss $url |
-     sed $sed_args "s/<link>(.+(mingw-get-[0-9]+\.[0-9]+-mingw32-.+-bin$ext).+)<\/link>/\2	\1/p" |
+     sed $sed_args "s/<link>(.+(mingw-get-[0-9]+\.[0-9]+(\.[0-9]+)*-mingw32-.+-bin$ext).+)<\/link>/\2	\1/p" |
      head -1)
 
 file=$(echo "$link" | cut -f 1)
