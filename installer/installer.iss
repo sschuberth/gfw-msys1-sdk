@@ -48,11 +48,11 @@ PrivilegesRequired=none
 Uninstallable=not IsPortableMode
 
 ; Cosmetic
-SetupIconFile=resources\git.ico
+SetupIconFile=root\mingw\etc\git.ico
 WizardImageBackColor=clWhite
 WizardImageStretch=no
-WizardImageFile=resources\git-large.bmp
-WizardSmallImageFile=resources\git-small.bmp
+WizardImageFile=root\mingw\etc\git-large.bmp
+WizardSmallImageFile=root\mingw\etc\git-small.bmp
 
 [Files]
 
