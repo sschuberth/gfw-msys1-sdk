@@ -15,7 +15,9 @@ patch -p 0 -N << "EOF"
        local $^W;
 EOF
 
-# Force an update of Prove to a version that has "--jobs".
+# In order to ignore some failing tests we have to use "force" because our version of CPAN does not yet support "notest".
+
+# Update Prove to a version that has "--jobs".
 PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install App::Prove));"
 
 # Enable "--archive" support for Prove.
