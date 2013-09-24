@@ -66,7 +66,7 @@ Name: "{group}\Git Development Environment (MSYS Mode)"; Filename: "{app}\msys.b
 [Run]
 
 Filename: "{app}\rebaseall.cmd"; Description: "Rebase DLLs"; Flags: postinstall
-Filename: "{app}\bin\sh.exe"; Description: "Update Perl modules"; Parameters: "--login -c update-perl-modules.sh"; WorkingDir: "{app}"; Flags: postinstall
+Filename: "{app}\update-perl-modules.cmd"; Description: "Update Perl modules"; Flags: postinstall
 Filename: "{app}\bin\sh.exe"; Description: "Clone the packages repository"; Parameters: "--login -c 'git clone {#PACKAGES_REPO_CONFIG} {#PACKAGES_REPO_URL} packages'"; WorkingDir: "{app}"; Flags: postinstall
 Filename: "{app}\mingw\bin\git.exe"; Description: "Clone the Git repository"; Parameters: "clone {#GIT_REPO_CONFIG} {#GIT_REPO_URL}"; WorkingDir: "{app}"; Flags: postinstall
 Filename: "{app}\msys.bat"; Description: "Start the development environment"; Flags: postinstall skipifsilent
