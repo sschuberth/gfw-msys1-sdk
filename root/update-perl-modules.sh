@@ -18,4 +18,4 @@ EOF
 # In order to ignore some failing tests we have to use "force" because our version of CPAN does not yet support "notest".
 
 # Update Prove to a version that has "--jobs" and enable "--archive" support.
-PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install App::Prove TAP::Harness::Archive));" | tee $(basename $0 .sh).log
+PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install App::Prove TAP::Harness::Archive));"
