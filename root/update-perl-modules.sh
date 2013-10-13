@@ -19,3 +19,6 @@ EOF
 
 # Update Prove to a version that has "--jobs" and enable "--archive" support.
 PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install App::Prove TAP::Harness::Archive));"
+
+# Install a developer release of Win32::API that supports MSYS.
+PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install BULKDD/Win32/Win32-API-0.76_04.tar.gz));"
