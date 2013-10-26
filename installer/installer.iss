@@ -86,6 +86,7 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 
 const
     RequiredPackages    = 'msys-base '
+                        + 'msys-coreutils '
                         + 'msys-perl '
                         + 'msys-openssh '
                         + 'msys-rebase '
