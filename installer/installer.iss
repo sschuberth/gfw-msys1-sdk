@@ -113,6 +113,7 @@ const
                         + 'msys-rsync '
                         + 'msys-vim '
                         + 'msys-zlib '
+                        + 'msys-coreutils-ext'
 
                         + 'mingw32-gnupg '
                         ;
