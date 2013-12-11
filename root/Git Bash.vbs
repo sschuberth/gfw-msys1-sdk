@@ -10,8 +10,10 @@ Set link = shell.CreateShortcut(linkfile)
 link.TargetPath = fso.BuildPath(gitdir, "bin\sh.exe")
 link.Arguments = "--login -i"
 link.IconLocation = fso.BuildPath(gitdir, "mingw\etc\git.ico")
-If WScript.Arguments.Length > 0 Then link.WorkingDirectory = WScript.Arguments(0)
 link.Save
+
+Set env = shell.Environment("Process")
+If WScript.Arguments.Length > 0 Then env("START_DIR") = WScript.Arguments(0)
 
 Set app = CreateObject("Shell.Application")
 app.ShellExecute linkfile

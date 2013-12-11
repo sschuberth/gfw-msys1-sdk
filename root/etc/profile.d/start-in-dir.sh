@@ -5,5 +5,5 @@
 # call at the end of /etc/profile. With this trick we can start in the root instead of $HOME.
 function cd() {
     unset -f cd
-    cd /
+    [ -n "$START_DIR" ] && cd "$START_DIR" || cd /
 }
