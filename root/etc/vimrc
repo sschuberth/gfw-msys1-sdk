@@ -1,5 +1,6 @@
 " Setting some decent VIM settings for programming
 
+source /share/vim/vimrc         " source vimrc from msys-vim package
 set ai                          " set auto-indenting on for programming
 set showmatch                   " automatically show matching brackets. works like it does in bbedit.
 set vb                          " turn on the "visual bell" - which is much quieter than the "audio blink"
