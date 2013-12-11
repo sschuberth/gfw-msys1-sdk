@@ -15,5 +15,8 @@ link.Save
 Set env = shell.Environment("Process")
 If WScript.Arguments.Length > 0 Then env("START_DIR") = WScript.Arguments(0)
 
+' Set the MSYSTEM environment variable (valid values are "MINGW" or "MSYS").
+If WScript.Arguments.Length > 1 Then env("MSYSTEM") = WScript.Arguments(1)
+
 Set app = CreateObject("Shell.Application")
 app.ShellExecute linkfile
