@@ -87,8 +87,8 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 const
     RequiredPackages    = 'msys-base '
                         + 'msys-coreutils '
-                        + 'msys-perl '
                         + 'msys-openssh '
+                        + 'msys-perl '
                         + 'msys-rebase '
 
                         + 'mingw32-gcc '
@@ -105,7 +105,8 @@ const
                         + 'mingw32-unzip '
                         ;
 
-    RecommendedPackages = 'msys-gcc '
+    RecommendedPackages = 'msys-coreutils-ext '
+                        + 'msys-gcc '
                         + 'msys-libcrypt '
                         + 'msys-libminires '
                         + 'msys-libopenssl '
@@ -113,7 +114,6 @@ const
                         + 'msys-rsync '
                         + 'msys-vim '
                         + 'msys-zlib '
-                        + 'msys-coreutils-ext '
 
                         + 'mingw32-gnupg '
                         ;
