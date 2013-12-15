@@ -67,8 +67,11 @@ Name: "{group}\Git Development Environment (MSYS Mode)"; Filename: "wscript"; Pa
 
 Filename: "{app}\rebaseall.cmd"; Description: "Rebase DLLs"; Flags: postinstall
 Filename: "{app}\update-perl-modules.cmd"; Description: "Update Perl modules"; Flags: postinstall
+
+; For the packages repository we have configured smudge / clean and diff filters that depend on lzma (and sh) to be in PATH, so make sure the environment is set up correctly. 
 Filename: "{app}\bin\sh.exe"; Description: "Clone the packages repository"; Parameters: "--login -c 'git clone {#PACKAGES_REPO_CONFIG} {#PACKAGES_REPO_URL} packages'"; WorkingDir: "{app}"; Flags: postinstall skipifsilent
 Filename: "{app}\mingw\bin\git.exe"; Description: "Clone the Git repository"; Parameters: "clone {#GIT_REPO_CONFIG} {#GIT_REPO_URL}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent
+
 Filename: "wscript"; Parameters: """{app}\Git Bash.vbs"""; Description: "Start the development environment"; Flags: postinstall skipifsilent
 
 [UninstallDelete]
