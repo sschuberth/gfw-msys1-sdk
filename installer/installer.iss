@@ -291,3 +291,63 @@ begin
         end;
     end;
 end;
+
+const
+    Confirmation='You will loose those when uninstalling. Are you sure that you want to continue?';
+
+function InitializeUninstall:Boolean;
+var
+    RepoNames:array of String;
+    AppDir,CmdDir,TmpFile,RepoName,RepoDir:String;
+    i,ResultCode,Size:Integer;
+    UnpushedCommits:Boolean;
+begin
+    Result:=False;
+
+    SetArrayLength(RepoNames,2);
+    RepoNames[0]:='git';
+    RepoNames[1]:='packages';
+
+    AppDir:=ExpandConstant('{app}');
+    CmdDir:=ExpandConstant('{cmd}')
+    TmpFile:=ExpandConstant('{tmp}')+'\unpushed.log';
+
+    for i:=0 to Length(RepoNames)-1 do begin
+        RepoName:=RepoNames[i];
+        RepoDir:=AppDir+'\'+RepoName;
+
+        if FileExists(RepoDir+'\.git\refs\stash') then begin
+            if MsgBox('You have stashed changes in the "'+RepoName+'" repository. '+Confirmation,mbConfirmation,MB_YESNO)=IDNO then begin
+                Exit;
+            end
+        end;
+
+        if Exec(AppDir+'\mingw\bin\git.exe','diff --quiet',RepoDir,SW_HIDE,ewWaitUntilTerminated,ResultCode) then begin
+            if ResultCode<>0 then begin
+                if MsgBox('You have unstaged changes in the "'+RepoName+'" repository. '+Confirmation,mbConfirmation,MB_YESNO)=IDNO then begin
+                    Exit;
+                end
+            end;
+        end;
+
+        if Exec(AppDir+'\mingw\bin\git.exe','diff --quiet --cached',RepoDir,SW_HIDE,ewWaitUntilTerminated,ResultCode) then begin
+            if ResultCode<>0 then begin
+                if MsgBox('You have uncommitted changes in the "'+RepoName+'" repository. '+Confirmation,mbConfirmation,MB_YESNO)=IDNO then begin
+                    Exit;
+                end
+            end;
+        end;
+
+        if Exec(CmdDir,'/c '+AppDir+'\mingw\bin\git.exe log --branches --not --remotes > '+TmpFile,RepoDir,SW_HIDE,ewWaitUntilTerminated,ResultCode) then begin
+            if ResultCode=0 then begin
+                UnpushedCommits:=FileSize(TmpFile,Size) and (Size>0);
+                DeleteFile(TmpFile);
+                if UnpushedCommits and (MsgBox('You have unpushed commits in the "'+RepoName+'" repository. '+Confirmation,mbConfirmation,MB_YESNO)=IDNO) then begin
+                    Exit;
+                end
+            end;
+        end;
+    end;
+
+    Result:=true;
+end;
