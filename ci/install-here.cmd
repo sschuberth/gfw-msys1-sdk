@@ -2,12 +2,12 @@
 
 setlocal
 
-for /f "delims=" %%f in ('dir /b /o:d *.exe 2^> nul') do set newest=%%~nf
+for /f "delims=" %%f in ('dir /b /o:d mingwGitDevEnv-*.exe 2^> nul') do set installer=%%~nf
 
-if "%newest%" == "" (
+if "%installer%" == "" (
     echo ERROR: No installer found, please build it first.
     exit /b 1
 )
 
-echo Installing %newest% ...
-%newest%.exe /log="%newest%.log" /verysilent /dir="mingwGitDevEnv" /noicons /portable=1
+echo Installing %installer% ...
+%installer%.exe /log="%installer%.log" /verysilent /dir="mingwGitDevEnv" /noicons /portable=1
