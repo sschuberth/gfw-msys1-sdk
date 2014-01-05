@@ -309,7 +309,7 @@ begin
     RepoNames[1]:='packages';
 
     AppDir:=ExpandConstant('{app}');
-    CmdDir:=ExpandConstant('{cmd}')
+    CmdDir:=ExpandConstant('{cmd}');
     TmpFile:=ExpandConstant('{tmp}')+'\unpushed.log';
 
     for i:=0 to Length(RepoNames)-1 do begin
