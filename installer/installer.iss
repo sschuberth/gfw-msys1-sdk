@@ -239,9 +239,14 @@ begin
     end;
 end;
 
+function GetMinGWGetLog:String;
+begin
+    Result:=ExpandConstant('{param:log-mingw-get}');
+end;
+
 function NextButtonClick(CurPageID:Integer):Boolean;
 var
-    Packages,HomePath:String;
+    Packages,MinGWGet,MinGWGetLog,PowerShell,HomePath:String;
     Home:TArrayOfString;
     ResultCode:Integer;
 begin
@@ -256,7 +261,23 @@ begin
             Log('Installing the following packages: '+Packages);
 
             // Do not run "mingw-get update" here because it takes quite a long time to download the catalogue files.
-            Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
+            MinGWGet:=WizardDirValue+'\mingw\bin\mingw-get.exe';
+            MinGWGetLog:=GetMinGWGetLog;
+
+            if Length(MinGWGetLog)>0 then begin
+                PowerShell:=ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe');
+                if FileExists(PowerShell) then begin
+                    Exec(PowerShell,'"'+MinGWGet+' install '+Packages+' 2>&1 | %{ \"$_\" } | tee '+MinGWGetLog+'"','',SW_SHOW,ewWaitUntilTerminated,ResultCode);
+                end else begin
+                    Log('Error: Cannot create log file for mingw-get, PowerShell not found.');
+                    MinGWGetLog:='';
+                end;
+            end;
+
+            if Length(MinGWGetLog)=0 then begin
+                Exec(MinGWGet,'install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
+            end;
+
             if ResultCode<>0 then begin
                 MsgBox('mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.',mbError,MB_OK);
             end;
