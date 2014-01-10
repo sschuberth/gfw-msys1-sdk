@@ -246,7 +246,7 @@ begin
             Log('Installing the following packages: '+Packages);
 
             // Do not run "mingw-get update" here because it takes quite a long time to download the catalogue files.
-            Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+Packages,WizardDirValue,SW_SHOW,ewWaitUntilTerminated,ResultCode);
+            Exec(WizardDirValue+'\mingw\bin\mingw-get.exe','install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
             if ResultCode<>0 then begin
                 MsgBox('mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.',mbError,MB_OK);
             end;
