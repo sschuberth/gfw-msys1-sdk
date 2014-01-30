@@ -88,8 +88,10 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 #include "xmlparser.inc.iss"
 
 const
-    RequiredPackages    = 'msys-base '
+    RequiredPackages    = 'msys-automake '
+                        + 'msys-base '
                         + 'msys-coreutils '
+                        + 'msys-libtool '
                         + 'msys-openssh '
                         + 'msys-perl '
                         + 'msys-rebase '
