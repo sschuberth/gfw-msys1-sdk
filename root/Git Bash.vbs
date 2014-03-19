@@ -2,6 +2,7 @@
 Set shell = CreateObject("WScript.Shell")
 Set env = shell.Environment("Process")
 If env("HOME") = "" Then env("HOME") = env("HOMEDRIVE") & env("HOMEPATH")
+If env("HOME") = "" Then env("HOME") = env("USERPROFILE")
 
 ' Set the optional MSYSTEM environment variable (valid values are "MINGW" or "MSYS").
 If WScript.Arguments.Length > 0 Then env("MSYSTEM") = WScript.Arguments(0)
