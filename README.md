@@ -10,7 +10,7 @@ The installer strives to supersede the existing [msysgit net installer](http://c
 
 * **Package management:** All required packages are installed via MinGW's new [mingw-get](http://sourceforge.net/projects/mingw/files/Installer/mingw-get/) tool. This means that the installed packages can be updated independently of updates to the mingwGitDevEnv installer, and in turn that there is no need to create a new mingwGitDevEnv installer just because of updates to packages. You have full access to all upstream MSYS / MinGW packages in addition to custom mingwGitDevEnv packages.
 
-* **Custom packages:** mingwGitDevEnv provides several updated and custom packages to improve the Git experience on Windows, for example OpenSSH with [HPN patches](http://www.psc.edu/index.php/hpn-ssh) which greatly improves network performance especially in distributed corporate environments.
+* **Custom packages:** mingwGitDevEnv provides several updated and custom packages to improve the Git experience on Windows.
 
 * **Execution of batch files:** You can execute _*.bat_ / _*.cmd_ files right away without manually prefixing them with _cmd.exe_.
 
