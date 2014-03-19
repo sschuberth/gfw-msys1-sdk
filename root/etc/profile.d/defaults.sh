@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# Enable Git completion.
+f=/mingw/share/git-core/git-completion.bash
+[ -r "$f" ] && source "$f"
+
+# Define a Git prompt.
+f=/mingw/share/git-core/git-prompt.sh
+[ -r "$f" ] && source "$f"
+
+if type -t __git_ps1 >/dev/null; then
+    export PROMPT_COMMAND='__git_ps1 "\n\[\033[33m\]\w\[\033[0m\]\[\033[32m\]" "\[\033[0m\]\n$ "'
+fi
+
 # Make vim the default editor as we do not ship vi.
 export EDITOR=vim
 
