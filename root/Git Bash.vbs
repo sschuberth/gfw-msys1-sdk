@@ -12,8 +12,11 @@ link.Arguments = "--login -i"
 link.IconLocation = fso.BuildPath(gitdir, "mingw\etc\git.ico")
 link.Save
 
-' Set the optional MSYSTEM environment variable (valid values are "MINGW" or "MSYS").
+' Set the HOME environment variable if unset.
 Set env = shell.Environment("Process")
+If env("HOME") = "" Then env("HOME") = env("HOMEDRIVE") & env("HOMEPATH")
+
+' Set the optional MSYSTEM environment variable (valid values are "MINGW" or "MSYS").
 If WScript.Arguments.Length > 0 Then env("MSYSTEM") = WScript.Arguments(0)
 
 ' Set the optional start directory.
