@@ -7,7 +7,7 @@ If env("HOME") = "" Then env("HOME") = env("HOMEDRIVE") & env("HOMEPATH")
 If WScript.Arguments.Length > 0 Then env("MSYSTEM") = WScript.Arguments(0)
 
 ' Set the optional start directory.
-If WScript.Arguments.Length > 1 Then env("START_DIR") = WScript.Arguments(1)
+If WScript.Arguments.Length > 1 Then env("LOGIN_DIR") = WScript.Arguments(1)
 
 Const TemporaryFolder = 2
 Set fso = CreateObject("Scripting.FileSystemObject")
