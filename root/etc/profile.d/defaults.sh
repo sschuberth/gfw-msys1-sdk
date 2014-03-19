@@ -1,21 +1,5 @@
 #!/bin/bash
 
-# Allow to execute *.bat and *.cmd files directly without the need to
-# manually prefix each call with "cmd //c".
-SOURCE=${BASH_SOURCE[0]}
-source $(dirname $SOURCE)/preexec.bash
-
-function preexec () {
-    ext="${1##*.}"
-
-    if [ "$ext" = "bat" ] || [ "$ext" = "cmd" ]; then
-        cmd //c "$1"
-        false
-    fi
-}
-
-preexec_install
-
 # Make vim the default editor as we do not ship vi.
 export EDITOR=vim
 
@@ -48,3 +32,19 @@ if [ -z "$ftps_proxy" ]; then
         export ftps_proxy=$ftp_proxy
     fi
 fi
+
+# Allow to execute *.bat and *.cmd files directly without the need to
+# manually prefix each call with "cmd //c".
+SOURCE=${BASH_SOURCE[0]}
+source $(dirname $SOURCE)/preexec.bash
+
+function preexec () {
+    ext="${1##*.}"
+
+    if [ "$ext" = "bat" ] || [ "$ext" = "cmd" ]; then
+        cmd //c "$1"
+        false
+    fi
+}
+
+preexec_install
