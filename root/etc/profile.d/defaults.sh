@@ -2,11 +2,11 @@
 
 # Enable Git completion.
 f=/mingw/share/git-core/git-completion.bash
-[ -r "$f" ] && source "$f"
+[ -r "$f" ] && . "$f"
 
 # Define a Git prompt.
 f=/mingw/share/git-core/git-prompt.sh
-[ -r "$f" ] && source "$f"
+[ -r "$f" ] && . "$f"
 
 if type -t __git_ps1 >/dev/null; then
     export PROMPT_COMMAND='__git_ps1 "\n\[\033[33m\]\w\[\033[0m\]\[\033[32m\]" "\[\033[0m\]\n$ "'
@@ -48,7 +48,7 @@ fi
 # Allow to execute *.bat and *.cmd files directly without the need to
 # manually prefix each call with "cmd //c".
 SOURCE=${BASH_SOURCE[0]}
-source $(dirname $SOURCE)/preexec.bash
+. $(dirname $SOURCE)/preexec.bash
 
 function preexec () {
     ext="${1##*.}"
