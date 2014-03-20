@@ -44,6 +44,7 @@ Please see the separate [mingwGitDevEnv-packages](https://github.com/sschuberth/
 
 ## TODOs (roughly in order of priority)
 
+* Make `git help -a` work when built-ins are removed.
 * Make all Git tests pass, see the [test results](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-test/lastSuccessfulBuild/) for the latest [snapshot build](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-installer/lastSuccessfulBuild/).
 * Upgrade Perl (to a version that includes [this patch](https://github.com/msysgit/msysgit/issues/61#issuecomment-10695361))
 * Upgrade SVN libraries (requires new Perl)
