@@ -18,13 +18,13 @@ The installer strives to supersede the existing [msysgit net installer](http://c
 
 # Download
 
-Choose between the latest [stable release](https://github.com/sschuberth/mingwGitDevEnv/releases/download/v0.2/mingwGitDevEnv-v0.2.exe) or the latest [snapshot release](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-installer/lastSuccessfulBuild/artifact/download.html).
+Choose between the latest [stable release](https://github.com/sschuberth/mingwGitDevEnv/releases/download/v0.2/mingwGitDevEnv-v0.2.exe) or the latest [snapshot release](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-build-installer/lastSuccessfulBuild/artifact/download.html).
 
 # Getting involved
 
 ## Setting up the environment
 
-If you start from scratch without an existing MSYS environment (or Git client, for that matter) you have sort of a chicken-and-egg problem: In order to build the mingwGitDevEnv installer or create mingw-get packages (see the [next section](#creating-mingw-get-packages)) you need various MSYS tools like curl or wget, sed, lzma, tar, unzip. The mingwGitDevEnv installer provides those tools, but you do not have the installer yet. The easiest way to solve this is by downloading an already existing [snapshot release](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-installer/lastSuccessfulBuild/artifact/download.html) of the mingwGitDevEnv installer, run it to set up the development environment, and use that environment to work on mingwGitDevEnv itself. To do so, select _Start the development environment_ on the installer's final page and type at the prompt:
+If you start from scratch without an existing MSYS environment (or Git client, for that matter) you have sort of a chicken-and-egg problem: In order to build the mingwGitDevEnv installer or create mingw-get packages (see the [next section](#creating-mingw-get-packages)) you need various MSYS tools like curl or wget, sed, lzma, tar, unzip. The mingwGitDevEnv installer provides those tools, but you do not have the installer yet. The easiest way to solve this is by downloading an already existing [snapshot release](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-build-installer/lastSuccessfulBuild/artifact/download.html) of the mingwGitDevEnv installer, run it to set up the development environment, and use that environment to work on mingwGitDevEnv itself. To do so, select _Start the development environment_ on the installer's final page and type at the prompt:
 
     $ git clone https://github.com/sschuberth/mingwGitDevEnv.git  # Clone the repository (or your fork of it)
     $ cd mingwGitDevEnv                                           # Change to the working tree
@@ -45,7 +45,7 @@ Please see the separate [mingwGitDevEnv-packages](https://github.com/sschuberth/
 ## TODOs (roughly in order of priority)
 
 * Make `git help -a` work when built-ins are removed.
-* Make all Git tests pass, see the [test results](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-test/lastSuccessfulBuild/) for the latest [snapshot build](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-installer/lastSuccessfulBuild/).
+* Make all Git tests pass, see the [test results](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-test-git/lastSuccessfulBuild/) for the latest [snapshot build](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-build-installer/lastSuccessfulBuild/).
 * Upgrade Perl (to a version that includes [this patch](https://github.com/msysgit/msysgit/issues/61#issuecomment-10695361))
 * Upgrade SVN libraries (requires new Perl)
 * Create a new "Git for Windows" installer which also comes with mingw-get package management.
