@@ -42,7 +42,11 @@ If everything went fine you should now have a file matching _mingwGitDevEnv-*.ex
 
 Please see the separate [mingwGitDevEnv-packages](https://github.com/sschuberth/mingwGitDevEnv-packages) repository for details.
 
-## TODOs (roughly in order of priority)
+## Getting in contact
+
+We now have a [mailing list](http://groups.google.com/group/mingwGitDevEnv) for developers.
+
+# TODOs (roughly in order of priority)
 
 * Make `git help -a` work when built-ins are removed.
 * Make all Git tests pass, see the [test results](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-test-git/lastSuccessfulBuild/) for the latest [snapshot build](http://mingwgitdevenv.cloudapp.net/job/mingwGitDevEnv-build-installer/lastSuccessfulBuild/).
