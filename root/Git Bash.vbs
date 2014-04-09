@@ -13,13 +13,13 @@ If WScript.Arguments.Length > 1 Then env("LOGIN_DIR") = WScript.Arguments(1)
 Const TemporaryFolder = 2
 Set fso = CreateObject("Scripting.FileSystemObject")
 linkfile = fso.BuildPath(fso.GetSpecialFolder(TemporaryFolder), "Git Bash.lnk")
-gitdir = fso.GetParentFolderName(WScript.ScriptFullName)
+rootdir = fso.GetParentFolderName(WScript.ScriptFullName)
 
 ' Dynamically create a shortcut with the current directory as the working directory.
 Set link = shell.CreateShortcut(linkfile)
-link.TargetPath = fso.BuildPath(gitdir, "bin\sh.exe")
+link.TargetPath = fso.BuildPath(rootdir, "bin\sh.exe")
 link.Arguments = "--login -i"
-link.IconLocation = fso.BuildPath(gitdir, "mingw\etc\git.ico")
+link.IconLocation = fso.BuildPath(rootdir, "mingw\etc\git.ico")
 link.Save
 
 Set app = CreateObject("Shell.Application")
