@@ -120,6 +120,7 @@ const
                         + 'msys-vim '
                         + 'msys-zlib '
 
+                        + 'mingw32-gdb '
                         + 'mingw32-gnupg '
                         ;
 
