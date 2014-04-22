@@ -115,6 +115,8 @@ const
     RecommendedPackages = 'msys-coreutils-ext '
                         + 'msys-gcc '
                         + 'msys-libcrypt '
+                        + 'msys-libexpat '
+                        + 'msys-libffi '
                         + 'msys-libminires '
                         + 'msys-libopenssl '
                         + 'msys-pcre '
