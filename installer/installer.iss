@@ -88,6 +88,7 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 #include "xmlparser.inc.iss"
 
 const
+    # List packages required to build Git from sources, or those that must ship with the Git for Windows end-user installer.
     RequiredPackages    = 'msys-automake '
                         + 'msys-base '
                         + 'msys-coreutils '
@@ -110,6 +111,7 @@ const
                         + 'mingw32-unzip '
                         ;
 
+    # List packages needed to (re-)build the binaries Git depends on, or those for convenience tools.
     RecommendedPackages = 'msys-coreutils-ext '
                         + 'msys-gcc '
                         + 'msys-libcrypt '
