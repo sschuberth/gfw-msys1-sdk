@@ -95,6 +95,7 @@ const
                         + 'msys-libtool '
                         + 'msys-openssh '
                         + 'msys-perl '
+                        + 'msys-python '
                         + 'msys-rebase '
 
                         + 'mingw32-gcc '
