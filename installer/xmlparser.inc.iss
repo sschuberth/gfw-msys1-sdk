@@ -56,7 +56,7 @@ procedure ParseForPackages(Lines:TArrayOfString;var List:TStringList);
 var
     WithinPackageTag:Boolean;
     i,p:Integer;
-    Line,Name,LocalGroup,GlobalGroup:String;
+    Line,Name,Group,LocalGroup,GlobalGroup:String;
 begin
     WithinPackageTag:=False;
 
@@ -88,10 +88,13 @@ begin
         end else if Pos('<affiliate group',Line)>0 then begin
             // Look for a group name. Usually the group is a child of the package, but for some
             // meta packages the group is defined before the package.
+            Group:=GetFirstQuotedString(Line);
             if WithinPackageTag then begin
-                LocalGroup:=GetFirstQuotedString(Line);
+                if Length(LocalGroup)=0 then begin
+                    LocalGroup:=Group;
+                end;
             end else begin
-                GlobalGroup:=GetFirstQuotedString(Line);
+                GlobalGroup:=Group;
             end;
         end;
     end;
@@ -111,6 +114,9 @@ var
 begin
     Groups:=TStringList.Create;
     Packages:=TStringList.Create;
+
+    // Add the special "Basic Setup" group which is not part of any hierarchy definition.
+    Groups.Append('Basic Setup');
 
     Path:=WizardDirValue+'\mingw\var\lib\mingw-get\data\';
 
