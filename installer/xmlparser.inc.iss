@@ -64,7 +64,7 @@ begin
         Line:=Lines[i];
 
         // Look for a package name.
-        if Pos('<package name',Line)>0 then begin
+        if (Pos('<package name',Line)>0) and not WithinPackageTag then begin
             WithinPackageTag:=True;
             Name:=GetFirstQuotedString(Line);
 
@@ -74,7 +74,7 @@ begin
                 Delete(Line,1,p);
                 Name:=Name+'@'+GetFirstQuotedString(Line);
             end;
-        end else if Pos('</package>',Line)>0 then begin
+        end else if (Pos('</package>',Line)>0) and WithinPackageTag then begin
             WithinPackageTag:=False;
 
             if Length(LocalGroup)>0 then begin
