@@ -21,4 +21,4 @@ EOF
 PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install App::Prove TAP::Harness::Archive));"
 
 # Install a developer release of Win32::API that supports MSYS.
-PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install BULKDD/Win32/Win32-API-0.76_04.tar.gz));"
+PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install Win32::API));"
