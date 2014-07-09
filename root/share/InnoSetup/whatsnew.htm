@@ -21,10 +21,40 @@
 
 <div class="bluehead"><span class="head1">Inno Setup 5</span><br /><span class="head2">Revision History</span></div>
 
-<p>Copyright &copy; 1997-2013 <a href="http://www.jrsoftware.org/">Jordan Russell</a>. All rights reserved.<br />
-Portions Copyright &copy; 2000-2013 Martijn Laan. All rights reserved.<br />
+<p>Copyright &copy; 1997-2014 <a href="http://www.jrsoftware.org/">Jordan Russell</a>. All rights reserved.<br />
+Portions Copyright &copy; 2000-2014 Martijn Laan. All rights reserved.<br />
 For conditions of distribution and use, see <a href="http://www.jrsoftware.org/files/is/license.txt">LICENSE.TXT</a>.
 </p>
+
+<p><a name="5.5.5"></a><span class="ver">5.5.5 </span><span class="date">(2014-07-09)</span></p>
+<ul>
+<li>/LOG: Now logs INI entries. Also improved logging of icon entries.</li>
+<li>Added new [Setup] section directive: <tt>Output</tt>, which defaults to <tt>yes</tt>. If set to <tt>no</tt> the Setup Compiler will only check the script for errors and skip creating setup files.</li>
+<li>Console-mode compiler (ISCC) changes:
+<ul>
+  <li>Added new command line parameters /DO and /EO. These can be used to disable or enable output, overriding the <tt>Output</tt> directive.</li>
+  <li>Added new command line parameter /Qp. Can be used to enable quiet compile while still displaying progress. Contributed by <a href="https://github.com/KngStr" target="_blank">KngStr</a> via <a href="https://github.com/jrsoftware" target="_blank">GitHub</a>.</li>
+  <li>ISCC now automatically specifies any Sign Tools configured using the IDE, eliminating the need to specify these using the /S command line parameter. Also contributed by <a href="https://github.com/KngStr" target="_blank">KngStr</a> via <a href="https://github.com/jrsoftware" target="_blank">GitHub</a>.</li>
+</ul>
+<li>Pascal Scripting changes:
+<ul>
+  <li>Added new function <tt>CurrentSourceFileName</tt>, which returns the source file name of the [Files] entry that is currently being processed. The returned name may include constants. <i>Note:</i> Do not attempt to call this function from outside a Check, BeforeInstall or AfterInstall event function belonging to a [Files] entry with the <tt>external</tt> flag.</li>
+  <li>The already-existing <tt>StrToFloat</tt> and <tt>FloatToStr</tt> functions are now documented.</li>
+  <li>Strings and numbers are now highlighted. Based on contribution by <a href="https://github.com/maldoinc" target="_blank">maldoinc</a> via <a href="https://github.com/jrsoftware" target="_blank">GitHub</a>.</li>
+  <li>Unicode Inno Setup: Added new class <tt>TStringStream</tt>.</li>
+</ul>
+</li>
+<li>Inno Setup Preprocessor (ISPP) changes:
+<ul>
+  <li>Added function <tt>DeleteFileNow</tt>.</li>
+  <li>Added 64-bit support to function <tt>ReadReg</tt>.</li>
+</ul>
+</li>
+<li>Added official Scottish Gaelic and Turkish translations.</li>
+<li><i>Fix:</i> [Setup] section directive <tt>UsePreviousLanguage</tt> was not working when Setup was running in 64-bit mode.</li>
+<li>Unicode [Code] based on RemObjects Pascal Script Git commit 97eefc260b41ba51328d95b4ed43669f38655720.</li>
+<li>Various documentation improvements. Contributed by <a href="https://github.com/jogo-" target="_blank">jogo-</a> via <a href="https://github.com/jrsoftware" target="_blank">GitHub</a>.</li>
+</ul>
 
 <p><a name="5.5.4"></a><span class="ver">5.5.4 </span><span class="date">(2013-10-13)</span></p>
 <ul>
@@ -45,7 +75,7 @@ For conditions of distribution and use, see <a href="http://www.jrsoftware.org/f
 <li>Added new command line parameters supported by Setup: /HELP and /?. Cause Setup to display the list of accepted command line parameters in a message box, exiting with exit code 0 afterwards. Ignored if the <tt>UseSetupLdr</tt> [Setup] section directive was set to <tt>no</tt>.</li>
 <li>Added new command line parameter supported by Inno Setup's own installer: /PORTABLE=1. Causes Inno Setup's own installer to not create an uninstaller nor an entry in the <i>Add/Remove Programs</i> Control Panel applet. Also supported by QuickStart Pack's installer.</li>
 <li>Added workaround for bug in 64-bit Windows which in some cases would cause Windows to display an error message when a user tries to change the icon of an installed shortcut.</li>
-<li>Updated the compiler and document icons, created by Motaz.</li>
+<li>Updated the compiler and document icons, created by Motaz Alnuweiri.</li>
 <li>Restart Manager: If Setup is not running silently and is unable to close all applications using files that need to be updated, it will now ask the user to abort, retry, or ignore. Previously it always ignored.</li>
 <li>A message has been added in this version.
   (<a href="https://github.com/jrsoftware/issrc/commit/4e2a3c21dcb0a8ecf591d628062e317e8a2fc0e3">View differences in Default.isl</a>)
@@ -121,7 +151,7 @@ For conditions of distribution and use, see <a href="http://www.jrsoftware.org/f
 </li>
 <li>Improved the "auto-retry" feature of the [Files] section: it now automatically retries even if the <tt>restartreplace</tt> [Files] section flag is used.</li>
 <li>Pascal Scripting: Changed the <tt>InstallOnThisVersion</tt> support function to return a Boolean value. If an invalid version string is passed, an exception will be raised.</li>
-<li>Added 128x128 and 256x256 sizes to the compiler and document icons, created by Motaz.</li>
+<li>Added 128x128 and 256x256 sizes to the compiler and document icons, created by Motaz Alnuweiri.</li>
 <li>Some messages have been added and removed in this version.
   (<a href="https://github.com/jrsoftware/issrc/commit/0769551f461e66ad58436cc9b31580d4fa70fe62">View differences in Default.isl</a>)
   <ul>
