@@ -113,7 +113,8 @@ const
                         ;
 
     // List packages needed to (re-)build the binaries Git depends on, or those for convenience tools.
-    RecommendedPackages = 'msys-coreutils-ext '
+    RecommendedPackages = 'msys-bison '
+                        + 'msys-coreutils-ext '
                         + 'msys-gcc '
                         + 'msys-libcrypt '
                         + 'msys-libexpat '
