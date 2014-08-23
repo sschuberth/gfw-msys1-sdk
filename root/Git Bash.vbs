@@ -1,8 +1,5 @@
-' Set the HOME environment variable if unset.
 Set shell = CreateObject("WScript.Shell")
 Set env = shell.Environment("Process")
-If env("HOME") = "" Then env("HOME") = env("HOMEDRIVE") & env("HOMEPATH")
-If env("HOME") = "" Then env("HOME") = env("USERPROFILE")
 
 ' Optionally set the MSYSTEM environment variable to a custom value ("MINGW32" or "MSYS").
 linkname = "Git Bash.lnk"
