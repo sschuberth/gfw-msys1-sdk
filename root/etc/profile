@@ -71,6 +71,3 @@ export PS1='\[\033]0;$MSYSTEM:\w\007
 $ '
 
 alias clear=clsb
-
-cd "$HOME"
-
