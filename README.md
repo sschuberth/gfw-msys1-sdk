@@ -33,8 +33,8 @@ If you start from scratch without an existing MSYS environment (or Git client, f
 
 When you are done, building an up-to-date mingwGitDevEnv installer is done by these steps:
 
-    $ ./update-mingw-get.sh  # Download the most recent catalogue / package description files
-    $ ./build-installer.sh   # Create the installer
+    $ ./download-mingw-get.sh  # Download the most recent catalogue / package description files
+    $ ./build-installer.sh     # Create the installer
 
 If everything went fine you should now have a file matching _mingwGitDevEnv-*.exe_ which you can use to install the Git Development Environment including your changes.
 
