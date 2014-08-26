@@ -1,18 +1,6 @@
 #!/bin/sh
 
-# Find a suitable download tool.
-if [ -f "$(type -p curl)" ]; then
-    download="curl"
-    download_args_rss="-s"
-    download_args="-# -L -o"
-elif [ -f "$(type -p wget)" ]; then
-    download="wget"
-    download_args_rss="-q -O -"
-    download_args="-N -O"
-else
-    echo "ERROR: No suitable download tool found."
-    exit 1
-fi
+. download-tool-lib.sh
 
 # Download the most recent Inno Setup version.
 file="is-unicode.exe"
