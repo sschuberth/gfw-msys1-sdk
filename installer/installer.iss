@@ -271,7 +271,7 @@ begin
             if Length(MinGWGetLog)>0 then begin
                 PowerShell:=ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe');
                 if FileExists(PowerShell) then begin
-                    Exec(PowerShell,'"'+MinGWGet+' install '+Packages+' 2>&1 | %{ \"$_\" } | tee '+MinGWGetLog+'"','',SW_SHOW,ewWaitUntilTerminated,ResultCode);
+                    Exec(PowerShell,'"'+MinGWGet+' install '+Packages+' 2>&1 | %{ \"$_\" } | tee '+MinGWGetLog+'"',WizardDirValue,SW_SHOW,ewWaitUntilTerminated,ResultCode);
                 end else begin
                     Log('Error: Cannot create log file for mingw-get, PowerShell not found.');
                     MinGWGetLog:='';
@@ -279,7 +279,7 @@ begin
             end;
 
             if Length(MinGWGetLog)=0 then begin
-                Exec(MinGWGet,'install '+Packages,'',SW_SHOW,ewWaitUntilTerminated,ResultCode);
+                Exec(MinGWGet,'install '+Packages,WizardDirValue,SW_SHOW,ewWaitUntilTerminated,ResultCode);
             end;
 
             if ResultCode<>0 then begin
