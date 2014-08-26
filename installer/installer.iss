@@ -165,7 +165,7 @@ procedure CurStepChanged(CurStep:TSetupStep);
 var
     Packages:TArrayOfString;
     NumPackages,i,Level,p:Integer;
-    Hierarchy,Group,PrevPath,Path,PackageName,PackageClass:String;
+    Msg,Hierarchy,Group,PrevPath,Path,PackageName,PackageClass:String;
     Required,Recommended:Boolean;
 begin
     // Initialize the package selection page just after the actual installation finishes.
@@ -179,7 +179,9 @@ begin
 
     if NumPackages=0 then begin
         // This should never happen as we bundle the package catalogue files with the installer.
-        MsgBox('No packages found, please report this as an error to the developers.',mbError,MB_OK);
+        Msg:='No packages found, please report this as an error to the developers.';
+        SuppressibleMsgBox(Msg,mbError,MB_OK,IDOK);
+        Log('Error: '+Msg);
         Exit;
     end;
 
@@ -246,14 +248,16 @@ end;
 
 function NextButtonClick(CurPageID:Integer):Boolean;
 var
-    Packages,MinGWGet,MinGWGetLog,PowerShell,HomePath:String;
+    Msg,Packages,MinGWGet,MinGWGetLog,PowerShell,HomePath:String;
     Home:TArrayOfString;
     ResultCode:Integer;
 begin
     Result:=True;
 
     if (CurPageID=wpSelectDir) and (Pos(' ',WizardDirValue)>0) then begin
-        MsgBox('The installation directory must not contain any spaces, please choose a different one.',mbError,MB_OK);
+        Msg:='The installation directory must not contain any spaces, please choose a different one.';
+        SuppressibleMsgBox(Msg,mbError,MB_OK,IDOK);
+        Log('Error: '+Msg);
         Result:=False;
     end else if CurPageID=PackagesPage.ID then begin
         Packages:=GetSelectedPackages;
@@ -279,7 +283,9 @@ begin
             end;
 
             if ResultCode<>0 then begin
-                MsgBox('mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.',mbError,MB_OK);
+                Msg:='mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.';
+                SuppressibleMsgBox(Msg,mbError,MB_OK,IDOK);
+                Log('Error: '+Msg);
             end;
 
             // Set the HOME environment variable if not set. This is better than changing /etc/profile
@@ -299,7 +305,7 @@ begin
 
             Result:=True;
         end else begin
-            Result:=(MsgBox('You have not selected any packages. Are you sure you want to continue?',mbConfirmation,MB_YESNO)=IDYES);
+            Result:=(SuppressibleMsgBox('You have not selected any packages. Are you sure you want to continue?',mbConfirmation,MB_YESNO,IDYES)=IDYES);
         end;
     end;
 end;

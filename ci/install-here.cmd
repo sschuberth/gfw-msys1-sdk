@@ -10,4 +10,4 @@ if "%installer%" == "" (
 )
 
 echo Installing %installer% ...
-%installer%.exe /log="%installer%.log" /verysilent /dir="mingwGitDevEnv" /noicons /portable=1 /log-mingw-get="%CD%\mingw-get.log"
+%installer%.exe /log="%installer%.log" /verysilent /suppressmsgboxes /dir="mingwGitDevEnv" /noicons /portable=1 /log-mingw-get="%CD%\mingw-get.log"
