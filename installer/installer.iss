@@ -17,11 +17,11 @@
     #endif
 #endif
 
-#define PACKAGES_REPO_URL    'https://github.com/sschuberth/mingwGitDevEnv-packages.git'
 #define PACKAGES_REPO_CONFIG '-c diff.lzma.textconv=""lzma -d -c -qq | cat"" -c filter.lzma.smudge=""lzma -d"" -c filter.lzma.clean=""lzma -z""'
+#define PACKAGES_REPO_URL    'https://github.com/sschuberth/mingwGitDevEnv-packages.git'
 
-#define GIT_REPO_URL    'https://github.com/sschuberth/git.git'
 #define GIT_REPO_CONFIG '-c core.autocrlf=false'
+#define GIT_REPO_URL    'https://github.com/sschuberth/git.git'
 
 [Setup]
 
@@ -65,14 +65,14 @@ Name: "{group}\Git Development Environment (MSYS Mode)"; Filename: "wscript"; Pa
 
 [Run]
 
-Filename: "{app}\rebaseall.cmd"; Description: "Rebase DLLs"; Flags: postinstall
-Filename: "{app}\update-perl-modules.cmd"; Description: "Update Perl modules"; Flags: postinstall
+Description: "Rebase DLLs"; Filename: "{app}\rebaseall.cmd"; Flags: postinstall
+Description: "Update Perl modules"; Filename: "{app}\update-perl-modules.cmd"; Flags: postinstall
 
 ; For the packages repository we have configured smudge / clean and diff filters that depend on lzma (and sh) to be in PATH, so make sure the environment is set up correctly. 
-Filename: "{app}\bin\sh.exe"; Description: "Clone the packages repository"; Parameters: "--login -c 'git clone {#PACKAGES_REPO_CONFIG} {#PACKAGES_REPO_URL} packages'"; WorkingDir: "{app}"; Flags: postinstall skipifsilent
-Filename: "{app}\mingw\bin\git.exe"; Description: "Clone the Git repository"; Parameters: "clone {#GIT_REPO_CONFIG} {#GIT_REPO_URL}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent
+Description: "Clone the packages repository"; Filename: "{app}\bin\sh.exe"; Parameters: "--login -c 'git clone {#PACKAGES_REPO_CONFIG} {#PACKAGES_REPO_URL} packages'"; WorkingDir: "{app}"; Flags: postinstall skipifsilent
+Description: "Clone the Git repository"; Filename: "{app}\mingw\bin\git.exe"; Parameters: "clone {#GIT_REPO_CONFIG} {#GIT_REPO_URL}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent
 
-Filename: "wscript"; Parameters: """{app}\Git Bash.vbs"""; Description: "Start the development environment"; Flags: postinstall skipifsilent
+Description: "Start the development environment"; Filename: "wscript"; Parameters: """{app}\Git Bash.vbs"""; Flags: postinstall skipifsilent
 
 [UninstallDelete]
 
