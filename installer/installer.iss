@@ -60,8 +60,8 @@ Source: root\*; DestDir: {app}; Flags: recursesubdirs
 
 [Icons]
 
-Name: "{group}\Git Development Environment"; Filename: "wscript"; Parameters: """{app}\Git Bash.vbs"""; IconFilename: "{uninstallexe}"
-Name: "{group}\Git Development Environment (MSYS Mode)"; Filename: "wscript"; Parameters: """{app}\Git Bash.vbs"" MSYS"; IconFilename: "{uninstallexe}"
+Name: "{group}\Git Development Environment"; Filename: "{app}\Git Bash.vbs"; IconFilename: "{uninstallexe}"
+Name: "{group}\Git Development Environment (MSYS Mode)"; Filename: "{app}\Git Bash.vbs"; Parameters: "MSYS"; IconFilename: "{uninstallexe}"
 
 [Run]
 
