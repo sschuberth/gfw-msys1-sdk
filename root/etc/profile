@@ -66,11 +66,13 @@ for i in /etc/profile.d/*.sh ; do
 done
 
 export MAKE_MODE=unix
-export PS1='\[\033]0;$MSYSTEM:\w\007
-\033[32m\]\u@\h \[\033[33m\w\033[0m\]
+export PS1='\033[32m\]\u@\h \[\033[33m\w\033[0m\]
 $ '
 
 # Set the console window icon
 echo -ne "\033]1;/mingw/etc/git.ico\007"
+
+# Set the console window title
+echo -ne "\033]0;Git Bash ($MSYSTEM)\007"
 
 alias clear=clsb
