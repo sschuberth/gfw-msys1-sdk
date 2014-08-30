@@ -9,9 +9,6 @@ If WScript.Arguments.Length > 0 Then
     linkname = "Git Bash (" & msystem & ").lnk"
 End If
 
-' Optionally set a custom start directory.
-If WScript.Arguments.Length > 1 Then env("LOGIN_DIR") = WScript.Arguments(1)
-
 Const TemporaryFolder = 2
 Set fso = CreateObject("Scripting.FileSystemObject")
 linkfile = fso.BuildPath(fso.GetSpecialFolder(TemporaryFolder), linkname)
