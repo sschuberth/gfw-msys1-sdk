@@ -17,5 +17,6 @@ EOF
 
 # In order to ignore some failing tests we have to use "force" because our version of CPAN does not yet support "notest".
 
-# Update Prove to a version that has "--jobs" and enable "--archive" support.
-PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install App::Prove TAP::Harness::Archive));"
+# Update Test::Harness from version 2.56 to a version that has "--jobs" support. Enable "--archive" support by also installing
+# TAP::Harness::Archive. However, the latter does not work with Test::Harness versions above 3.30, so hard-code that version.
+PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "CPAN::Shell->force(qw(install LEONT/Test-Harness-3.30.tar.gz TAP::Harness::Archive));"
