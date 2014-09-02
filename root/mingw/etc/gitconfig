@@ -1,2 +1,4 @@
 [http]
 	sslCAInfo = /bin/curl-ca-bundle.crt
+[rebase]
+	autosquash = true
