@@ -89,14 +89,20 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 
 const
     // List packages required to build Git from sources, or those that must ship with the Git for Windows end-user installer.
-    RequiredPackages    = 'msys-automake '
+    RequiredPackages    = 'msys-asciidoc '
+                        + 'msys-automake '
                         + 'msys-base '
                         + 'msys-coreutils '
+                        + 'msys-docbook '
+                        + 'msys-getopt '
                         + 'msys-libtool '
+                        + 'msys-libxml2 '
+                        + 'msys-libxslt '
                         + 'msys-openssh '
                         + 'msys-perl '
                         + 'msys-python '
                         + 'msys-rebase '
+                        + 'msys-xmlto '
 
                         + 'mingw32-gcc '
                         + 'mingw32-gcc-g++ '
