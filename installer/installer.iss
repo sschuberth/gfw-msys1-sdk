@@ -121,6 +121,7 @@ const
                         + 'msys-libffi '
                         + 'msys-libminires '
                         + 'msys-libopenssl '
+                        + 'msys-mktemp '
                         + 'msys-pcre '
                         + 'msys-rsync '
                         + 'msys-vim '
