@@ -96,7 +96,6 @@ const
                         + 'msys-docbook '
                         + 'msys-getopt '
                         + 'msys-libtool '
-                        + 'msys-libxml2 '
                         + 'msys-libxslt '
                         + 'msys-openssh '
                         + 'msys-perl '
