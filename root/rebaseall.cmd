@@ -24,3 +24,5 @@ if errorlevel 1 (
 :quit
 
 popd
+
+timeout /t 5
