@@ -48,12 +48,11 @@ We now have a [mailing list](http://groups.google.com/group/mingwGitDevEnv) for 
 
 # TODOs (roughly in order of priority)
 
-* Make `git help -a` work when built-ins are removed.
 * Make all Git tests pass, see the [test results](https://dscho.cloudapp.net/job/mingwGitDevEnv-test-git/lastSuccessfulBuild/) for the latest [snapshot build](https://dscho.cloudapp.net/job/mingwGitDevEnv-build-installer/lastSuccessfulBuild/).
 * Upgrade Perl (to a version that includes [this patch](https://github.com/msysgit/msysgit/issues/61#issuecomment-10695361))
 * Upgrade SVN libraries (requires new Perl)
 * Create a new "Git for Windows" installer which also comes with mingw-get package management.
-* Integrate [Karsten Blees'](https://github.com/kblees/msysgit) Unicode patches ([13](https://github.com/msysgit/msysgit/blob/msys/src/rt/patches/0013-msys.dll-basic-Unicode-support.patch), [14](https://github.com/msysgit/msysgit/blob/msys/src/rt/patches/0014-msys.dll-support-Unicode-console-input.patch), [15](https://github.com/msysgit/msysgit/blob/msys/src/rt/patches/0015-msys.dll-support-ALT-NUMPAD-console-input.patch), [16](https://github.com/msysgit/msysgit/blob/msys/src/rt/patches/0016-msys.dll-backport-multibyte-support-functions-from-n.patch)).
+* Make `git help -a` work when built-ins are removed.
 * Create a 64-bit version of "Git for Windows".
 * Contribute [patches to MSYS](https://github.com/sschuberth/mingwGitDevEnv-packages/tree/master/msys-core) back upstream.
 * Capture the console output of mingw-get and show the progress in the mingwGitDevEnv GUI.
