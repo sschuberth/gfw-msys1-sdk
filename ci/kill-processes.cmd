@@ -1,10 +1,10 @@
 @echo off
 
 rem The order of columns is fixed and cannot be changed by the order of arguments.
-wmic process get executablepath,processid | findstr /c:"mingwGitDevEnv" > process.log
-goto findstr_mingwGitDevEnv_%errorlevel%
+wmic process get executablepath,processid | findstr /c:"Git-SDK" > process.log
+goto findstr_Git-SDK_%errorlevel%
 
-:findstr_mingwGitDevEnv_0
+:findstr_Git-SDK_0
 
 for /f "tokens=2" %%p in (process.log) do (
     rem Force kill processes including their children.
@@ -13,7 +13,7 @@ for /f "tokens=2" %%p in (process.log) do (
 
 goto findstr_sh
 
-:findstr_mingwGitDevEnv_1
+:findstr_Git-SDK_1
 
 echo No processes found that need to be killed.
 

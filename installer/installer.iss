@@ -1,4 +1,4 @@
-#define APP_NAME    'mingwGitDevEnv'
+#define APP_NAME    'Git-SDK'
 #define APP_VERSION GetEnv('APP_VERSION')
 
 #if APP_VERSION==''
@@ -18,7 +18,7 @@
 #endif
 
 #define PACKAGES_REPO_CONFIG '-c diff.lzma.textconv=""lzma -d -c -qq | cat"" -c filter.lzma.smudge=""lzma -d"" -c filter.lzma.clean=""lzma -z""'
-#define PACKAGES_REPO_URL    'https://github.com/sschuberth/mingwGitDevEnv-packages.git'
+#define PACKAGES_REPO_URL    'https://github.com/git-for-windows/sdk-packages.git'
 
 #define GIT_REPO_CONFIG '-c core.autocrlf=false'
 #define GIT_REPO_URL    'https://github.com/sschuberth/git.git'
