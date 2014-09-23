@@ -21,7 +21,7 @@
 #define PACKAGES_REPO_URL    'https://github.com/git-for-windows/sdk-packages.git'
 
 #define GIT_REPO_CONFIG '-c core.autocrlf=false'
-#define GIT_REPO_URL    'https://github.com/sschuberth/git.git'
+#define GIT_REPO_URL    'https://github.com/git-for-windows/git.git'
 
 [Setup]
 
