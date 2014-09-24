@@ -42,7 +42,7 @@ Please see the separate [sdk-packages](https://github.com/git-for-windows/sdk-pa
 
 ## Getting in contact
 
-We now have a [mailing list](http://groups.google.com/group/mingwGitDevEnv) for developers.
+We now have a [mailing list](https://groups.google.com/group/git-windows-sdk) for developers.
 
 # TODOs (roughly in order of priority)
 
