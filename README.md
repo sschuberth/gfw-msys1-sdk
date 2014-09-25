@@ -16,7 +16,7 @@ The installer strives to supersede the existing msysgit netinstall package with 
 
 # Download
 
-Choose between the latest [stable release](https://github.com/git-for-windows/sdk/releases/download/v0.3/Git-SDK-v0.3.exe) or the latest [snapshot release](https://dscho.cloudapp.net/job/sdk-build-installer/lastSuccessfulBuild/artifact/download.html).
+Choose between the latest [stable release](https://github.com/git-for-windows/sdk/releases/download/v0.4/Git-SDK-v0.4.exe) or the latest [snapshot release](https://dscho.cloudapp.net/job/sdk-build-installer/lastSuccessfulBuild/artifact/download.html).
 
 # Getting involved
 
