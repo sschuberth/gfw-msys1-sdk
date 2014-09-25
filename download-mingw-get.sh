@@ -51,7 +51,7 @@ mkdir -p root/mingw && cd root/mingw && (
     <repository uri="http://prdownloads.sourceforge.net/mingw/%F.xml.lzma?download">
     </repository>
     <repository uri="https://github.com/git-for-windows/sdk-packages/blob/master/%F.xml.lzma?raw=true">
-      <package-list catalogue="git-windows-sdk-package-list" />
+      <package-list catalogue="git-win-sdk-package-list" />
     </repository>
     <system-map id="default">
       <sysroot subsystem="mingw32" path="%R" />
