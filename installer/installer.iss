@@ -1,5 +1,6 @@
-#define APP_NAME    'Git-SDK'
-#define APP_VERSION GetEnv('APP_VERSION')
+#define APP_NAME           'Git SDK'
+#define APP_NAME_NO_SPACES StringChange(APP_NAME,' ','-')
+#define APP_VERSION        GetEnv('APP_VERSION')
 
 #if APP_VERSION==''
     #define APP_VERSION  'Snapshot'
@@ -40,7 +41,7 @@ AppName={#APP_NAME}
 AppVersion={#APP_VERSION}
 AppVerName={#APP_VER_NAME}
 ChangesEnvironment=yes
-DefaultDirName={sd}\{#APP_NAME}
+DefaultDirName={sd}\{#APP_NAME_NO_SPACES}
 DefaultGroupName={#APP_NAME}
 DisableReadyPage=yes
 InfoBeforeFile=installer\note.rtf
