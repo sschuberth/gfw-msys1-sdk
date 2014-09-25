@@ -72,7 +72,7 @@ Description: "Update Perl modules"; Filename: "{app}\update-perl-modules.cmd"; F
 Description: "Clone the packages repository"; Filename: "{app}\bin\sh.exe"; Parameters: "--login -c 'git clone {#PACKAGES_REPO_CONFIG} {#PACKAGES_REPO_URL} packages'"; WorkingDir: "{app}"; Flags: postinstall skipifsilent
 Description: "Clone the Git repository"; Filename: "{app}\mingw\bin\git.exe"; Parameters: "clone {#GIT_REPO_CONFIG} {#GIT_REPO_URL}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent
 
-Description: "Start the development environment"; Filename: "wscript"; Parameters: """{app}\Git Bash.vbs"""; Flags: postinstall skipifsilent
+Description: "Start the development environment"; Filename: "wscript"; Parameters: """{app}\Git Bash.vbs"""; WorkingDir: "{app}"; Flags: postinstall skipifsilent
 
 [UninstallDelete]
 
