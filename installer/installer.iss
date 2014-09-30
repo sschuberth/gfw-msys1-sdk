@@ -147,6 +147,26 @@ begin
     Result:=(ExpandConstant('{param:portable|0}')='1');
 end;
 
+function InitializeSetup:Boolean;
+var
+    Version:TWindowsVersion;
+begin
+    GetWindowsVersionEx(Version);
+    if Version.Major<6 then begin
+        SuppressibleMsgBox(
+            'You are running an old version of Windows. Please note that support for ' +
+            'Windows versions prior to Vista is not actively maintained, so the ' +
+            'installation may fail. However, installation may also succeed with just ' +
+            'minor warnings. In any case, patches to support older Windows version ' +
+            'are welcome.',
+            mbInformation,
+            MB_OK,
+            IDOK
+        );
+    end;
+    Result:=True;
+end;
+
 procedure InitializeWizard;
 var
     PrevPageID:Integer;
