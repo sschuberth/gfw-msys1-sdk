@@ -112,6 +112,7 @@ const
                         + 'mingw32-libexpat '
                         + 'mingw32-libiconv '
                         + 'mingw32-libopenssl '
+                        + 'mingw32-libpcre '
                         + 'mingw32-libz '
                         + 'mingw32-mgwport '
                         + 'mingw32-tk '
