@@ -46,7 +46,6 @@ We now have a [mailing list](https://groups.google.com/group/git-win-sdk) for de
 
 # TODOs (roughly in order of priority)
 
-* Make all Git tests pass, see the [test results](https://dscho.cloudapp.net/job/sdk-test-git/lastSuccessfulBuild/) for the latest [snapshot build](https://dscho.cloudapp.net/job/sdk-build-installer/lastSuccessfulBuild/).
 * Upgrade Perl (to a version that includes [this patch](https://github.com/msysgit/msysgit/issues/61#issuecomment-10695361))
 * Upgrade SVN libraries (requires new Perl)
 * Create a new "Git for Windows" installer which also comes with mingw-get package management.
