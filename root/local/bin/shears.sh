@@ -17,6 +17,12 @@
 # the 'ours' strategy, in effect reverting all of the changes that are about
 # to be rebased).
 #
+# Example usage (regular Git for Windows workflow)
+#
+# git fetch junio
+# BASE="$(git rev-parse ":/Start the merging-rebase")"
+# shears.sh --onto junio/master $BASE
+#
 # Usage: shears [options] <upstream>
 # options:
 #  -m,--merging[=<message>]
