@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -n "$NUMBER_OF_PROCESSORS" ]; then
+    echo $NUMBER_OF_PROCESSORS
+    exit
+fi
+
+wmic="$SYSTEMROOT/System32/wbem/wmic.exe"
+"$wmic" cpu get NumberOfLogicalProcessors 2> /dev/null | grep -oP "\d+" || echo 1
