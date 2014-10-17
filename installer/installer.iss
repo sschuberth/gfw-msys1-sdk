@@ -137,6 +137,7 @@ const
                         + 'mingw32-gdb '
                         + 'mingw32-gnupg '
                         + 'mingw32-ntldd '
+                        + 'mingw32-openssl '
                         ;
 
 var
