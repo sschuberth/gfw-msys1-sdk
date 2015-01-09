@@ -104,6 +104,7 @@ const
                         + 'msys-rebase '
                         + 'msys-xmlto '
 
+                        + 'mingw32-curl '
                         + 'mingw32-gcc '
                         + 'mingw32-gcc-g++ '
                         + 'mingw32-gettext '
