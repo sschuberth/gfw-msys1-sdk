@@ -40,9 +40,9 @@ If everything went fine you should now have a file matching _Git-SDK-*.exe_ whic
 
 Please see the separate [sdk-packages](https://github.com/git-for-windows/sdk-packages) repository for details.
 
-## Getting in contact
+## Getting in touch
 
-We now have a [mailing list](https://groups.google.com/group/git-win-sdk) for developers.
+We now have a [mailing list](https://groups.google.com/group/git-win-sdk) for developers. Issues should be reported to the "catch-all" [Git for Windows issue tracker](https://github.com/git-for-windows/git/issues); they will be triaged and eventually labeled by the project collaborators.
 
 # TODOs (roughly in order of priority)
 
