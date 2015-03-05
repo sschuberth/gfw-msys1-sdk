@@ -1,6 +1,6 @@
 # Introduction
 
-This is the [Git for Windows SDK](https://github.com/git-for-windows/sdk), provided by an Inno Setup based wrapper around [MinGW](http://www.mingw.org/)'s [mingw-get](http://sourceforge.net/projects/mingw/files/Installer/mingw-get/) which installs a development environment for building Git for Windows using GCC.
+This is the [Git for Windows SDK](https://github.com/git-for-windows/sdk), provided by an Inno Setup based wrapper around [MinGW](http://www.mingw.org/)'s [mingw-get](http://sourceforge.net/projects/mingw/files/Installer/mingw-get/) which installs a development environment based on MSYS for building Git for Windows using GCC.
 
 The Git executable being built is a native Windows application, it is not an MSYS (or Cygwin) application that uses a Unix emulation layer. Only the shell environment and some tools Git depends on are provided by MSYS. This is also the case for the [msysgit](https://github.com/msysgit/msysgit/) project, but as it contains "msys" in its name this has always been a source of confusion.
 
