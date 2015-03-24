@@ -258,16 +258,20 @@ begin
     end;
 end;
 
-function GetSelectedPackages:String;
+function GetOptionalPackages:String;
 var
     i:Integer;
 begin
+    Result:='';
+
     if PackagesList=nil then begin
         Exit;
     end;
 
     for i:=0 to PackagesList.Items.Count-1 do begin
-        if PackagesList.Checked[i] and (PackagesList.ItemObject[i]=nil) then begin
+        if (PackagesList.ItemObject[i]=nil)     // Check if this is a package (not a group)
+        and PackagesList.ItemEnabled[i]         // and an optional item (required ones are always installed)
+        and PackagesList.Checked[i] then begin  // that is selected.
             Result:=Result+' '+PackagesList.ItemCaption[i];
         end;
     end;
@@ -292,18 +296,41 @@ begin
         Log('Error: '+Msg);
         Result:=False;
     end else if CurPageID=PackagesPage.ID then begin
-        Packages:=GetSelectedPackages;
-        if Length(Packages)>0 then begin
-            Log('Installing the following packages: '+Packages);
+        // Do not run "mingw-get update" here because it takes quite a long time to download the catalogue files.
+        MinGWGet:=WizardDirValue+'\mingw\bin\mingw-get.exe';
+        MinGWGetLog:=GetMinGWGetLog;
 
-            // Do not run "mingw-get update" here because it takes quite a long time to download the catalogue files.
-            MinGWGet:=WizardDirValue+'\mingw\bin\mingw-get.exe';
-            MinGWGetLog:=GetMinGWGetLog;
+        PowerShell:=ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe');
+
+        Packages:=RequiredPackages;
+        Log('Installing the following required packages: '+Packages);
+
+        if Length(MinGWGetLog)>0 then begin
+            if FileExists(PowerShell) then begin
+                Exec(PowerShell,'"'+MinGWGet+' install '+Packages+' 2>&1 | %{ \"$_\" } | tee '+MinGWGetLog+'"',WizardDirValue,SW_SHOW,ewWaitUntilTerminated,ResultCode);
+            end else begin
+                Log('Error: Cannot create log file for mingw-get, PowerShell not found.');
+                MinGWGetLog:='';
+            end;
+        end;
+
+        if Length(MinGWGetLog)=0 then begin
+            Exec(MinGWGet,'install '+Packages,WizardDirValue,SW_SHOW,ewWaitUntilTerminated,ResultCode);
+        end;
+
+        if ResultCode<>0 then begin
+            Msg:='mingw-get returned an error while installing required packages. You may want to look into this when starting the development environment.';
+            SuppressibleMsgBox(Msg,mbError,MB_OK,IDOK);
+            Log('Error: '+Msg);
+        end;
+
+        Packages:=GetOptionalPackages;
+        if Length(Packages)>0 then begin
+            Log('Installing the following optional packages: '+Packages);
 
             if Length(MinGWGetLog)>0 then begin
-                PowerShell:=ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe');
                 if FileExists(PowerShell) then begin
-                    Exec(PowerShell,'"'+MinGWGet+' install '+Packages+' 2>&1 | %{ \"$_\" } | tee '+MinGWGetLog+'"',WizardDirValue,SW_SHOW,ewWaitUntilTerminated,ResultCode);
+                    Exec(PowerShell,'"'+MinGWGet+' install '+Packages+' 2>&1 | %{ \"$_\" } | tee -append '+MinGWGetLog+'"',WizardDirValue,SW_SHOW,ewWaitUntilTerminated,ResultCode);
                 end else begin
                     Log('Error: Cannot create log file for mingw-get, PowerShell not found.');
                     MinGWGetLog:='';
@@ -315,29 +342,25 @@ begin
             end;
 
             if ResultCode<>0 then begin
-                Msg:='mingw-get returned an error while installing packages. You may want to look into this when starting the development environment.';
+                Msg:='mingw-get returned an error while installing optional packages. You may want to look into this when starting the development environment.';
                 SuppressibleMsgBox(Msg,mbError,MB_OK,IDOK);
                 Log('Error: '+Msg);
             end;
+        end;
 
-            // Set the HOME environment variable if not set. This is better than changing /etc/profile
-            // because that file will be overwritten on msys-core upgrades.
-            HomePath:=ExpandConstant('{%HOME}');
+        // Set the HOME environment variable if not set. This is better than changing /etc/profile
+        // because that file will be overwritten on msys-core upgrades.
+        HomePath:=ExpandConstant('{%HOME}');
+        if not DirExists(HomePath) then begin
+            HomePath:=ExpandConstant('{%HOMEDRIVE}')+ExpandConstant('{%HOMEPATH}');
             if not DirExists(HomePath) then begin
-                HomePath:=ExpandConstant('{%HOMEDRIVE}')+ExpandConstant('{%HOMEPATH}');
-                if not DirExists(HomePath) then begin
-                    HomePath:=ExpandConstant('{%USERPROFILE}');
-                end;
-                if DirExists(HomePath) then begin
-                    SetArrayLength(Home,1);
-                    Home[0]:=HomePath;
-                    SetEnvStrings('HOME',False,False,Home);
-                end;
+                HomePath:=ExpandConstant('{%USERPROFILE}');
             end;
-
-            Result:=True;
-        end else begin
-            Result:=(SuppressibleMsgBox('You have not selected any packages. Are you sure you want to continue?',mbConfirmation,MB_YESNO,IDYES)=IDYES);
+            if DirExists(HomePath) then begin
+                SetArrayLength(Home,1);
+                Home[0]:=HomePath;
+                SetEnvStrings('HOME',False,False,Home);
+            end;
         end;
     end;
 end;
