@@ -89,8 +89,8 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 #include "xmlparser.inc.iss"
 
 const
-    // List packages required to build Git from sources, or those that must ship with the Git for Windows end-user installer.
-    RequiredPackages =
+    // List packages that must ship with the Git for Windows user installer.
+    UserPackages =
         'msys-asciidoc '
       + 'msys-automake '
       + 'msys-base '
@@ -121,8 +121,8 @@ const
       + 'mingw32-unzip '
     ;
 
-    // List packages needed to (re-)build the binaries Git depends on, or those for convenience tools.
-    RecommendedPackages =
+    // List packages that by default get installed by the Git for Windows SDK developer installer.
+    DeveloperPackages =
         'msys-bison '
       + 'msys-coreutils-ext '
       + 'msys-gcc '
@@ -252,8 +252,8 @@ begin
         end;
 
         // Enclose the package name by spaces for the lookup as one name may be a substring of another name.
-        Required:=(Pos(' '+PackageName+' ',' '+RequiredPackages+' ')>0);
-        Recommended:=(Pos(' '+PackageName+' ',' '+RecommendedPackages+' ')>0);
+        Required:=(Pos(' '+PackageName+' ',' '+UserPackages+' ')>0);
+        Recommended:=(Pos(' '+PackageName+' ',' '+DeveloperPackages+' ')>0);
         PackagesList.AddCheckBox(PackageName,PackageClass,Level,Required or Recommended,not Required,False,True,nil);
     end;
 end;
@@ -302,7 +302,7 @@ begin
 
         PowerShell:=ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe');
 
-        Packages:=RequiredPackages;
+        Packages:=UserPackages;
         Log('Installing the following required packages: '+Packages);
 
         if Length(MinGWGetLog)>0 then begin
