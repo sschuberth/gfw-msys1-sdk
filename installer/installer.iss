@@ -257,6 +257,29 @@ begin
     end;
 end;
 
+function GetListOfFiles(Path:String):TArrayOfString;
+var
+    i:Integer;
+    FindRec:TFindRec;
+begin
+    i:=0;
+    SetArrayLength(Result,i);
+
+    if FindFirst(Path,FindRec) then begin
+        try
+            repeat
+                if (FindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY)=0 then begin
+                    Inc(i);
+                    SetArrayLength(Result,i);
+                    Result[i-1]:=FindRec.Name;
+                end;
+            until not FindNext(FindRec);
+        finally
+            FindClose(FindRec);
+        end;
+    end;
+end;
+
 function GetOptionalPackages:String;
 var
     i:Integer;
@@ -284,7 +307,7 @@ end;
 function NextButtonClick(CurPageID:Integer):Boolean;
 var
     Msg,Packages,MinGWGet,MinGWGetLog,PowerShell,HomePath:String;
-    Home:TArrayOfString;
+    UserPackageDeps,Home:TArrayOfString;
     ResultCode:Integer;
 begin
     Result:=True;
@@ -321,6 +344,27 @@ begin
             Msg:='mingw-get returned an error while installing required packages. You may want to look into this when starting the development environment.';
             SuppressibleMsgBox(Msg,mbError,MB_OK,IDOK);
             Log('Error: '+Msg);
+        end;
+
+        // Capture the list of required packages and their dependencies before installing optional packages.
+        Packages:=WizardDirValue+'\share\installer\user-packages.txt'
+        if not FileExists(Packages) then begin
+            UserPackageDeps:=GetListOfFiles(WizardDirValue+'\mingw\var\cache\mingw-get\packages\*.tar.*');
+            if not SaveStringsToFile(Packages,UserPackageDeps,False) then begin
+                Msg:='Failed to save the list of user package files.';
+                SuppressibleMsgBox(Msg,mbError,MB_OK,IDOK);
+                Log('Error: '+Msg);
+            end;
+        end;
+
+        Packages:=WizardDirValue+'\share\installer\user-data.txt'
+        if not FileExists(Packages) then begin
+            UserPackageDeps:=GetListOfFiles(WizardDirValue+'\mingw\var\lib\mingw-get\data\*.xml');
+            if not SaveStringsToFile(Packages,UserPackageDeps,False) then begin
+                Msg:='Failed to save the list of user package data.';
+                SuppressibleMsgBox(Msg,mbError,MB_OK,IDOK);
+                Log('Error: '+Msg);
+            end;
         end;
 
         Packages:=GetOptionalPackages;
