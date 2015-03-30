@@ -91,25 +91,47 @@ ConfirmUninstall=This will uninstall %1 and remove all files in the installation
 const
     // List packages that must ship with the Git for Windows user installer.
     UserPackages =
-        'msys-asciidoc '
-      + 'msys-automake '
-      + 'msys-base '
-      + 'msys-coreutils '
-      + 'msys-docbook '
+        'msys-base '
+      + 'msys-coreutils-ext '
       + 'msys-getopt '
-      + 'msys-libtool '
-      + 'msys-libxslt '
+      + 'msys-mktemp '
       + 'msys-openssh '
       + 'msys-perl '
       + 'msys-python '
       + 'msys-rebase '
-      + 'msys-xmlto '
+      + 'msys-rsync '
+      + 'msys-vim '
 
       + 'mingw32-curl '
+      + 'mingw32-git '
+      + 'mingw32-gnupg '
+      + 'mingw32-openssl '
+      + 'mingw32-tk '
+      + 'mingw32-unzip '
+    ;
+
+    // List packages that by default get installed by the Git for Windows SDK developer installer.
+    DeveloperPackages =
+        'msys-asciidoc '
+      + 'msys-automake '
+      + 'msys-bison '
+      + 'msys-docbook '
+      + 'msys-gcc '
+      + 'msys-libcrypt '
+      + 'msys-libexpat '
+      + 'msys-libffi '
+      + 'msys-libminires '
+      + 'msys-libopenssl '
+      + 'msys-libtool '
+      + 'msys-libxslt '
+      + 'msys-pcre '
+      + 'msys-xmlto '
+      + 'msys-zlib '
+
       + 'mingw32-gcc '
       + 'mingw32-gcc-g++ '
+      + 'mingw32-gdb '
       + 'mingw32-gettext '
-      + 'mingw32-git '
       + 'mingw32-libcurl '
       + 'mingw32-libexpat '
       + 'mingw32-libiconv '
@@ -117,30 +139,7 @@ const
       + 'mingw32-libpcre '
       + 'mingw32-libz '
       + 'mingw32-mgwport '
-      + 'mingw32-tk '
-      + 'mingw32-unzip '
-    ;
-
-    // List packages that by default get installed by the Git for Windows SDK developer installer.
-    DeveloperPackages =
-        'msys-bison '
-      + 'msys-coreutils-ext '
-      + 'msys-gcc '
-      + 'msys-libcrypt '
-      + 'msys-libexpat '
-      + 'msys-libffi '
-      + 'msys-libminires '
-      + 'msys-libopenssl '
-      + 'msys-mktemp '
-      + 'msys-pcre '
-      + 'msys-rsync '
-      + 'msys-vim '
-      + 'msys-zlib '
-
-      + 'mingw32-gdb '
-      + 'mingw32-gnupg '
       + 'mingw32-ntldd '
-      + 'mingw32-openssl '
     ;
 
 var
