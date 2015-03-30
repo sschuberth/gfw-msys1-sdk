@@ -19,7 +19,7 @@
 #endif
 
 #define PACKAGES_REPO_CONFIG '-c diff.lzma.textconv=""lzma -d -c -qq | cat"" -c filter.lzma.smudge=""lzma -d"" -c filter.lzma.clean=""lzma -z""'
-#define PACKAGES_REPO_URL    'https://github.com/git-for-windows/sdk-packages.git'
+#define PACKAGES_REPO_URL    'https://github.com/sschuberth/gfw-msys1-packages.git'
 
 #define GIT_REPO_CONFIG '-c core.autocrlf=false'
 #define GIT_REPO_URL    'https://github.com/git-for-windows/git.git'

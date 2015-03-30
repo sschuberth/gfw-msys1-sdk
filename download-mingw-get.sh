@@ -50,7 +50,7 @@ mkdir -p root/mingw && cd root/mingw && (
 <profile project="MinGW" application="mingw-get">
     <repository uri="http://prdownloads.sourceforge.net/mingw/%F.xml.lzma?download">
     </repository>
-    <repository uri="https://github.com/git-for-windows/sdk-packages/blob/master/%F.xml.lzma?raw=true">
+    <repository uri="https://github.com/sschuberth/gfw-msys1-packages/blob/master/%F.xml.lzma?raw=true">
       <package-list catalogue="git-win-sdk-package-list" />
     </repository>
     <system-map id="default">
