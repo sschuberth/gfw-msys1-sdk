@@ -1,3 +1,5 @@
+[Code]
+
 // Returns the first quoted string contained in "Name" (without the quotes).
 function GetFirstQuotedString(Name:String):String;
 var

@@ -30,9 +30,9 @@
 Compression=lzma2/ultra
 LZMAUseSeparateProcess=yes
 OutputBaseFilename={#OUT_NAME}
-OutputDir=.
+OutputDir=..
 SolidCompression=yes
-SourceDir=..
+SourceDir=../..
 VersionInfoVersion={#FILE_VERSION}
 
 ; Installer-related
@@ -44,20 +44,20 @@ ChangesEnvironment=yes
 DefaultDirName={sd}\{#APP_NAME_NO_SPACES}
 DefaultGroupName={#APP_NAME}
 DisableReadyPage=yes
-InfoBeforeFile=installer\note.rtf
+InfoBeforeFile=share\installer\sdk-notes.rtf
 PrivilegesRequired=none
 Uninstallable=not IsPortableMode
 
 ; Cosmetic
-SetupIconFile=root\share\resources\git-sdk.ico
+SetupIconFile=share\resources\git-sdk.ico
 WizardImageBackColor=clWhite
 WizardImageStretch=no
-WizardImageFile=root\share\resources\git-large-sdk.bmp
-WizardSmallImageFile=root\share\resources\git-small-sdk.bmp
+WizardImageFile=share\resources\git-large-sdk.bmp
+WizardSmallImageFile=share\resources\git-small-sdk.bmp
 
 [Files]
 
-Source: root\*; DestDir: {app}; Flags: recursesubdirs
+Source: *; DestDir: {app}; Flags: recursesubdirs
 
 [Icons]
 
@@ -402,7 +402,7 @@ begin
             if DirExists(HomePath) then begin
                 SetArrayLength(Home,1);
                 Home[0]:=HomePath;
-                SetEnvStrings('HOME',False,False,Home);
+                SetEnvStrings('HOME',Home,False,False,False);
             end;
         end;
     end;
