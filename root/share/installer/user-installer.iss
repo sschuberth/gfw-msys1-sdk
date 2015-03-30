@@ -64,8 +64,59 @@ Name: assoc_sh; Description: Associate .sh files to be run with Bash; Types: def
 Name: consolefont; Description: Use a TrueType font in all console windows (not only for Git Bash)
 
 [Files]
-Source: *; DestDir: {app}; Flags: recursesubdirs replacesameversion sortfilesbyextension; AfterInstall: DeleteFromVirtualStore
-Source: share\installer\user-notes.rtf; DestDir: {app}; Flags: isreadme replacesameversion; AfterInstall: DeleteFromVirtualStore
+Source: Git Bash.VisualElementsManifest.xml; DestDir: {app}
+Source: share\installer\Git Bash.vbs; DestDir: {app}
+Source: share\installer\user-notes.rtf; DestDir: {app}; Flags: isreadme
+Source: share\resources\git.ico; DestDir: {app}\etc
+
+Source: etc\profile.d\*; DestDir: {app}\etc\profile.d
+Source: etc\inputrc; DestDir: {app}\etc
+Source: etc\profile; DestDir: {app}\etc
+Source: etc\vimrc; DestDir: {app}\etc
+Source: local\bin\*; DestDir: {app}\local\bin
+Source: mingw\etc\gitconfig; DestDir: {app}\mingw\etc
+
+; mingw-get files.
+Source: mingw\bin\mingw-get.exe; DestDir: {app}\mingw\bin
+Source: mingw\bin\mingw-get-info; DestDir: {app}\mingw\bin
+Source: mingw\libexec\mingw-get\*; DestDir: {app}\mingw\libexec\mingw-get
+
+; Files required to install the packages.
+Source: bin\msys-1.0.dll; DestDir: {app}\bin
+Source: bin\msys-iconv-2.dll; DestDir: {app}\bin
+Source: bin\msys-intl-8.dll; DestDir: {app}\bin
+Source: bin\msys-regex-1.dll; DestDir: {app}\bin
+Source: bin\tar.exe; DestDir: {app}\bin
+Source: bin\msys-lzma-5.dll; DestDir: {app}\bin
+Source: bin\lzma.exe; DestDir: {app}\bin
+Source: bin\xz.exe; DestDir: {app}\bin
+
+#define FileHandle
+#define FileLine
+
+#sub ProcessPackagesFile
+    #define FileName = FileRead(FileHandle)
+    Source: mingw\var\cache\mingw-get\packages\{#FileName}; DestDir: {app}\mingw\var\cache\mingw-get\packages; Flags: nocompression; AfterInstall: ExtractPackageFile
+#endsub
+
+#for {FileHandle = FileOpen("user-packages.txt"); FileHandle && !FileEof(FileHandle); ""} \
+    ProcessPackagesFile
+
+#if FileHandle
+    #expr FileClose(FileHandle)
+#endif
+
+#sub ProcessDataFile
+    #define FileName = FileRead(FileHandle)
+    Source: mingw\var\lib\mingw-get\data\{#FileName}; DestDir: {app}\mingw\var\lib\mingw-get\data
+#endsub
+
+#for {FileHandle = FileOpen("user-data.txt"); FileHandle && !FileEof(FileHandle); ""} \
+    ProcessDataFile
+
+#if FileHandle
+    #expr FileClose(FileHandle)
+#endif
 
 [Icons]
 Name: {group}\Git GUI; Filename: {app}\bin\wish.exe; Parameters: """{app}\libexec\git-core\git-gui"""; WorkingDir: %HOMEDRIVE%%HOMEPATH%; IconFilename: {app}\etc\git.ico
@@ -154,6 +205,33 @@ Type: dirifempty; Name: {app}\home
 #include "environment.inc.iss"
 #include "putty.inc.iss"
 #include "modules.inc.iss"
+
+procedure ExtractPackageFile;
+var
+    AppDir,PackageFile,FileFormat,PrefixDir:String;
+    ResultCode:Integer;
+begin
+    AppDir:=ExpandConstant('{app}');
+
+    // Make the current file path relative to the application directcory.
+    PackageFile:=CurrentFileName;
+    Delete(PackageFile,1,Length('{app}\'));
+
+    // Strip the leading period character.
+    FileFormat:=ExtractFileExt(PackageFile);
+    Delete(FileFormat,1,1);
+
+    PrefixDir:='.'
+    if Pos('-mingw32-',ExtractFileName(PackageFile))>0 then begin
+        PrefixDir:='mingw';
+    end;
+
+    ResultCode:=0;
+
+    if (not Exec(AppDir+'\bin\tar.exe','--use-compress-program bin\'+FileFormat+'.exe -x -f '+PackageFile+' -C '+PrefixDir,AppDir,SW_HIDE,ewWaitUntilTerminated,ResultCode)) or (ResultCode<>0) then begin
+        Log('Failed to extract "'+PackageFile+'" using the "'+FileFormat+'" program (code '+IntToStr(ResultCode)+').');
+    end;
+end;
 
 function CreateHardLink(lpFileName,lpExistingFileName:String;lpSecurityAttributes:Integer):Boolean;
 #ifdef UNICODE
