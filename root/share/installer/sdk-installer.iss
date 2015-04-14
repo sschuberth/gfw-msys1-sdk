@@ -128,6 +128,7 @@ const
       + 'msys-xmlto '
       + 'msys-zlib '
 
+      + 'mingw32-7z '
       + 'mingw32-gcc '
       + 'mingw32-gcc-g++ '
       + 'mingw32-gdb '
