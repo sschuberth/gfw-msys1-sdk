@@ -3,7 +3,7 @@
 . download-tool-lib.sh
 
 # Limit the number of RSS feed entries.
-url=http://sourceforge.net/projects/mingw/rss?limit=500
+url=http://sourceforge.net/projects/mingw/rss?path=/Installer/mingw-get&limit=500
 
 # Parse the RSS feed for the most recent download link and construct a line with the file name and URL separated by a
 # tab character so we can easily separate it via "cut" later.
