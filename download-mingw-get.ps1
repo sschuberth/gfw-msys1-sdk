@@ -14,10 +14,8 @@ if (!(Test-Path $file)) {
 }
 
 # Extract the ZIP archive (silently overwriting existing files).
-$shell = New-Object -ComObject Shell.Application
-$zip = $shell.NameSpace((Get-Item -Path $file -Verbose).FullName)
-$dest = $shell.namespace((Get-Item -Path "$PSScriptRoot\root\mingw" -Verbose).FullName)
-$dest.CopyHere($zip.items(), 0x4 -bOr 0x10 -bOr 0x200 -bOr 0x400)
+[System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem')
+[System.IO.Compression.ZipFile]::ExtractToDirectory($file, "$PSScriptRoot\root\mingw")
 
 # Update the catalogue of mingw-get packages.
 @'
