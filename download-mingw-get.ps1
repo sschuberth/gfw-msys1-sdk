@@ -17,7 +17,7 @@ if (!(Test-Path $file)) {
 $shell = New-Object -ComObject Shell.Application
 $zip = $shell.NameSpace((Get-Item -Path $file -Verbose).FullName)
 $dest = $shell.namespace((Get-Item -Path "$PSScriptRoot\root\mingw" -Verbose).FullName)
-$dest.CopyHere($zip.items(), 0x04 -bOr 0x10)
+$dest.CopyHere($zip.items(), 0x4 -bOr 0x10 -bOr 0x200 -bOr 0x400)
 
 # Update the catalogue of mingw-get packages.
 @'
