@@ -1,10 +1,10 @@
 # Determine the last mingw-get release from the RSS feed.
-$url = "http://sourceforge.net/projects/mingw/rss?path=/Installer/mingw-get&limit=200"
+$url = 'http://sourceforge.net/projects/mingw/rss?path=/Installer/mingw-get&limit=200'
 $feed = [xml](Invoke-WebRequest $url)
-$item = $feed.rss.channel.item | Where-Object { $_.title.InnerText -CMatch "mingw-get-[0-9]+(\.[0-9]+){1,}-mingw32-.+-bin\.zip" } | Select-Object -First 1
+$item = $feed.rss.channel.item | Where-Object { $_.title.InnerText -CMatch 'mingw-get-[0-9]+(\.[0-9]+){1,}-mingw32-.+-bin\.zip' } | Select-Object -First 1
 
 # Download the ZIP archive if it does not exist yet.
-$file = $PSScriptRoot + "\" + [System.IO.Path]::GetFileName($item.title.InnerText)
+$file = $PSScriptRoot + '\' + [System.IO.Path]::GetFileName($item.title.InnerText)
 
 if (!(Test-Path $file)) {
     # Use a fake UserAgent to make the SourceForge redirection work.
