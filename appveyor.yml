@@ -1,6 +1,7 @@
 version: 1.0.{build}
 build_script:
 - ps: >-
+    $PSScriptRoot
     $PSVersionTable.PSVersion.Major
 
     # Determine the last mingw-get release from the RSS feed.
