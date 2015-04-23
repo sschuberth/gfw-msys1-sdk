@@ -1,35 +1,34 @@
-build_script:
-  - ps: >-
-    $url = "http://sourceforge.net/projects/mingw/rss?path=/Installer/mingw-get&limit=200"
-    $feed = [xml](Invoke-WebRequest $url)
-    $item = $feed.rss.channel.item | Where-Object { $_.title.InnerText -CMatch "mingw-get-[0-9]+(\.[0-9]+){1,}-mingw32-.+-bin\.zip" } | Select-Object -First 1
+build_script: |
+  $url = "http://sourceforge.net/projects/mingw/rss?path=/Installer/mingw-get&limit=200"
+  $feed = [xml](Invoke-WebRequest $url)
+  $item = $feed.rss.channel.item | Where-Object { $_.title.InnerText -CMatch "mingw-get-[0-9]+(\.[0-9]+){1,}-mingw32-.+-bin\.zip" } | Select-Object -First 1
 
-    $file = $PSScriptRoot + "\" + [System.IO.Path]::GetFileName($item.title.InnerText)
+  $file = $PSScriptRoot + "\" + [System.IO.Path]::GetFileName($item.title.InnerText)
 
-    if (!(Test-Path $file)) {
-        Invoke-WebRequest $item.link -OutFile $file -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
-    } else {
-        write "Skipping download, $file already exists."
-    }
+  if (!(Test-Path $file)) {
+      Invoke-WebRequest $item.link -OutFile $file -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
+  } else {
+      write "Skipping download, $file already exists."
+  }
 
-    $shell = New-Object -ComObject Shell.Application
-    $zip = $shell.NameSpace((Get-Item -Path $file -Verbose).FullName)
-    $dest = $shell.namespace((Get-Item -Path "$PSScriptRoot\root\mingw" -Verbose).FullName)
-    $dest.CopyHere($zip.items(), 0x04 -bOr 0x10)
+  $shell = New-Object -ComObject Shell.Application
+  $zip = $shell.NameSpace((Get-Item -Path $file -Verbose).FullName)
+  $dest = $shell.namespace((Get-Item -Path "$PSScriptRoot\root\mingw" -Verbose).FullName)
+  $dest.CopyHere($zip.items(), 0x04 -bOr 0x10)
 
-    @'
-    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-    <profile project="MinGW" application="mingw-get">
-        <repository uri="http://prdownloads.sourceforge.net/mingw/%F.xml.lzma?download">
-        </repository>
-        <repository uri="https://github.com/sschuberth/gfw-msys1-packages/blob/master/%F.xml.lzma?raw=true">
-          <package-list catalogue="git-win-sdk-package-list" />
-        </repository>
-        <system-map id="default">
-          <sysroot subsystem="mingw32" path="%R" />
-          <sysroot subsystem="msys" path="%R/../" />
-        </system-map>
-    </profile>
-    '@ | Out-File "$PSScriptRoot\root\mingw\var\lib\mingw-get\data\profile.xml" -Encoding UTF8
+  @'
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <profile project="MinGW" application="mingw-get">
+      <repository uri="http://prdownloads.sourceforge.net/mingw/%F.xml.lzma?download">
+      </repository>
+      <repository uri="https://github.com/sschuberth/gfw-msys1-packages/blob/master/%F.xml.lzma?raw=true">
+        <package-list catalogue="git-win-sdk-package-list" />
+      </repository>
+      <system-map id="default">
+        <sysroot subsystem="mingw32" path="%R" />
+        <sysroot subsystem="msys" path="%R/../" />
+      </system-map>
+  </profile>
+  '@ | Out-File "$PSScriptRoot\root\mingw\var\lib\mingw-get\data\profile.xml" -Encoding UTF8
 
-    & "$PSScriptRoot\root\mingw\bin\mingw-get.exe" update
+  & "$PSScriptRoot\root\mingw\bin\mingw-get.exe" update
