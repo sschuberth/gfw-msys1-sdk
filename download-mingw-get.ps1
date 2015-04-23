@@ -33,4 +33,4 @@ if (!(Test-Path $file)) {
 </profile>
 '@ | Out-File "$PSScriptRoot\root\mingw\var\lib\mingw-get\data\profile.xml" -Encoding UTF8
 
-& "$PSScriptRoot\root\mingw\bin\mingw-get.exe" update
+& "$PSScriptRoot\root\mingw\bin\mingw-get.exe" update 2>&1 | %{ "$_" }
