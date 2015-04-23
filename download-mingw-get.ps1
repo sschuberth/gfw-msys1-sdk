@@ -33,6 +33,6 @@ $dest.CopyHere($zip.items(), 0x04 -bOr 0x10)
       <sysroot subsystem="msys" path="%R/../" />
     </system-map>
 </profile>
-'@ | Out-File root\mingw\var\lib\mingw-get\data\profile.xml -Encoding UTF8
+'@ | Out-File .\root\mingw\var\lib\mingw-get\data\profile.xml -Encoding UTF8
 
-root\mingw\bin\mingw-get.exe update
+.\root\mingw\bin\mingw-get.exe update
