@@ -1,2 +1,3 @@
+clone_depth: 1
 build_script:
     - ps: .\download-mingw-get.ps1
