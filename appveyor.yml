@@ -1,2 +1,2 @@
 build_script:
-    - ps: "&" .\download-mingw-get.ps1
+    - ps: .\download-mingw-get.ps1
