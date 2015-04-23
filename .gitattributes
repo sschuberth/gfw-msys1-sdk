@@ -2,5 +2,6 @@
 /root/share/InnoSetup/ -text
 *.cmd eol=crlf
 *.iss eol=crlf
+*.ps1 eol=crlf
 *.vbs eol=crlf
 *.sh eol=lf
