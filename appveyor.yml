@@ -1,9 +1,6 @@
 version: 1.0.{build}
 build_script:
 - ps: >-
-    $PSScriptRoot
-    $PSVersionTable.PSVersion.Major
-
     # Determine the last mingw-get release from the RSS feed.
 
     $url = "http://sourceforge.net/projects/mingw/rss?path=/Installer/mingw-get&limit=200"
@@ -15,7 +12,7 @@ build_script:
 
     # Download the ZIP archive if it does not exist yet.
 
-    $file = $PSScriptRoot + "\" + [System.IO.Path]::GetFileName($item.title.InnerText)
+    $file = $env:APPVEYOR_BUILD_FOLDER + "\" + [System.IO.Path]::GetFileName($item.title.InnerText)
 
 
     if (!(Test-Path $file)) {
@@ -32,7 +29,7 @@ build_script:
 
     $zip = $shell.NameSpace((Get-Item -Path $file -Verbose).FullName)
 
-    $dest = $shell.namespace((Get-Item -Path "$PSScriptRoot\root\mingw" -Verbose).FullName)
+    $dest = $shell.namespace((Get-Item -Path "$env:APPVEYOR_BUILD_FOLDER\root\mingw" -Verbose).FullName)
 
     $dest.CopyHere($zip.items(), 0x04 -bOr 0x10)
 
@@ -55,7 +52,7 @@ build_script:
         </system-map>
     </profile>
 
-    '@ | Out-File "$PSScriptRoot\root\mingw\var\lib\mingw-get\data\profile.xml" -Encoding UTF8
+    '@ | Out-File "$env:APPVEYOR_BUILD_FOLDER\root\mingw\var\lib\mingw-get\data\profile.xml" -Encoding UTF8
 
 
-    & "$PSScriptRoot\root\mingw\bin\mingw-get.exe" update
+    & "$env:APPVEYOR_BUILD_FOLDER\root\mingw\bin\mingw-get.exe" update
