@@ -1,6 +1,8 @@
 version: 1.0.{build}
 build_script:
 - ps: >-
+    $PSVersionTable.PSVersion.Major
+
     # Determine the last mingw-get release from the RSS feed.
 
     $url = "http://sourceforge.net/projects/mingw/rss?path=/Installer/mingw-get&limit=200"
