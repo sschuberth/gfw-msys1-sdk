@@ -4,7 +4,7 @@ $feed = [xml](Invoke-WebRequest $url)
 $item = $feed.rss.channel.item | Where-Object { $_.title.InnerText -CMatch "mingw-get-[0-9]+(\.[0-9]+){1,}-mingw32-.+-bin\.zip" } | Select-Object -First 1
 
 # Download the ZIP archive if it does not exist yet.
-$file = [System.IO.Path]::GetFileName($item.title.InnerText)
+$file = $PSScriptRoot + "\" + [System.IO.Path]::GetFileName($item.title.InnerText)
 
 if (!(Test-Path $file)) {
     # Use a fake UserAgent to make the SourceForge redirection work.
@@ -16,7 +16,7 @@ if (!(Test-Path $file)) {
 # Extract the ZIP archive (silently overwriting existing files).
 $shell = New-Object -ComObject Shell.Application
 $zip = $shell.NameSpace((Get-Item -Path $file -Verbose).FullName)
-$dest = $shell.namespace((Get-Item -Path "root\mingw" -Verbose).FullName)
+$dest = $shell.namespace((Get-Item -Path "$PSScriptRoot\root\mingw" -Verbose).FullName)
 $dest.CopyHere($zip.items(), 0x04 -bOr 0x10)
 
 # Update the catalogue of mingw-get packages.
@@ -33,6 +33,6 @@ $dest.CopyHere($zip.items(), 0x04 -bOr 0x10)
       <sysroot subsystem="msys" path="%R/../" />
     </system-map>
 </profile>
-'@ | Out-File .\root\mingw\var\lib\mingw-get\data\profile.xml -Encoding UTF8
+'@ | Out-File "$PSScriptRoot\root\mingw\var\lib\mingw-get\data\profile.xml" -Encoding UTF8
 
-.\root\mingw\bin\mingw-get.exe update
+& "$PSScriptRoot\root\mingw\bin\mingw-get.exe" update
