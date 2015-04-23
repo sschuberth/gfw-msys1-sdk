@@ -8,7 +8,7 @@ $file = $PSScriptRoot + "\" + [System.IO.Path]::GetFileName($item.title.InnerTex
 
 if (!(Test-Path $file)) {
     # Use a fake UserAgent to make the SourceForge redirection work.
-    Invoke-WebRequest $item.link -OutFile $file -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
+    Invoke-WebRequest $item.link -OutFile $file -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox -Verbose
 } else {
     write "Skipping download, $file already exists."
 }
