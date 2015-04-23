@@ -1,0 +1,2 @@
+build_script:
+    - ps: Invoke-Expression .\download-mingw-get.ps1
