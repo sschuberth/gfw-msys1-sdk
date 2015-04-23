@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. download-tool-lib.sh
+. ./download-tool-lib.sh
 
 # Limit the number of RSS feed entries.
 url=http://sourceforge.net/projects/mingw/rss?path=/Installer/mingw-get&limit=500
