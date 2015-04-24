@@ -13,9 +13,19 @@ if (!(Test-Path $file)) {
     write "Skipping download, $file already exists."
 }
 
-# Extract the ZIP archive (silently overwriting existing files).
-[System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem')
-[System.IO.Compression.ZipFile]::ExtractToDirectory($file, "$PSScriptRoot\root\mingw")
+# Extract the ZIP archive.
+if ($env:CI) {
+    # As "CopyHere" does not work on CI for some reason, use .NET instead. Note that this
+    # throws an IOException if a destination file already exists.
+    [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem')
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($file, "$PSScriptRoot\root\mingw")
+} else {
+    # Use the "CopyHere" from the Shell Application COM object to silently overwrite existing files.
+    $shell = New-Object -ComObject Shell.Application
+    $zip = $shell.NameSpace((Get-Item -Path $file -Verbose).FullName)
+    $dest = $shell.NameSpace((Get-Item -Path "$PSScriptRoot\root\mingw" -Verbose).FullName)
+    $dest.CopyHere($zip.items(), 0x4 -bOr 0x10 -bOr 0x200 -bOr 0x400)
+}
 
 # Update the catalogue of mingw-get packages.
 @'
