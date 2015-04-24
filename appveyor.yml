@@ -1,11 +1,8 @@
 before_build:
     - ps: .\download-mingw-get.ps1
 
-build_script: |
-    git describe --tags --match "v[0-9]*"
-    $test44 = & "git" describe --tags --match "v[0-9]*"
+build_script: ps |
     $env:APP_VERSION = git describe --tags --match "v[0-9]*"
-    write $env:APP_VERSION
     root\share\InnoSetup\ISCC.exe root\share\installer\sdk-installer.iss
 
 artifacts:
