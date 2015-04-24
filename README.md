@@ -1,5 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/a4ojq1oafw0r1pjm/branch/master?svg=true)](https://ci.appveyor.com/project/sschuberth/gfw-msys1-sdk/branch/master)
 
+**Note:** This project is more or less deprecated in favor of the [MSYS2](http://msys2.github.io/)-based [Git SDK installer](https://github.com/git-for-windows/build-extra/tree/master/sdk-installer) that is being created as part of the [Git for Windows](https://github.com/git-for-windows) organization.
+
 # Introduction
 
 This is the [Git for Windows SDK](https://github.com/sschuberth/gfw-msys1-sdk), provided by an Inno Setup based wrapper around [MinGW](http://www.mingw.org/)'s [mingw-get](http://sourceforge.net/projects/mingw/files/Installer/mingw-get/) which installs a development environment based on MSYS for building Git for Windows using GCC.
