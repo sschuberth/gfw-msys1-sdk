@@ -1,9 +1,6 @@
 before_build:
     - ps: .\download-mingw-get.ps1
 
-cache:
-    - mingw-get-*-bin.zip
-
 build_script: |
     git describe --tags --match "v[0-9]*"
     $test44 = & "git" describe --tags --match "v[0-9]*"
