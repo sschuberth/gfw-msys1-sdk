@@ -1,6 +1,11 @@
 #!/bin/sh
 
-. ./download-tool-lib.sh
+. ./lib-tools.sh
+
+if [ -z "$download" ]; then
+    echo "ERROR: No suitable download tool found."
+    exit 1
+fi
 
 # Download the most recent Inno Setup version.
 file="is-unicode.exe"

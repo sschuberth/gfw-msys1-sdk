@@ -1,6 +1,21 @@
 #!/bin/sh
 
-. ./download-tool-lib.sh
+. ./lib-tools.sh
+
+if [ -z "$download" ]; then
+    echo "ERROR: No suitable download tool found."
+    exit 1
+fi
+
+if [ -z "$unpack" ]; then
+    echo "ERROR: No suitable unpacking tool found."
+    exit 1
+fi
+
+if [ -z "$sed_version" ]; then
+    echo "ERROR: No sed tool found."
+    exit 1
+fi
 
 # Limit the number of RSS feed entries.
 url=http://sourceforge.net/projects/mingw/rss?path=/Installer/mingw-get&limit=500

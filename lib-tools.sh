@@ -7,9 +7,6 @@ elif [ -f "$(type -p wget)" ]; then
     download="wget"
     download_args_rss="-q -O -"
     download_args="-N -O"
-else
-    echo "ERROR: No suitable download tool found."
-    exit 1
 fi
 
 # Find a suitable unpacking tool.
@@ -19,9 +16,6 @@ if [ -f "$(type -p xz)" ]; then
 elif [ -f "$(type -p unzip)" ]; then
     unpack="unzip -o"
     ext="\.zip"
-else
-    echo "ERROR: No suitable unpacking tool found."
-    exit 1
 fi
 
 sed_version=$(sed --version 2> /dev/null)
