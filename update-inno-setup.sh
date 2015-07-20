@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. download-tool-lib.sh
+. ./download-tool-lib.sh
 
 # Download the most recent Inno Setup version.
 file="is-unicode.exe"
