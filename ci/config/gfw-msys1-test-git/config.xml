@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Test Git for Windows using the latest SDK.</description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>30</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <org.jvnet.jenkins.plugins.nodelabelparameter.NodeParameterDefinition plugin="nodelabelparameter@1.5.1">
+          <name>TEST_NODE</name>
+          <description>The node to run the tests on.</description>
+          <allowedSlaves>
+            <string>ALL (no restriction)</string>
+          </allowedSlaves>
+          <defaultSlaves>
+            <string>master</string>
+          </defaultSlaves>
+          <triggerIfResult>multiSelectionDisallowed</triggerIfResult>
+          <allowMultiNodeSelection>false</allowMultiNodeSelection>
+          <triggerConcurrentBuilds>false</triggerConcurrentBuilds>
+          <ignoreOfflineNodes>false</ignoreOfflineNodes>
+          <nodeEligibility class="org.jvnet.jenkins.plugins.nodelabelparameter.node.AllNodeEligibility"/>
+        </org.jvnet.jenkins.plugins.nodelabelparameter.NodeParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>TEST_RANGE</name>
+          <description>Range of test numbers to run (thousands digit only).</description>
+          <defaultValue>0-9</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.22">
+      <autoRebuild>false</autoRebuild>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@1.8.4">
+      <maxConcurrentPerNode>0</maxConcurrentPerNode>
+      <maxConcurrentTotal>0</maxConcurrentTotal>
+      <categories>
+        <string>Expensive</string>
+      </categories>
+      <throttleEnabled>true</throttleEnabled>
+      <throttleOption>category</throttleOption>
+    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>true</concurrentBuild>
+  <builders>
+    <hudson.plugins.parameterizedtrigger.TriggerBuilder plugin="parameterized-trigger@2.26">
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+          <configs>
+            <org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter plugin="nodelabelparameter@1.5.1">
+              <name>KILL_NODE</name>
+              <nodeLabel>${TEST_NODE}</nodeLabel>
+            </org.jvnet.jenkins.plugins.nodelabelparameter.parameterizedtrigger.NodeLabelBuildParameter>
+          </configs>
+          <projects>gfw-msys1-kill-processes</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <block>
+            <buildStepFailureThreshold>
+              <name>FAILURE</name>
+              <ordinal>2</ordinal>
+              <color>RED</color>
+              <completeBuild>true</completeBuild>
+            </buildStepFailureThreshold>
+            <unstableThreshold>
+              <name>UNSTABLE</name>
+              <ordinal>1</ordinal>
+              <color>YELLOW</color>
+              <completeBuild>true</completeBuild>
+            </unstableThreshold>
+            <failureThreshold>
+              <name>FAILURE</name>
+              <ordinal>2</ordinal>
+              <color>RED</color>
+              <completeBuild>true</completeBuild>
+            </failureThreshold>
+          </block>
+          <buildAllNodesWithLabel>false</buildAllNodesWithLabel>
+        </hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.TriggerBuilder>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.35">
+      <project>gfw-msys1-sdk-build-installer</project>
+      <filter>ci/*</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.35">
+      <project>gfw-msys1-sdk-test-installer</project>
+      <filter>Git-SDK.tar.gz</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.35">
+      <project>gfw-msys1-build-git</project>
+      <filter>git.tar.gz</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.tasks.Shell>
+      <command>tar -xf Git-SDK.tar.gz
+rm Git-SDK.tar.gz
+
+tar -xf git.tar.gz -C Git-SDK
+rm git.tar.gz</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.BatchFile>
+      <command>@echo off&#xd;
+&#xd;
+rem Shorten the path for t3200-branch.sh (test 26) and t9700-perl-git.sh (test 39).&#xd;
+if not exist g mklink /j g Git-SDK\git</command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.Shell>
+      <command>cd Git-SDK/etc/profile.d &amp;&amp;
+
+# Trigger testing Git on shell login.
+jobs=$(expr $(nproc) \* 2)
+
+cat &gt; zzz.sh &lt;&lt; EOF
+# Under &quot;Publish TAP Results&quot; for &quot;Test results&quot; use: Git-SDK/git/t/test-results/*.out
+# Takes slightly more than 3 hours to complete (running multiple parallel job is currently broken in make).
+#cd t &amp;&amp; GIT_TEST_OPTS=\&quot;--tee\&quot; make -j $jobs -k || true
+#tar -czf test-results.tar.gz test-results/t[$TEST_RANGE]*
+
+# Under &quot;Publish TAP Results&quot; for &quot;Test results&quot; use: test-results/*.sh
+# Takes slightly more than 1 hour to complete (broken right now due to some Perl issue about &quot;new&quot; in package &quot;TAP::Harness::Archive&quot;).
+cd &quot;$WORKSPACE/g/t&quot; &amp;&amp; prove -j $jobs -a test-results.tar.gz ./t[$TEST_RANGE]*.sh || true
+
+logout
+EOF</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.BatchFile>
+      <command>call ci\start_login_shell.cmd</command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.Shell>
+      <command>name=test-results
+file=Git-SDK/git/t/$name.tar.gz
+if [ -f $file ]; then
+    mkdir -p $name
+    tar -C $name -xf $file
+fi</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder plugin="groovy-postbuild@2.2">
+      <script plugin="script-security@1.13">
+        <script>/*
+ * Parse prove&apos;s Test Summary Report
+ */
+
+def patternSummary = ~/^.*\(.*Failed\: (\d+)\).*$/
+def patternDetails = ~/^.*Failed test.*\:.*$/
+def map = [:]
+def prevLine = &quot;Test Summary Report&quot;
+def failedCount = 0
+
+manager.build.logFile.eachLine { line -&gt;
+    matcher = patternDetails.matcher(line)
+    if (matcher?.matches()) {
+        map[prevLine] = line
+        matcher = patternSummary.matcher(prevLine)
+        if (matcher?.matches()) {
+            failedCount += matcher.group(1).toInteger()
+        }
+    }
+    prevLine = line
+}
+
+if (map.size() &gt; 0) {
+    summary = manager.createSummary(&quot;error.gif&quot;)
+    summary.appendText(&quot;The following test(s) failed:&lt;ul&gt;&quot;, false)
+    map.sort().each {
+        summary.appendText(&quot;&lt;li&gt;&lt;b&gt;$it.key:&lt;/b&gt;$it.value&lt;/li&gt;&quot;, false)
+    }
+    summary.appendText(&quot;&lt;/ul&gt;&quot;, false)
+    manager.addShortText(failedCount + &quot; test(s) failed&quot;, &quot;grey&quot;, &quot;white&quot;, &quot;0px&quot;, &quot;white&quot;)
+}</script>
+        <sandbox>false</sandbox>
+      </script>
+      <behavior>0</behavior>
+      <runForMatrixParent>false</runForMatrixParent>
+    </org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder>
+    <org.tap4j.plugin.TapPublisher plugin="tap@1.22">
+      <testResults>test-results/*.sh</testResults>
+      <failIfNoResults>true</failIfNoResults>
+      <failedTestsMarkBuildAsFailure>false</failedTestsMarkBuildAsFailure>
+      <outputTapToConsole>false</outputTapToConsole>
+      <enableSubtests>false</enableSubtests>
+      <discardOldReports>false</discardOldReports>
+      <todoIsFailure>false</todoIsFailure>
+      <includeCommentDiagnostics>false</includeCommentDiagnostics>
+      <validateNumberOfTests>true</validateNumberOfTests>
+      <planRequired>true</planRequired>
+      <verbose>false</verbose>
+    </org.tap4j.plugin.TapPublisher>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>Git-SDK/git/t/test-results.tar.gz</artifacts>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+    </hudson.tasks.ArtifactArchiver>
+    <hudson.tasks.Mailer plugin="mailer@1.15">
+      <recipients>sschuberth@gmail.com</recipients>
+      <dontNotifyEveryUnstableBuild>true</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.25">
+      <deleteDirs>false</deleteDirs>
+      <cleanupParameter></cleanupParameter>
+      <externalDelete></externalDelete>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+    <hudson.plugins.build__timeout.BuildTimeoutWrapper plugin="build-timeout@1.14.1">
+      <strategy class="hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy">
+        <timeoutMinutes>240</timeoutMinutes>
+      </strategy>
+      <operationList/>
+    </hudson.plugins.build__timeout.BuildTimeoutWrapper>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.6"/>
+  </buildWrappers>
+</project>

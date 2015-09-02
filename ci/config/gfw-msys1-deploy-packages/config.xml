@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Deploy created MSYS1 / MinGW packages to &lt;a href=&quot;https://bintray.com/git-for-windows/sdk-packages&quot;&gt;Bintray&lt;/a&gt;.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.plugins.copyartifact.BuildSelectorParameter plugin="copyartifact@1.35">
+          <name>PACKAGES_BUILD</name>
+          <description>The build whose package artifacts to deploy.</description>
+          <defaultSelector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+        </hudson.plugins.copyartifact.BuildSelectorParameter>
+        <hudson.model.StringParameterDefinition>
+          <name>PACKAGES_LICENSE</name>
+          <description>The software license of the packages to deploy (only required if packages are being newly created).</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>BINTRAY_USER</name>
+          <description>Your Bintray user name.</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>BINTRAY_API_KEY</name>
+          <description>Your Bintray &lt;a href=&quot;https://bintray.com/user/edit/tab/apikey&quot;&gt;API key&lt;/a&gt;.</description>
+          <defaultValue>dzl+sB5mAgS3xDNIbJX+Ww==</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.22">
+      <autoRebuild>false</autoRebuild>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@1.8.4">
+      <maxConcurrentPerNode>0</maxConcurrentPerNode>
+      <maxConcurrentTotal>0</maxConcurrentTotal>
+      <throttleEnabled>false</throttleEnabled>
+      <throttleOption>project</throttleOption>
+    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.35">
+      <project></project>
+      <filter>Git-SDK/packages/*/*.list, Git-SDK/packages/*/*.tar.lzma</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.ParameterizedBuildSelector">
+        <parameterName>PACKAGES_BUILD</parameterName>
+      </selector>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.tasks.Shell>
+      <command>set +x
+
+# See https://bintray.com/docs/api/
+# and https://github.com/bintray/bintray-examples/blob/master/bash-example/pushToBintray.sh.
+
+BINTRAY_API=https://api.bintray.com
+
+BINTRAY_SUBJECT=git-for-windows
+BINTRAY_REPO=sdk-packages
+
+CURL_AUTH=&quot;curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H Content-Type:application/json -H Accept:application/json&quot;
+
+package_exists() {
+    local PCK_NAME=$1
+
+    result=$(curl --write-out %{http_code} --silent --output /dev/null -X GET ${BINTRAY_API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${PCK_NAME})
+    if [ $result -eq 200 ]; then
+        return 0
+    else
+        return $result
+    fi
+}
+
+create_package() {
+    local PCK_NAME=$1
+    local PCK_LICENSE=$2
+
+    data=&quot;{
+        \&quot;name\&quot;: \&quot;${PCK_NAME}\&quot;,
+        \&quot;licenses\&quot;: [\&quot;${PCK_LICENSE}\&quot;],
+        \&quot;github_repo\&quot;: \&quot;${BINTRAY_SUBJECT}/${BINTRAY_REPO}\&quot;,
+        \&quot;public_download_numbers\&quot;: \&quot;true\&quot;,
+    }&quot;
+
+    result=$(${CURL_AUTH} -X POST -d &quot;${data}&quot; ${BINTRAY_API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO})
+    if echo &quot;$result&quot; | grep -q &quot;\&quot;message\&quot;&quot;; then
+        echo &quot;Error: $result&quot;
+        return 1
+    fi
+    return 0
+}
+
+upload_content() {
+    local PCK_NAME=$1
+    local PCK_VERSION=$2
+    local PCK_FILE=$3
+    local PCK_PUBLISH=$4
+
+    result=$(${CURL_AUTH} --write-out %{http_code} --silent --output /dev/null -T ${PCK_FILE} ${BINTRAY_API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${PCK_NAME}/${PCK_VERSION}/${PCK_FILE}?publish=${PCK_PUBLISH})
+    if [ $result -eq 201 ]; then
+        return 0
+    else
+        return $result
+    fi
+}
+
+for path in Git-SDK/packages/*; do
+    pushd $path &gt; /dev/null
+    list=$(ls *.list)
+
+    # This is how mgwport extracts the package name, revision and version from the file name.
+    PF=${list%.list}
+    PN=${PF%%-[0-9]*}
+    PR=${PF##*-}
+    PV=$(echo ${PF} | sed -e &quot;s/${PN}\-\(.*\)\-${PR}$/\1/&quot;)
+
+    echo &quot;Checking if package &apos;$PN&apos; exists...&quot;
+    if package_exists $PN; then
+        echo &quot;Package &apos;$PN&apos; already exists&quot;
+    else
+        echo &quot;Package &apos;$PN&apos; does not exist yet&quot;
+
+        echo &quot;Creating package &apos;$PN&apos;...&quot;
+        if create_package $PN $PACKAGES_LICENSE; then
+            echo &quot;Package &apos;$PN&apos; successfully created&quot;
+        else
+            echo &quot;Package &apos;$PN&apos; cannot be created&quot;
+            exit 1
+        fi
+    fi
+
+    echo &quot;Deploying package &apos;$PN&apos;, version &apos;$PV&apos;, revision &apos;$PR&apos;...&quot;
+
+    while read file; do
+        echo &quot;Uploading file &apos;$file&apos;...&quot;
+        if upload_content $PN $PV-$PR $file 1; then
+            echo &quot;File &apos;$file&apos; successfully uploaded&quot;
+        else
+            echo &quot;File &apos;$file&apos; failed to upload (code: $?)&quot;
+            exit 1
+        fi
+    done &lt; $list
+
+    popd &gt; /dev/null
+done
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.25">
+      <deleteDirs>false</deleteDirs>
+      <cleanupParameter></cleanupParameter>
+      <externalDelete></externalDelete>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+  </buildWrappers>
+</project>

@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Create specified &lt;a href=&quot;https://github.com/sschuberth/gfw-msys1-packages/&quot;&gt;MSYS1 / MinGW packages&lt;/a&gt; using the latest development environment.</description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>30</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>GITHUB_REPO</name>
+          <description>Name of the Git repository on GitHub to look for changes in.</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>GIT_TO_REV</name>
+          <description>End of the revision range in the Git repository to look for changed package files.</description>
+          <defaultValue>origin/master</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>GIT_FROM_REV</name>
+          <description>Start of the revision range in the Git repository to look for changed package files. If left empty, start from the last upstream commit.</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>BUILD_MSYS</name>
+          <description>Build MSYS packages.</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>BUILD_MINGW32</name>
+          <description>Build MINGW32 packages.</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>RUN_TESTS</name>
+          <description>Run the tests associated with the package after building it.</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>INSTALL_PKGS</name>
+          <description>Install each package locally after it has been built successfully.</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.22">
+      <autoRebuild>false</autoRebuild>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@1.8.4">
+      <maxConcurrentPerNode>0</maxConcurrentPerNode>
+      <maxConcurrentTotal>0</maxConcurrentTotal>
+      <categories>
+        <string>Expensive</string>
+      </categories>
+      <throttleEnabled>true</throttleEnabled>
+      <throttleOption>category</throttleOption>
+    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.5">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <name>origin</name>
+        <url>https://github.com/$GITHUB_REPO</url>
+      </hudson.plugins.git.UserRemoteConfig>
+      <hudson.plugins.git.UserRemoteConfig>
+        <name>upstream</name>
+        <url>https://github.com/sschuberth/gfw-msys1-packages</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>$GIT_TO_REV</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <gitTool>Git SDK</gitTool>
+    <submoduleCfg class="list"/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.PruneStaleBranch/>
+      <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        <relativeTargetDir>Git-SDK/packages</relativeTargetDir>
+      </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+      <hudson.plugins.git.extensions.impl.CleanCheckout/>
+    </extensions>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.35">
+      <project>gfw-msys1-sdk-build-installer</project>
+      <filter>ci/*</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.35">
+      <project>gfw-msys1-sdk-test-installer</project>
+      <filter>Git-SDK.tar.gz</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.tasks.Shell>
+      <command>tar -xf Git-SDK.tar.gz &amp;&amp; rm Git-SDK.tar.gz</command>
+    </hudson.tasks.Shell>
+    <org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder plugin="conditional-buildstep@1.3.3">
+      <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail" plugin="run-condition@1.0"/>
+      <runCondition class="org.jenkins_ci.plugins.run_condition.core.BooleanCondition" plugin="run-condition@1.0">
+        <token>$BUILD_MSYS</token>
+      </runCondition>
+      <conditionalbuilders>
+        <hudson.tasks.Shell>
+          <command># Trigger building packages on shell login.
+cat &gt; Git-SDK/etc/profile.d/zzz.sh &lt;&lt; &quot;EOF&quot;
+echo &quot;Number of processors reported by nproc: $(nproc)&quot;
+
+cd /packages
+
+if [ -n &quot;$GIT_FROM_REV&quot; ]; then
+    from=$(git rev-parse $GIT_FROM_REV)
+else
+    from=$(git merge-base $GIT_TO_REV upstream/master)
+fi
+to=$(git rev-parse $GIT_TO_REV)
+
+echo -e &quot;Searching for changes in \e[32mMSYS packages\e[39m between $from and $to.&quot;
+list=$(git show --pretty=format: --name-only --reverse $from..$to | grep -oP &quot;^msys-\w+&quot; | uniq)
+
+if [ &quot;$RUN_TESTS&quot; = &quot;true&quot; ]; then
+    almostall=&quot;download prep compile test install package&quot;
+else
+    almostall=&quot;download prep compile install package&quot;
+fi
+
+if [ -n &quot;$list&quot; ]; then
+    echo &quot;[DESCRIPTION] Changed MSYS packages: $list&quot;
+    while read line; do
+        (
+            cd &quot;$line&quot; &amp;&amp;
+            (
+                git clean -fdx
+                port=$(ls *.msysport 2&gt; /dev/null)
+
+                # This is how mgwport extracts the package name, revision and version from the file name.
+                PF=${port%.msysport}
+                PN=${PF%%-[0-9]*}
+                PR=${PF##*-}
+                PV=$(echo ${PF} | sed -e &quot;s/${PN}\-\(.*\)\-${PR}$/\1/&quot;)
+
+                echo &quot;Building package &apos;$line&apos;, version &apos;$PV&apos;, revision &apos;$PR&apos;...&quot;
+
+                if [ -n &quot;$port&quot; ]; then
+                    mgwport $port $almostall
+                    ls -1 *.lzma &gt; $line-$PV-$PR.list
+                fi
+
+                [ &quot;$INSTALL_PKGS&quot; = &quot;true&quot; ] &amp;&amp; ../install-local.sh . || true
+            )
+        )
+    done &lt;&lt;&lt; &quot;$list&quot;
+else
+    echo &quot;[DESCRIPTION] No MSYS packages were changed.&lt;br /&gt;&quot;
+fi
+
+logout
+EOF</command>
+        </hudson.tasks.Shell>
+        <hudson.tasks.BatchFile>
+          <command>echo Starting an MSYS login shell to trigger building the packages...&#xd;
+set MSYSTEM=MSYS&#xd;
+call ci\start_login_shell.cmd&#xd;
+echo start_login_shell.cmd exited with code %ERRORLEVEL%</command>
+        </hudson.tasks.BatchFile>
+      </conditionalbuilders>
+    </org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder>
+    <org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder plugin="conditional-buildstep@1.3.3">
+      <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail" plugin="run-condition@1.0"/>
+      <runCondition class="org.jenkins_ci.plugins.run_condition.core.BooleanCondition" plugin="run-condition@1.0">
+        <token>$BUILD_MINGW32</token>
+      </runCondition>
+      <conditionalbuilders>
+        <hudson.tasks.Shell>
+          <command># Trigger building packages on shell login.
+cat &gt; Git-SDK/etc/profile.d/zzz.sh &lt;&lt; &quot;EOF&quot;
+echo &quot;Number of processors reported by nproc: $(nproc)&quot;
+
+cd /packages
+
+if [ -n &quot;$GIT_FROM_REV&quot; ]; then
+    from=$(git rev-parse $GIT_FROM_REV)
+else
+    from=$(git merge-base $GIT_TO_REV upstream/master)
+fi
+to=$(git rev-parse $GIT_TO_REV)
+
+echo -e &quot;Searching for changes in \e[32mMinGW packages\e[39m between $from and $to.&quot;
+list=$(git show --pretty=format: --name-only --reverse $from..$to | grep -oP &quot;^mingw32-\w+&quot; | uniq)
+
+if [ &quot;$RUN_TESTS&quot; = &quot;true&quot; ]; then
+    almostall=&quot;download prep compile test install package&quot;
+else
+    almostall=&quot;download prep compile install package&quot;
+fi
+
+if [ -n &quot;$list&quot; ]; then
+    echo &quot;[DESCRIPTION] Changed MinGW packages: $list&quot;
+    while read line; do
+        (
+            cd &quot;$line&quot; &amp;&amp;
+            (
+                git clean -fdx
+                port=$(ls *.mgwport 2&gt; /dev/null)
+
+                # This is how mgwport extracts the package name, revision and version from the file name.
+                PF=${port%.mgwport}
+                PN=${PF%%-[0-9]*}
+                PR=${PF##*-}
+                PV=$(echo ${PF} | sed -e &quot;s/${PN}\-\(.*\)\-${PR}$/\1/&quot;)
+
+                echo &quot;Building package &apos;$line&apos;, version &apos;$PV&apos;, revision &apos;$PR&apos;...&quot;
+
+                if [ -n &quot;$port&quot; ]; then
+                    mgwport $port $almostall
+                    ls -1 *.lzma &gt; $line-$PV-$PR.list
+                fi
+
+                [ &quot;$INSTALL_PKGS&quot; = &quot;true&quot; ] &amp;&amp; ../install-local.sh . || true
+            )
+        )
+    done &lt;&lt;&lt; &quot;$list&quot;
+else
+    echo &quot;[DESCRIPTION] No MinGW packages were changed.&lt;br /&gt;&quot;
+fi
+
+logout
+EOF</command>
+        </hudson.tasks.Shell>
+        <hudson.tasks.BatchFile>
+          <command>echo Starting a MINGW32 login shell to trigger building the packages...&#xd;
+set MSYSTEM=MINGW32&#xd;
+call ci\start_login_shell.cmd&#xd;
+echo start_login_shell.cmd exited with code %ERRORLEVEL%</command>
+        </hudson.tasks.BatchFile>
+      </conditionalbuilders>
+    </org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder>
+  </builders>
+  <publishers>
+    <org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder plugin="groovy-postbuild@2.2">
+      <script plugin="script-security@1.13">
+        <script>def pattern = ~/^\[DESCRIPTION\] (.*)$/
+def description = &quot;&quot;
+
+manager.build.logFile.eachLine { line -&gt;
+    matcher = pattern.matcher(line)
+    if (matcher?.matches()) {
+        if (description) {
+            description += &quot;&lt;br /&gt;&quot;
+        }
+        description += matcher.group(1)
+    }
+}
+
+if (description) {
+    manager.build.setDescription(description)
+}</script>
+        <sandbox>false</sandbox>
+      </script>
+      <behavior>0</behavior>
+      <runForMatrixParent>false</runForMatrixParent>
+    </org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>Git-SDK/packages/mingw32-*/*-mingw32-*.tar.lzma, Git-SDK/packages/msys-*/*-msys-*.tar.lzma, Git-SDK/packages/**/log/*.log, Git-SDK/packages/*/*.list</artifacts>
+      <allowEmptyArchive>true</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+    </hudson.tasks.ArtifactArchiver>
+    <hudson.tasks.Mailer plugin="mailer@1.15">
+      <recipients>sschuberth@gmail.com thomas.braun@virtuell-zuhause.de</recipients>
+      <dontNotifyEveryUnstableBuild>true</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>true</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.25">
+      <patterns>
+        <hudson.plugins.ws__cleanup.Pattern>
+          <pattern>Git-SDK/packages</pattern>
+          <type>EXCLUDE</type>
+        </hudson.plugins.ws__cleanup.Pattern>
+      </patterns>
+      <deleteDirs>true</deleteDirs>
+      <cleanupParameter></cleanupParameter>
+      <externalDelete></externalDelete>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+    <hudson.plugins.build__timeout.BuildTimeoutWrapper plugin="build-timeout@1.14.1">
+      <strategy class="hudson.plugins.build_timeout.impl.LikelyStuckTimeOutStrategy"/>
+      <operationList>
+        <hudson.plugins.build__timeout.operations.AbortOperation/>
+      </operationList>
+    </hudson.plugins.build__timeout.BuildTimeoutWrapper>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.6"/>
+  </buildWrappers>
+</project>
