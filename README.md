@@ -20,13 +20,13 @@ The installer strives to supersede the existing msysgit netinstall package with 
 
 # Download
 
-Choose between the latest [release](https://github.com/sschuberth/gfw-msys1-sdk/releases/latest) or the latest [snapshot](https://dscho.cloudapp.net/job/sdk-build-installer/lastSuccessfulBuild/artifact/download.html).
+Choose between the latest [release](https://github.com/sschuberth/gfw-msys1-sdk/releases/latest) or the latest [snapshot](https://ci.appveyor.com/project/sschuberth/gfw-msys1-sdk/branch/master/artifacts).
 
 # Getting involved
 
 ## Setting up the environment
 
-If you start from scratch without an existing MSYS environment (or Git client, for that matter) you have sort of a chicken-and-egg problem: In order to build the SDK installer or create mingw-get packages (see the [next section](#creating-mingw-get-packages)) you need various MSYS tools like curl or wget, sed, lzma, tar, unzip. The SDK installer provides those tools, but you do not have the installer yet. The easiest way to solve this is by downloading an already existing [snapshot release](https://dscho.cloudapp.net/job/sdk-build-installer/lastSuccessfulBuild/artifact/download.html) of the SDK installer, run it to set up the development environment, and use that environment to work on the SDK itself. To do so, select _Start the development environment_ on the installer's final page and type at the prompt:
+If you start from scratch without an existing MSYS environment (or Git client, for that matter) you have sort of a chicken-and-egg problem: In order to build the SDK installer or create mingw-get packages (see the [next section](#creating-mingw-get-packages)) you need various MSYS tools like curl or wget, sed, lzma, tar, unzip. The SDK installer provides those tools, but you do not have the installer yet. The easiest way to solve this is by downloading an already existing [snapshot release](https://ci.appveyor.com/project/sschuberth/gfw-msys1-sdk/branch/master/artifacts) of the SDK installer, run it to set up the development environment, and use that environment to work on the SDK itself. To do so, select _Start the development environment_ on the installer's final page and type at the prompt:
 
     $ git clone https://github.com/sschuberth/gfw-msys1-sdk.git  # Clone the repository (or your fork of it)
     $ cd gfw-msys1-sdk                                           # Change to the working tree
